@@ -1,0 +1,357 @@
+J00/009 Plan 1 Cycle 96 Timeout 0
+27/F2.6/2
+#35/F3,DX.8/3
+38/F3,DX.8/3
+63/F4.5/4F
+64/F3F4,DX,NTO.99/4F+
+76/F5.11/5F
+78/F1F5,NTO.99/5F+
+92/F1.19/1
+% WAT AM
+; 04-Apr-2013 16:10:59 Object compiled by TRCT
+; 06-Jun-2013 14:02:37 Object compiled by TRCT
+; 03-Sep-2013 10:46:31 Object compiled by TJDB
+; 03-Sep-2013 13:32:10 Object compiled by TJDB
+; 04-Sep-2013 15:22:23 Object compiled by TJDB
+; 17-Sep-2013 09:14:18 Object compiled by TRCT
+; 07-Oct-2013 11:00:42 Object compiled by TJDB
+; 23-Dec-2013 11:57:59 Object compiled by TASD
+; 13-Mar-2014 08:49:43 Object compiled by TRJW
+; 09-Jun-2014 17:08:51 Object compiled by TRJW
+; 24-Jun-2014 12:33:57 Object compiled by TMXS
+; 24-Jun-2014 16:29:25 Object compiled by TMXS
+; 14-Feb-2017 10:33:00 Object compiled by TMRS
+; 18-Apr-2017 09:47:31 Object compiled by TRJW
+; 17-Sep-2017 12:28:36 Object compiled by TRJW
+; 20-Sep-2017 11:57:33 Object compiled by TMRS
+; 20-Nov-2017 15:48:59 Object compiled by TMRS
+; 27-Nov-2017 11:19:55 Object compiled by TMRS
+; 06-Dec-2017 08:58:16 Object compiled by TNSB
+; 02-Jan-2018 10:05:12 Object compiled by TMRS
+; 24-Mar-2018 13:20:59 Object compiled by TMRS
+; 24-Mar-2018 13:29:21 Object compiled by TMRS
+; 28-Mar-2018 09:35:14 Object compiled by TMRS
+; 01-Aug-2018 10:37:24 Object compiled by TNSB
+; 30-Apr-2020 10:12:33 Object compiled by TCTB
+; 23-Sep-2020 14:45:36 Object compiled by TRJW
+; 24-Sep-2020 09:48:14 Object compiled by TRJW
+; 23-Jun-2021 07:20:17 Object compiled by TRJW
+; 24-Jun-2021 10:06:44 Object compiled by TRJW
+; 24-May-2022 09:55:48 Object compiled by TRJW
+*
+J00/009 Plan 2 Cycle 88 Timeout 0
+11/F1.19/1
+38/F2.6/2
+45/F3,DX.8/3
+74/F4.5/4F
+75/F3F4,DX,NTO.99/4F+
+83/F5.11/5F
+85/F1F5,NTO.99/5F+
+% WAT OP
+; 04-Apr-2013 16:12:39 Object compiled by TRCT
+; 04-Apr-2013 16:17:11 Object compiled by TRCT
+; 21-May-2013 14:59:49 Object compiled by TRJW
+; 06-Jun-2013 14:02:29 Object compiled by TRCT
+; 03-Sep-2013 10:07:47 Object compiled by TJDB
+; 03-Sep-2013 13:33:23 Object compiled by TJDB
+; 16-Sep-2013 11:50:49 Object compiled by TRCT
+; 07-Oct-2013 10:44:19 Object compiled by TJDB
+; 07-Oct-2013 11:02:34 Object compiled by TJDB
+; 23-Dec-2013 11:57:04 Object compiled by TASD
+; 13-Mar-2014 09:04:56 Object compiled by TRJW
+; 09-Jun-2014 17:08:22 Object compiled by TRJW
+; 24-Jun-2014 12:28:24 Object compiled by TMXS
+; 14-Feb-2017 10:35:07 Object compiled by TMRS
+; 18-Apr-2017 09:47:48 Object compiled by TRJW
+; 17-Sep-2017 12:29:09 Object compiled by TRJW
+; 20-Sep-2017 11:34:31 Object compiled by TMRS
+; 21-Nov-2017 10:29:54 Object compiled by TMRS
+; 27-Nov-2017 11:20:10 Object compiled by TMRS
+; 06-Dec-2017 08:57:56 Object compiled by TNSB
+; 02-Jan-2018 10:08:40 Object compiled by TMRS
+; 24-Mar-2018 13:16:57 Object compiled by TMRS
+; 24-Mar-2018 13:29:12 Object compiled by TMRS
+; 28-Mar-2018 14:47:57 Object compiled by TMRS
+; 01-Aug-2018 10:37:13 Object compiled by TNSB
+; 30-Apr-2020 10:11:33 Object compiled by TCTB
+; 23-Sep-2020 13:33:15 Object compiled by TKCS
+; 24-Sep-2020 09:48:44 Object compiled by TRJW
+; 23-Jun-2021 11:13:39 Object compiled by TRJW
+; 24-Jun-2021 10:58:46 Object compiled by TRJW
+; 23-May-2022 15:57:50 Object compiled by TMRS
+; 24-May-2022 10:49:35 Object compiled by TRJW
+*
+J00/009 Plan 3 Cycle 96 Timeout 0
+18/F2.6/2
+26/F3,DX.8/3
+58/F4.5/4F
+59/F3F4,DX,NTO.99/4F+
+67/F5.11/5F
+69/F1F5,NTO.99/5F+
+83/F1.19/1
+% WAT PM
+; 04-Apr-2013 16:15:23 Object compiled by TRCT
+; 04-Apr-2013 16:17:01 Object compiled by TRCT
+; 06-Jun-2013 14:02:21 Object compiled by TRCT
+; 03-Sep-2013 10:46:12 Object compiled by TJDB
+; 03-Sep-2013 13:34:34 Object compiled by TJDB
+; 07-Oct-2013 10:55:19 Object compiled by TJDB
+; 23-Dec-2013 11:57:51 Object compiled by TASD
+; 24-Feb-2014 18:09:23 Object compiled by TRCT
+; 13-Mar-2014 09:05:17 Object compiled by TRJW
+; 09-Jun-2014 17:08:08 Object compiled by TRJW
+; 24-Jun-2014 12:33:46 Object compiled by TMXS
+; 24-Jun-2014 16:06:33 Object compiled by TMXS
+; 14-Feb-2017 10:33:20 Object compiled by TMRS
+; 18-Apr-2017 09:47:58 Object compiled by TRJW
+; 17-Sep-2017 12:28:59 Object compiled by TRJW
+; 20-Sep-2017 11:57:53 Object compiled by TMRS
+; 20-Nov-2017 15:52:29 Object compiled by TMRS
+; 27-Nov-2017 11:20:20 Object compiled by TMRS
+; 06-Dec-2017 08:57:33 Object compiled by TNSB
+; 02-Jan-2018 10:10:11 Object compiled by TMRS
+; 24-Mar-2018 13:18:51 Object compiled by TMRS
+; 24-Mar-2018 13:29:00 Object compiled by TMRS
+; 01-Aug-2018 10:37:45 Object compiled by TNSB
+; 30-Apr-2020 10:11:56 Object compiled by TCTB
+; 23-Sep-2020 14:45:16 Object compiled by TRJW
+; 24-Sep-2020 09:49:18 Object compiled by TRJW
+; 23-Jun-2021 11:14:04 Object compiled by TRJW
+*
+J00/009 Plan 5 Cycle 80 Timeout 0
+27/F2.6/2
+35/F3,DX.8/3
+55/F4.5/4F
+56/F3F4,DX,NTO.99/4F+
+64/F5.11/5F
+66/F1F5,NTO.99/5F+
+80/F1.19/1
+% WAT ON
+; 04-Apr-2013 16:16:52 Object compiled by TRCT
+; 06-Jun-2013 14:02:13 Object compiled by TRCT
+; 03-Sep-2013 10:45:24 Object compiled by TJDB
+; 07-Oct-2013 11:07:59 Object compiled by TJDB
+; 23-Dec-2013 11:57:42 Object compiled by TASD
+; 13-Mar-2014 09:05:58 Object compiled by TRJW
+; 09-Jun-2014 17:07:54 Object compiled by TRJW
+; 24-Jun-2014 12:35:30 Object compiled by TMXS
+; 24-Jun-2014 16:32:14 Object compiled by TMXS
+; 17-Sep-2017 12:28:39 Object compiled by TRJW
+; 27-Nov-2017 11:20:30 Object compiled by TMRS
+; 06-Dec-2017 08:57:09 Object compiled by TNSB
+; 02-Jan-2018 10:11:15 Object compiled by TMRS
+; 24-Mar-2018 13:12:57 Object compiled by TMRS
+; 24-Mar-2018 13:28:50 Object compiled by TMRS
+; 01-Aug-2018 10:37:02 Object compiled by TNSB
+; 30-Apr-2020 10:12:10 Object compiled by TCTB
+; 24-Sep-2020 09:48:56 Object compiled by TRJW
+; 23-Jun-2021 11:13:57 Object compiled by TRJW
+*
+J00/009 Plan 8 Cycle 80 Timeout 0
+27/F2.6/2
+35/F3,DX.8/3
+55/F4.5/4F
+56/F3F4,DX,NTO.99/4F+
+64/F5.11/5F
+66/F1F5,NTO.99/5F+
+80/F1.19/1
+% WAT LE
+; 04-Apr-2013 16:18:32 Object compiled by TRCT
+; 06-Jun-2013 14:02:04 Object compiled by TRCT
+; 03-Sep-2013 10:45:39 Object compiled by TJDB
+; 07-Oct-2013 11:10:19 Object compiled by TJDB
+; 23-Dec-2013 11:57:32 Object compiled by TASD
+; 13-Mar-2014 09:05:39 Object compiled by TRJW
+; 09-Jun-2014 17:07:42 Object compiled by TRJW
+; 24-Jun-2014 12:36:15 Object compiled by TMXS
+; 24-Jun-2014 16:31:16 Object compiled by TMXS
+; 17-Sep-2017 12:28:17 Object compiled by TRJW
+; 27-Nov-2017 11:20:39 Object compiled by TMRS
+; 06-Dec-2017 08:56:59 Object compiled by TNSB
+; 02-Jan-2018 10:11:57 Object compiled by TMRS
+; 24-Mar-2018 13:13:00 Object compiled by TMRS
+; 24-Mar-2018 13:28:34 Object compiled by TMRS
+; 01-Aug-2018 10:36:47 Object compiled by TNSB
+; 30-Apr-2020 10:12:21 Object compiled by TCTB
+; 23-Jun-2021 11:13:51 Object compiled by TRJW
+*
+J00/009 Plan 21 Cycle 96 Timeout 0
+40/F2.6/
+47/F3,DX.08/
+64/F4.05/
+65/F3F4,DX,NTO.99/
+76/F5.11/
+78/F1F5,NTO.99/
+92/F1.19/
+% ASSIST MOORGATE NORTH/SOUTHBOUND
+; 30-Mar-2010 13:10:19 Copied from Plan 11 by TRJW
+; 30-Mar-2010 13:11:26 Object compiled by TRJW
+; 30-Mar-2010 13:14:59 Object compiled by TRJW
+; 15-Feb-2011 14:49:26 Object compiled by TRJW
+; 16-Feb-2011 11:59:02 Object compiled by TRJW
+; 19-Mar-2011 13:38:47 Object compiled by TRJW
+; 17-Feb-2013 10:58:38 Object compiled by TRJW
+; 12-Jul-2016 12:01:57 Object compiled by TGXS
+; 17-Sep-2017 12:29:52 Object compiled by TRJW
+; 06-Dec-2017 09:03:13 Object compiled by TNSB
+; 01-Aug-2018 10:35:11 Object compiled by TNSB
+*
+J00/009 Plan 22 Cycle 96 Timeout 0
+32/F2.6/
+47/F3,DX.08/
+64/F4.05/
+65/F3F4,DX,NTO.99/
+76/F5.11/
+78/F1F5,NTO.99/
+92/F1.19/
+% ASSIST MOORGATE SOUTHBOUND R/T
+; 30-Mar-2010 13:12:07 Copied from Plan 21 by TRJW
+; 30-Mar-2010 13:13:27 Object compiled by TRJW
+; 19-Mar-2011 13:37:34 Object compiled by TRJW
+; 17-Feb-2013 10:59:50 Object compiled by TRJW
+; 17-Sep-2017 12:30:21 Object compiled by TRJW
+; 06-Dec-2017 09:03:00 Object compiled by TNSB
+; 01-Aug-2018 10:34:59 Object compiled by TNSB
+*
+J00/009 Plan 23 Cycle 96 Timeout 0
+25/F2.6/
+32/F3,DX.8/
+64/F4.5/
+65/F3F4,DX,NTO.99/
+76/F5.11/
+78/F1F5,NTO.99/
+92/F1.19/
+% ASSIST LONDON WALL
+; 30-Mar-2010 10:58:51 Copied from Plan 11 by TRJW
+; 30-Mar-2010 10:59:22 Object compiled by TRJW
+; 30-Mar-2010 11:02:06 Object compiled by TRJW
+; 19-Mar-2011 13:35:43 Object compiled by TRJW
+; 21-Jun-2011 09:00:41 Object compiled by TRJW
+; 17-Feb-2013 11:01:52 Object compiled by TRJW
+; 25-Feb-2013 08:33:06 Object compiled by TRJW
+; 17-Sep-2017 12:31:58 Object compiled by TRJW
+; 06-Dec-2017 09:02:50 Object compiled by TNSB
+; 01-Aug-2018 10:34:49 Object compiled by TNSB
+*
+J00/009 Plan 24 Cycle 96 Timeout 0
+25/F2.6/
+32/F3,DX.8/
+59/F4,DX.5/
+76/F5.11/
+78/F1F5,NTO.99/
+92/F1.19/
+% ASSIST LONDON WALL R/T INTO MOORGATE
+; 09-Sep-2012 08:20:30 Copied from Plan 13 by TJDB
+; 09-Sep-2012 08:26:35 Object compiled by TJDB
+; 09-Sep-2012 09:56:46 Object compiled by TJDB
+; 09-Sep-2012 11:56:12 Object compiled by TJDB
+; 06-Jan-2013 11:03:08 Object compiled by TRJW
+; 17-Feb-2013 11:07:44 Object compiled by TRJW
+; 17-Apr-2013 09:39:09 Object compiled by TRCT
+; 17-Apr-2013 14:21:33 Object compiled by TRCT
+; 03-Sep-2013 17:14:28 Object compiled by TRXB
+; 24-Feb-2014 15:56:37 Object compiled by THBB
+; 17-Sep-2017 12:33:53 Object compiled by TRJW
+; 06-Dec-2017 09:02:41 Object compiled by TNSB
+; 01-Aug-2018 10:33:39 Object compiled by TNSB
+*
+J00/009 Plan 25 Cycle 104 Timeout 0
+30/F2.6/
+37/F3,DX.8/
+64/F4.5/
+65/F3F4,DX,NTO.99/
+76/F5.11/
+78/F1F5,NTO.99/
+92/F1.19/
+% HEAVY ASSIST MOORGATE NORTH/SOUTHBOUND
+; 26-Jan-2011 13:35:53 Object compiled by TREP
+; 19-Mar-2011 13:32:13 Object compiled by TRJW
+; 17-Feb-2013 11:15:37 Object compiled by TRJW
+; 12-Jul-2016 11:50:51 Object compiled by TGXS
+; 17-Sep-2017 12:34:39 Object compiled by TRJW
+; 06-Dec-2017 09:02:31 Object compiled by TNSB
+; 01-Aug-2018 10:36:04 Object compiled by TNSB
+*
+J00/009 Plan 26 Cycle 104 Timeout 0
+20/F2.6/
+27/F3,DX.8/
+61/F4,DX.5/
+76/F5.11/
+78/F1F5,NTO.99/
+92/F1.19/
+% HEAVY ASSIST LONDON WALL
+; 28-Mar-2011 09:35:49 Copied from Plan 23 by TRJW
+; 28-Mar-2011 09:47:37 Object compiled by TRJW
+; 28-Mar-2011 17:01:37 Object compiled by TRJW
+; 17-Feb-2013 11:10:46 Object compiled by TRJW
+; 17-Apr-2013 08:25:18 Object compiled by TAWH
+; 17-Apr-2013 08:53:59 Object compiled by TAWH
+; 12-Jul-2016 11:47:48 Object compiled by TGXS
+; 12-Jul-2016 11:49:38 Object compiled by TGXS
+; 17-Sep-2017 12:36:39 Object compiled by TRJW
+; 06-Dec-2017 09:02:20 Object compiled by TNSB
+; 01-Aug-2018 10:35:51 Object compiled by TNSB
+*
+J00/009 Plan 27 Cycle 104 Timeout 0
+20/F2.6/
+27/F3,DX.8/
+64/F4.5/
+65/F3F4,DX,NTO.99/
+76/F5.11/
+78/F1F5,NTO.99/
+92/F1.19/
+% HEAVY ASSIST LONDON WALL E/B
+; 05-Jun-2012 13:50:51 Copied from Plan 23 by TJDB
+; 05-Jun-2012 13:52:25 Object compiled by TJDB
+; 05-Jun-2012 14:25:46 Object compiled by TJDB
+; 17-Feb-2013 11:13:56 Object compiled by TRJW
+; 12-Jul-2016 11:47:06 Object compiled by TGXS
+; 17-Sep-2017 12:36:42 Object compiled by TRJW
+; 06-Dec-2017 09:00:06 Object compiled by TNSB
+; 01-Aug-2018 10:35:38 Object compiled by TNSB
+*
+J00/009 Plan 28 Cycle 104 Timeout 0
+20/F2.6/
+27/F3,DX.8/
+50/F4,DX.5/
+76/F5.11/
+78/F1F5,NTO.99/
+92/F1.19/
+% HEAVY R/T ASSIST (LONDON WALL W/B CLOSURE)
+; 06-Jan-2013 11:00:38 Copied from Plan 24 by TRJW
+; 06-Jan-2013 11:05:34 Object compiled by TRJW
+; 07-Jan-2013 08:14:09 Object compiled by TRJW
+; 07-Jan-2013 15:35:21 Object compiled by TRJW
+; 08-Jan-2013 09:25:13 Object compiled by TRJW
+; 17-Feb-2013 11:19:20 Object compiled by TRJW
+; 17-Sep-2017 12:38:25 Object compiled by TRJW
+; 06-Dec-2017 08:59:56 Object compiled by TNSB
+; 08-Feb-2018 14:42:07 Object compiled by TTJB
+; 01-Aug-2018 10:35:25 Object compiled by TNSB
+*
+J00/009 Plan 32 Cycle 100 Timeout 0
+01/F1.17/
+20/F2.6/
+40/F3,DX.8/
+60/F4,DX.5/
+80/F5,DX.10/
+% MINS CHECK
+; Object compiled by TRRR. On  5-NOV-2004 at 11:48 ( Created )
+; Object compiled by TRRR. On  5-NOV-2004 at 11:52
+; Object compiled by TRRR. On  5-NOV-2004 at 13:49
+; Object compiled by TRRR. On  5-NOV-2004 at 13:52
+; Object compiled by TMXS. On 24-NOV-2004 at 09:57
+; Object compiled by TMXS. On 24-NOV-2004 at 10:02
+; Object compiled by TMXS. On 23-FEB-2005 at 15:44
+; Object compiled by SDIM. On 21-AUG-2006 at 14:37 ( Created )
+; Object compiled by TNSB. On 23-APR-2008 at 11:57 ( Created )
+; Object compiled by TNSB. On 20-NOV-2008 at 08:36
+; 02-Dec-2008 11:00:52 Object compiled by TSJC
+; 21-Jan-2010 11:14:57 Object compiled by TNSB
+; 30-Mar-2010 13:16:36 Object compiled by TRJW
+; 11-Apr-2012 13:43:40 Object compiled by TNSB
+; 11-Apr-2012 13:45:00 Object compiled by TNSB
+; 17-Feb-2013 10:53:11 Object compiled by TRJW
+; 06-Dec-2017 09:03:50 Object compiled by TNSB
+; 01-Aug-2018 10:34:37 Object compiled by TNSB
+*

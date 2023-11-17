@@ -1,0 +1,195 @@
+Controller - start
+00/000010/U,STCL LV T900 MK 1 UTC Semi VA Controller,532650/181268,290,00/000010/U
+Controller - end
+Site Details - start
+Site Number,00/000010/U
+Controller Type,STCL LV T900 MK 1 UTC Semi VA Controller
+Grid Reference,532650/181268
+Address,MOORGATE - LOTHBURY - PRINCES STREET - GRESHAM STREET
+Issue,26
+Control Group,290
+Control Subgroup,00/000010/U
+Site Link Number,
+SFM Version Number,0
+Site Details - end
+Stages - start
+0,CONTROLLER ALL RED
+1, MOORGATE - PRINCES STREET
+2,GRESHAM STREET - LOTHBURY
+3,PEDESTRIANS
+4,UTC DUMMY - MOORGATE
+5,UTC DUMMY - PRINCE\S STREET
+Stages - end
+Streams - start
+0,00/000010/U,CONTROLLER ALL RED,I,X
+0,00/000010/U,GRESHAM STREET - LOTHBURY,C,X
+0,00/000010/U,GRESHAM STREET - LOTHBURY,D,X
+0,00/000010/U, MOORGATE - PRINCES STREET,A,X
+0,00/000010/U, MOORGATE - PRINCES STREET,B,X
+0,00/000010/U,PEDESTRIANS,E,X
+0,00/000010/U,PEDESTRIANS,H,X
+0,00/000010/U,PEDESTRIANS,G,X
+0,00/000010/U,PEDESTRIANS,F,X
+0,00/000010/U,UTC DUMMY - MOORGATE,A,X
+0,00/000010/U,UTC DUMMY - MOORGATE,J,X
+0,00/000010/U, UTC DUMMY - PRINCES STREET,B,X
+0,00/000010/U, UTC DUMMY - PRINCES STREET,K,X
+Streams - end
+Revert and Startup Stage - start
+0,00/000010/U,,,1
+Revert and Startup Stage - end
+Phase Timings - start
+A,7,,20,,T
+B,7,,20,,T
+C,7,,20,,T
+D,7,,20,,T
+E,6,,,9,P
+F,6,,,9,P
+G,6,,,9,P
+H,6,,,9,P
+I,3,,,,D
+J,1,,,,D
+K,1,,,,D
+Phase Timings - end
+Intergreens - start
+A,C,6
+A,D,6
+A,E,10
+A,F,10
+A,G,10
+A,H,10
+A,I,3
+A,K,8
+B,C,6
+B,D,6
+B,E,10
+B,F,10
+B,G,10
+B,H,10
+B,I,3
+B,J,7
+C,A,7
+C,B,7
+C,E,10
+C,F,10
+C,G,10
+C,H,10
+C,I,3
+C,J,7
+C,K,7
+D,A,7
+D,B,7
+D,E,10
+D,F,10
+D,G,10
+D,H,10
+D,I,3
+D,J,7
+D,K,7
+E,A,20
+E,B,20
+E,C,20
+E,D,20
+E,I,9
+E,J,20
+E,K,20
+F,A,20
+F,B,20
+F,C,20
+F,D,20
+F,I,9
+F,J,20
+F,K,20
+G,A,20
+G,B,20
+G,C,20
+G,D,20
+G,I,9
+G,J,20
+G,K,20
+H,A,20
+H,B,20
+H,C,20
+H,D,20
+H,I,9
+H,J,20
+H,K,20
+I,A,2
+I,B,2
+I,C,2
+I,D,2
+I,E,2
+I,F,2
+I,G,2
+I,H,2
+I,J,2
+I,K,2
+J,B,8
+J,C,6
+J,D,6
+J,E,10
+J,F,10
+J,G,10
+J,H,10
+J,I,3
+J,K,8
+K,A,7
+K,C,6
+K,D,6
+K,E,10
+K,F,10
+K,G,10
+K,H,10
+K,I,3
+K,J,7
+Intergreens - end
+Phase Delays - start
+Phase Delays - end
+Detection - start
+Detection - end
+Phase type and conditions - start
+A,MOORGATE S/B,T,0,0,
+B, PRINCES STREET N/B,T,0,0,
+C,GRESHAM STREET E/B,T,0,0,
+D,LOTHBURY W/B,T,0,0,
+E,PED X GRESHAM STREET,P,0,0,
+F,PED X MOORGATE,P,0,0,
+G,PED X LOTHBURY,P,0,0,
+H, PED X PRINCES STREET,P,0,0,
+I,ALL RED DUMMY,D,0,0,
+J,UTC DUMMY - MOORGATE S/B,D,0,0,
+K, UTC DUMMY - PRINCES STREET N/B,D,0,0,
+Phase type and conditions - end
+Bus Priority - start
+1, MOORGATE - PRINCES STREET,,,,,,,,,,,,
+2,GRESHAM STREET - LOTHBURY,,,,,,,,,,,,
+3,PEDESTRIANS,,,,,,,,,,,,
+4,UTC DUMMY - MOORGATE,,,,,,,,,,,,
+5, UTC DUMMY - PRINCES STREET,,,,,,,,,,,,
+Bus Priority - end
+Stage Movements Under UTC Control - start
+1,CLF (Non Base Time),Y
+1,UTC,Y
+1,Manual,Y
+2,Fixed Time,Y
+Stage Movements Under UTC Control - end
+Prohibited Stages - start
+4,1,0
+5,1,0
+Prohibited Stages - end
+Phase Stage Demand Dependency - start
+PEDESTRIANS,E,X
+PEDESTRIANS,F,X
+PEDESTRIANS,G,X
+PEDESTRIANS,H,X
+Phase Stage Demand Dependency - end
+Linked Sites - start
+Link Number,Link To Ped Controller On Site,Stage or Phase,Trigger Point,Memory,Link Delay Time,Inhibit Release Period,Override Time
+Linked Sites - end
+Comments - start
+Version No,14
+Linking,NONE
+Comments,TFL SPEC ISSUE 14.  AUDIBLES TIMESWITCHED OFF BETWEEN 22:00 AND 07:00.
+Detection,PUSH BUTTONS / TACTILES & AUDIBLES - iBUS (TSN 3550) - VEHICLE SCOOT
+Amendments,NEW PROM (TFL SPEC ISSUE 14) INSTALLED & UTC COMMISSIONED.  03-SEP-2021 BENNK
+Comments - end

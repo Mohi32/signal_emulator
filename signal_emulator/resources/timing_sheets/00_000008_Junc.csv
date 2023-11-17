@@ -1,0 +1,169 @@
+Controller - start
+00/000008/U,STCL T800 MK 1 UTC Cntr  Integral Facilities,531791/181407,801,00/000008/U
+Controller - end
+Site Details - start
+Site Number,00/000008/U
+Controller Type,STCL T800 MK 1 UTC Cntr  Integral Facilities
+Grid Reference,531791/181407
+Address,A40 HOLBORN VIADUCT - A40 NEWGATE ST - OLD BAILEY - GILTSPUR ST
+Issue,26
+Control Group,801
+Control Subgroup,00/000008/U
+Site Link Number,00/057/,00/058/
+SFM Version Number,0
+Site Details - end
+Stages - start
+0,00
+1,01
+2,02
+3,03
+4,04
+5,05
+Stages - end
+Streams - start
+0,00/000008/U,00,G,X
+0,00/000008/U,01,C,X
+0,00/000008/U,01,D,X
+0,00/000008/U,02,E,X
+0,00/000008/U,02,F,X
+0,00/000008/U,03,A,X
+0,00/000008/U,03,B,X
+0,00/000008/U,04,C,X
+0,00/000008/U,04,H,X
+0,00/000008/U,05,D,X
+0,00/000008/U,05,I,X
+Streams - end
+Revert and Startup Stage - start
+0,00/000008/U,,,1
+Revert and Startup Stage - end
+Phase Timings - start
+A,7,,,,T
+B,7,,,,T
+C,7,,,,T
+D,7,,,,T
+E,6,,,9,P
+F,6,,,9,P
+G,3,,,,D
+H,1,,,,D
+I,1,,,,D
+Phase Timings - end
+Intergreens - start
+A,C,6
+A,D,5
+A,E,9
+A,F,10
+A,G,3
+A,H,6
+A,I,5
+B,C,7
+B,D,7
+B,E,9
+B,F,10
+B,G,3
+B,H,7
+B,I,7
+C,A,7
+C,B,7
+C,E,10
+C,F,11
+C,G,3
+C,I,3
+D,A,7
+D,B,7
+D,E,11
+D,F,11
+D,G,3
+D,H,3
+E,A,14
+E,B,14
+E,C,14
+E,D,14
+E,G,9
+E,H,14
+E,I,14
+F,A,14
+F,B,14
+F,C,14
+F,D,14
+F,G,9
+F,H,14
+F,I,14
+G,A,2
+G,B,2
+G,C,2
+G,D,2
+G,E,2
+G,F,2
+G,H,2
+G,I,2
+H,A,7
+H,B,7
+H,D,2
+H,E,10
+H,F,11
+H,G,3
+H,I,2
+I,A,7
+I,B,7
+I,C,2
+I,E,11
+I,F,11
+I,G,3
+I,H,3
+Intergreens - end
+Phase Delays - start
+Phase Delays - end
+Detection - start
+Detection - end
+Phase type and conditions - start
+A,OLD BAILEY,T,0,0,
+B,GILTSPUR STREET,T,0,0,
+C,HOLBORN VIADUCT,T,0,0,
+D,NEWGATE STREET,T,0,0,
+E,PEDS GILTSPUR ST & OLD BAILEY,P,0,0,
+F, PEDS HOLBORN VDUCT & NEWGATE ST,P,0,0,
+G,ALL RED DUMMY,D,0,0,
+H,UTC DUMMY STAGE 4,D,0,0,
+I,UTC DUMMY STAGE 5,D,0,0,
+Phase type and conditions - end
+Bus Priority - start
+1,01,,,,,,,,,,,,
+2,02,,,,,,,,,,,,
+3,03,,,,,,,,,,,,
+4,04,,,,,,,,,,,,
+5,05,,,,,,,,,,,,
+Bus Priority - end
+Stage Movements Under UTC Control - start
+1,CLF (Non Base Time),Y
+1,UTC,Y
+1,Manual,Y
+2,Emergency,Y
+2,Vehicle Actuated,Y
+2,Serial Mova,Y
+2,Priority,Y
+2,Part Time,Y
+2,Hurry Call,Y
+2,Fixed Time,Y
+Stage Movements Under UTC Control - end
+Prohibited Stages - start
+4,1,0
+4,5,0
+5,1,0
+5,4,0
+Prohibited Stages - end
+Phase Stage Demand Dependency - start
+02,E,X
+02,F,X
+03,A,X
+03,B,X
+Phase Stage Demand Dependency - end
+Linked Sites - start
+Link Number,Link To Ped Controller On Site,Stage or Phase,Trigger Point,Memory,Link Delay Time,Inhibit Release Period,Override Time
+Linked Sites - end
+Comments - start
+Version No,24
+Linking,COMPUTER CONTROL OF 00/057 AND 00/058
+Comments,TFL SPEC ISSUE 24.
+Detection,SMVDs - PUSHBUTTONS / TACTILES & AUDIBLES - PED COUNTDOWN - iBUS (TSN 3549) - VEHICLE SCOOT
+Amendments,TACTILE REPLACED ON POLE 8.  23-AUG-2022 SIEMENS
+Comments - end

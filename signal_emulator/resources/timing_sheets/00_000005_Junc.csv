@@ -1,0 +1,417 @@
+Controller - start
+00/000005/U,STCL ELV T950 MK 1 UTC Semi VA Controller,531390/180818,15,/
+Controller - end
+Site Details - start
+Site Number,00/000005/U
+Controller Type,STCL ELV T950 MK 1 UTC Semi VA Controller
+Grid Reference,531390/180818
+Address,VICTORIA EMBANKMENT - TEMPLE AVENUE
+Issue,39
+Control Group,15
+Control Subgroup,/
+Site Link Number,00/505/
+SFM Version Number,0
+Site Details - end
+Stages - start
+0,0
+1,1
+2,2
+3,3
+4,4
+5,5
+6,6
+7,7
+8,8
+9,9
+10,10
+11,11
+12,12
+13,13
+Stages - end
+Streams - start
+0,00/000005/U,0,N,X
+0,00/000005/U,1,A,X
+0,00/000005/U,1,H,X
+0,00/000005/U,1,G,X
+0,00/000005/U,1,B,X
+0,00/000005/U,2,D,X
+0,00/000005/U,2,C,X
+0,00/000005/U,2,P,X
+0,00/000005/U,2,E,X
+0,00/000005/U,2,J,X
+0,00/000005/U,2,I,X
+0,00/000005/U,3,A,X
+0,00/000005/U,3,G,X
+0,00/000005/U,3,Q,X
+0,00/000005/U,3,B,X
+0,00/000005/U,4,B,X
+0,00/000005/U,4,R,X
+0,00/000005/U,4,G,X
+0,00/000005/U,4,H,X
+0,00/000005/U,5,S,X
+0,00/000005/U,5,B,X
+0,00/000005/U,5,G,X
+0,00/000005/U,6,I,X
+0,00/000005/U,6,C,X
+0,00/000005/U,6,T,X
+0,00/000005/U,7,C,X
+0,00/000005/U,7,U,X
+0,00/000005/U,7,I,X
+0,00/000005/U,7,D,X
+0,00/000005/U,8,C,X
+0,00/000005/U,8,V,X
+0,00/000005/U,8,J,X
+0,00/000005/U,8,I,X
+1,00/000138/,10,K,X
+1,00/000138/,10,L,X
+1,00/000138/,11,M,X
+1,00/000138/,12,W,X
+1,00/000138/,12,L,X
+1,00/000138/,13,K,X
+1,00/000138/,13,X,X
+1,00/000138/,9,O,X
+Streams - end
+Revert and Startup Stage - start
+0,00/000005/U,1,,1
+1,00/000138/,10,,10
+Revert and Startup Stage - end
+Phase Timings - start
+A,7,,,,T
+B,7,,,,T
+C,5,,,,T
+D,5,,,,T
+E,6,,,8,P
+F,,,,,F
+G,7,,,,T
+H,7,,,,T
+I,5,,,,T
+J,5,,,,T
+K,5,,,,T
+L,5,,,,T
+M,6,,,3,P
+N,3,,,,D
+O,3,,,,D
+P,3,,,,D
+Q,1,,,,D
+R,1,,,,D
+S,1,,,,D
+T,1,,,,D
+U,1,,,,D
+V,1,,,,D
+W,1,,,,D
+X,1,,,,D
+Phase Timings - end
+Intergreens - start
+A,D,7
+A,E,7
+A,I,7
+A,N,3
+A,R,3
+A,S,3
+A,T,6
+A,U,6
+A,V,6
+B,D,7
+B,E,7
+B,I,7
+B,N,3
+B,T,5
+B,U,5
+B,V,5
+C,G,5
+C,N,3
+C,Q,5
+C,R,5
+C,S,5
+D,A,5
+D,B,5
+D,N,3
+D,Q,5
+D,R,5
+D,S,5
+D,T,3
+D,V,3
+E,A,13
+E,B,13
+E,N,8
+E,Q,13
+E,R,13
+E,S,13
+E,T,3
+E,U,3
+E,V,3
+G,C,5
+G,J,5
+G,N,3
+G,T,5
+G,U,5
+G,V,5
+H,N,3
+H,P,3
+H,Q,3
+H,S,3
+H,T,3
+H,U,3
+H,V,3
+I,A,5
+I,B,5
+I,N,3
+I,Q,5
+I,R,5
+I,S,5
+J,G,5
+J,N,3
+J,Q,5
+J,R,5
+J,S,5
+J,T,3
+J,U,3
+K,M,5
+K,O,3
+K,W,3
+L,M,5
+L,O,3
+L,X,3
+M,K,8
+M,L,8
+M,O,3
+M,W,8
+M,X,8
+N,A,2
+N,B,2
+N,C,2
+N,D,2
+N,E,2
+N,G,2
+N,H,2
+N,I,2
+N,J,2
+N,P,2
+N,Q,2
+N,R,2
+N,S,2
+N,T,2
+N,U,2
+N,V,2
+O,K,2
+O,L,2
+O,M,2
+O,W,2
+O,X,2
+P,H,2
+P,N,2
+P,Q,2
+P,R,2
+P,S,2
+P,T,3
+P,U,3
+P,V,3
+Q,C,5
+Q,D,5
+Q,E,6
+Q,H,2
+Q,I,6
+Q,J,5
+Q,N,2
+Q,P,6
+Q,R,2
+Q,S,2
+Q,T,2
+Q,U,2
+Q,V,2
+R,A,2
+R,C,5
+R,D,5
+R,E,6
+R,I,5
+R,J,5
+R,N,2
+R,P,2
+R,Q,2
+R,S,2
+R,T,2
+R,U,2
+R,V,2
+S,A,2
+S,C,5
+S,D,5
+S,E,6
+S,H,2
+S,I,5
+S,J,5
+S,N,2
+S,P,5
+S,Q,2
+S,R,2
+S,T,2
+S,U,2
+S,V,2
+T,A,5
+T,B,5
+T,D,2
+T,E,2
+T,G,5
+T,H,2
+T,J,2
+T,N,2
+T,P,2
+T,Q,2
+T,R,2
+T,S,2
+T,U,2
+T,V,2
+U,A,5
+U,B,5
+U,E,2
+U,G,5
+U,H,2
+U,J,2
+U,N,2
+U,P,2
+U,Q,2
+U,R,2
+U,S,2
+U,T,2
+U,V,2
+V,A,5
+V,B,5
+V,D,2
+V,E,2
+V,G,5
+V,H,2
+V,N,2
+V,P,2
+V,Q,2
+V,R,2
+V,S,2
+V,T,2
+V,U,2
+W,K,2
+W,M,5
+W,O,2
+W,X,2
+X,L,2
+X,M,5
+X,O,2
+X,W,2
+Intergreens - end
+Phase Delays - start
+1,0,B,8
+1,7,A,4
+1,6,G,10
+1,7,G,10
+1,6,A,4
+1,6,B,8
+1,7,B,8
+1,8,G,10
+1,8,B,8
+1,8,A,4
+1,2,A,4
+1,2,B,8
+1,2,P,12
+1,2,G,10
+1,0,G,10
+1,0,A,4
+2,1,D,8
+2,4,C,8
+2,4,D,8
+2,4,H,13
+2,5,C,8
+2,5,D,8
+2,4,J,8
+2,4,I,8
+2,5,J,8
+2,5,I,8
+2,3,C,8
+2,3,D,8
+2,3,J,8
+2,3,I,8
+2,1,C,8
+2,1,J,8
+2,1,I,8
+2,1,H,13
+3,0,G,6
+3,8,G,6
+3,7,G,6
+3,6,G,6
+3,2,P,11
+3,2,G,6
+3,0,B,6
+4,0,B,8
+4,8,B,8
+4,6,B,8
+4,7,B,8
+4,2,B,8
+4,0,G,6
+6,4,H,5
+6,1,H,5
+7,1,H,5
+7,4,H,5
+8,4,H,5
+8,1,H,5
+Phase Delays - end
+Detection - start
+Detection - end
+Phase type and conditions - start
+A,VICTORIA EMBANKMENT E/B,T,0,0,
+B,VICTORIA EMBANKMENT W/B,T,0,0,
+C,CYCLES TOWARDS VICTORIA EMBANKMENT TUNNEL,T,0,0,
+D,CYCLES INTO TEMPLE AVENUE,T,0,0,
+E,PEDS X VICTORIA EMBANKMENT,P,0,0,
+F,NOT USED,F,,,
+G,VICTORIA EMBANKMENT E/B @ SLIP RD,T,0,0,
+H,VICTORIA EMBANKMENT W/B @ SLIP RD,T,0,0,
+I,CYCLES TEMPLE AVENUE \t\t\t\t\t\t\t\t\t\t\t\t\t,T,0,0,
+J,CYCLES FROM BFRS UNDERPASS,T,0,0,
+K,CYCLES E/B @ 00/138\t\t\t\t\t\t\t\t\t\t\t\t\t,T,0,0,
+L,CYCLES W/B @ 00/138\t\t\t\t\t\t\t\t\t\t\t\t\t,T,0,0,
+M,PEDS X CYCLE TRACK @ 00/138\t\t\t\t\t\t\t\t\t\t\t\t\t,P,0,0,
+N,ALL RED DUMMY STREAM 0 00/005\t\t\t\t\t\t\t\t\t\t\t\t\t,D,0,0,
+O,ALL RED DUMMY STREAM 1 00/138\t\t\t\t\t\t\t\t\t\t\t\t\t,D,0,0,
+P,DUMMY PHASE FOR SITE EXIT IN STAGE 2\t\t\t\t\t\t\t\t\t\t\t\t\t,D,0,0,
+Q,UTC DUMMY STAGE 3\t\t\t\t\t\t\t\t\t\t\t\t\t,D,0,0,
+R,UTC DUMMY STAGE 4,D,0,0,
+S,UTC DUMMY STAGE 5,D,0,0,
+T,UTC DUMMY STAGE 6\t\t\t\t\t\t\t\t\t\t\t\t,D,0,0,
+U,UTC DUMMY STAGE 7\t\t\t\t\t\t\t\t\t\t\t\t,D,0,0,
+V,UTC DUMMY STAGE 8\t\t\t\t\t\t\t\t\t\t\t,D,0,0,
+W,UTC DUMMY STAGE 12, IN STREAM 1\t\t\t\t\t\t\t\t\t\t\t\t\t,D,0,0,
+X,UTC DUMMY STAGE 13, IN STREAM 1\t\t\t\t\t\t\t\t\t\t\t\t\t,D,0,0,
+Phase type and conditions - end
+Bus Priority - start
+1,1,,,,,,,,,,,,
+2,2,,,,,,,,,,,,
+3,3,,,,,,,,,,,,
+4,4,,,,,,,,,,,,
+5,5,,,,,,,,,,,,
+6,6,,,,,,,,,,,,
+7,7,,,,,,,,,,,,
+8,8,,,,,,,,,,,,
+9,9,,,,,,,,,,,,
+10,10,,,,,,,,,,,,
+11,11,,,,,,,,,,,,
+12,12,,,,,,,,,,,,
+13,13,,,,,,,,,,,,
+Bus Priority - end
+Stage Movements Under UTC Control - start
+Stage Movements Under UTC Control - end
+Prohibited Stages - start
+Prohibited Stages - end
+Phase Stage Demand Dependency - start
+11,M,X
+2,C,X
+2,D,X
+2,E,X
+2,I,X
+2,J,X
+Phase Stage Demand Dependency - end
+Linked Sites - start
+Link Number,Link To Ped Controller On Site,Stage or Phase,Trigger Point,Memory,Link Delay Time,Inhibit Release Period,Override Time
+Linked Sites - end
+Comments - start
+Version No,18
+Linking,CLF
+Comments,TFL SPEC ISSUE 18.  **2ND OTU AT 00/505.**
+Detection,IRDs - PUSH BUTTONS / TACTILES - PED COUNTDOWN - VEHICLE SCOOT - CYCLE SCOOT
+Amendments,SITE COMMS MIGRATED TO CAPITA SERVICES. 04-NOV-2022 DTA_BM
+Comments - end

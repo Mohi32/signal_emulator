@@ -1,0 +1,120 @@
+J00/004 Plan 1 Cycle 80 Timeout 0
+02/F1.9/1
+09/F1,DUM.99/1+
+22/F2,DX.10/2
+39/F3,DX.10/3
+46/F3,DX,DUM.99/3+
+73/F5.7/5F
+% WAT AM PEAK
+; 16-Aug-2016 15:12:43 Copied from Plan 11 by TJDB
+; 05-Sep-2016 14:16:56 Object compiled by TJDB
+; 27-Sep-2017 10:27:07 Object compiled by TNSB
+; 02-May-2018 09:38:07 Object compiled by TNSB
+; 08-Apr-2019 11:53:37 Object compiled by TSJS
+; 16-May-2019 13:39:06 Object compiled by TNSB
+; 26-Jun-2019 14:18:58 Object compiled by TFOS
+; 27-Jun-2019 16:32:20 Object compiled by TRJW
+; 18-Jul-2019 09:16:52 Object compiled by TNSB
+*
+J00/004 Plan 2 Cycle 80 Timeout 0
+02/F1.9/1
+09/F1,DUM.99/1+
+22/F2,DX.10/2
+40/F3,DX.10/3
+47/F3,DX,DUM.99/3+
+73/F5.7/5F
+% WAT OFF PEAK
+; 16-Aug-2016 15:13:29 Copied from Plan 12 by TJDB
+; 05-Sep-2016 14:16:09 Object compiled by TJDB
+; 27-Sep-2017 10:50:35 Object compiled by TNSB
+; 02-May-2018 09:35:46 Object compiled by TNSB
+; 08-Apr-2019 11:53:32 Object compiled by TSJS
+; 14-May-2019 11:14:23 Object compiled by TNSB
+; 26-Jun-2019 14:10:12 Object compiled by TFOS
+; 27-Jun-2019 16:32:41 Object compiled by TRJW
+; 18-Jul-2019 09:18:14 Object compiled by TNSB
+*
+J00/004 Plan 3 Cycle 80 Timeout 0
+02/F1.9/1
+09/F1,DUM.99/1+
+24/F2,DX.10/2
+40/F3,DX.10/3
+47/F3,DX,DUM.99/3+
+73/F5.7/5F
+% WAT PM PEAK
+; 16-Aug-2016 15:13:44 Copied from Plan 13 by TJDB
+; 05-Sep-2016 14:16:25 Object compiled by TJDB
+; 27-Sep-2017 10:33:17 Object compiled by TNSB
+; 02-May-2018 09:33:18 Object compiled by TNSB
+; 08-Apr-2019 11:53:27 Object compiled by TSJS
+; 16-May-2019 13:38:39 Object compiled by TNSB
+; 26-Jun-2019 14:18:48 Object compiled by TFOS
+; 27-Jun-2019 16:32:49 Object compiled by TRJW
+; 18-Jul-2019 09:17:59 Object compiled by TNSB
+*
+J00/004 Plan 5 Cycle 64 Timeout 0
+02/F1.9/1
+09/F1,DUM.99/1+
+18/F2,DX.10/2
+34/F3,DX.10/3
+41/F3,DX,DUM.99/3+
+57/F5.7/5F
+% WAT OVERNIGHT
+; 16-Aug-2016 15:14:00 Copied from Plan 15 by TJDB
+; 05-Sep-2016 14:16:35 Object compiled by TJDB
+; 27-Sep-2017 10:28:45 Object compiled by TNSB
+; 02-May-2018 09:30:34 Object compiled by TNSB
+; 08-Apr-2019 11:53:21 Object compiled by TSJS
+; 30-Apr-2019 10:01:44 Object compiled by TNSB
+; 26-Jun-2019 14:18:37 Object compiled by TFOS
+; 27-Jun-2019 16:33:03 Object compiled by TRJW
+; 18-Jul-2019 09:17:46 Object compiled by TNSB
+*
+J00/004 Plan 8 Cycle 72 Timeout 0
+02/F1.9/1
+09/F1,DUM.99/1+
+20/F2,DX.10/2
+37/F3,DX.10/3
+44/F3,DX,DUM.99/3+
+65/F5.7/5F
+% WAT LATE EVENING
+; 16-Aug-2016 15:14:12 Copied from Plan 18 by TJDB
+; 05-Sep-2016 14:16:46 Object compiled by TJDB
+; 27-Sep-2017 10:30:10 Object compiled by TNSB
+; 02-May-2018 09:27:57 Object compiled by TNSB
+; 08-Apr-2019 11:53:14 Object compiled by TSJS
+; 16-May-2019 13:37:57 Object compiled by TNSB
+; 26-Jun-2019 14:18:24 Object compiled by TFOS
+; 27-Jun-2019 16:33:21 Object compiled by TRJW
+; 18-Jul-2019 09:17:17 Object compiled by TNSB
+*
+J00/004 Plan 32 Cycle 80 Timeout 0
+01/F1.9/
+20/F2,DX.10/
+40/F3,DX.10/
+60/F5.7/
+% MINS CHECK
+; Object compiled by SJMW. On  5-NOV-2002 at 15:59 ( Created )
+; Object compiled by SJAP. On 19-APR-2004 at 11:21 ( Created )
+; Object compiled by TNSB. On 14-JUN-2004 at 10:09
+; Object compiled by TMXS. On  1-SEP-2004 at 16:09
+; Object compiled by TSPC. On  7-SEP-2004 at 10:06
+; Object compiled by TJMH. On 13-SEP-2004 at 09:06
+; Object compiled by SDIM. On 21-AUG-2006 at 14:37 ( Created )
+; Object compiled by TNSB. On 23-APR-2008 at 11:57 ( Created )
+; Object compiled by TJMH. On 23-JUN-2008 at 14:29
+; Object compiled by TNSB. On 20-NOV-2008 at 08:36
+; 29-Jan-2010 14:25:39 Object compiled by TNSB
+; 09-Feb-2012 05:17:11 Object compiled by TRRR
+; 01-Aug-2013 16:13:54 Object compiled by TRJW
+; 23-Oct-2013 07:34:52 Object compiled by TRJW
+; 08-Nov-2013 16:28:18 Object compiled by TRJW
+; 10-Nov-2013 07:24:38 Object compiled by TMOS
+; 26-Apr-2014 10:08:19 Object compiled by TRJW
+; 02-Sep-2014 15:07:19 Object compiled by TNSB
+; 09-Jun-2015 09:31:11 Object compiled by TNSB
+; 16-Jun-2015 08:37:21 Object compiled by TNSB
+; 27-Sep-2017 10:24:25 Object compiled by TNSB
+; 27-Jun-2019 16:34:42 Object compiled by TRJW
+; 03-Oct-2022 14:43:40 Object compiled by TKCS
+*

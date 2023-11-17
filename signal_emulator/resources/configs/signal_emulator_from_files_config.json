@@ -1,0 +1,22 @@
+{
+    "postgres_connection": {
+        "host": "localhost",
+        "database": "tfl_signal_timings",
+        "user": "postgres",
+        "password": "password",
+        "port": "5433",
+        "schema": "v1"
+    },
+    "load_from_postgres": false,
+    "M37": {
+        "m37_path": "signal_emulator/resources/M37/averaged/m37_averaged_10_sites.csv",
+        "source_type": "averaged",
+        "export_to_csv_path": false
+    },
+    "timing_sheet_directory": "signal_emulator/resources/timing_sheets",
+    "timing_sheet_column_config": "signal_emulator/resources/timing_sheet_column_lookup.json",
+    "plan_directory": "signal_emulator/resources/plans",
+    "PJA_directory": "signal_emulator/resources/PJA",
+    "output_directory_visum": "signal_emulator/output/VISUM",
+    "output_directory_linsig": "signal_emulator/output/LINSIG"
+}

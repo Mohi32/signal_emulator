@@ -1,0 +1,321 @@
+Controller - start
+00/000011/,STCL ELV T900 MK 1 UTC Semi VA Controller,532707/181112,0,00/000011/
+Controller - end
+Site Details - start
+Site Number,00/000011/
+Controller Type,STCL ELV T900 MK 1 UTC Semi VA Controller
+Grid Reference,532707/181112
+Address,O.O.S FROM 25/02/2023 -BANK JUNCTION - THREADNEEDLE ST - CORNHILL - PRINCES ST - KING WILLIAM STREET
+Issue,50
+Control Group,0
+Control Subgroup,00/000011/
+Site Link Number,
+SFM Version Number,0
+Site Details - end
+Stages - start
+0,00
+1,01
+2,02
+3,03
+4,04
+5,05
+6,06
+7,07
+Stages - end
+Streams - start
+0,00/000011/,00,M,X
+0,00/000011/,01,G,X
+0,00/000011/,01,F,X
+0,00/000011/,02,A,X
+0,00/000011/,02,G,X
+0,00/000011/,02,C,X
+0,00/000011/,03,D,X
+0,00/000011/,03,G,X
+0,00/000011/,03,E,X
+0,00/000011/,04,H,X
+0,00/000011/,04,I,X
+0,00/000011/,04,J,X
+0,00/000011/,04,K,X
+0,00/000011/,04,L,X
+0,00/000011/,05,G,X
+0,00/000011/,05,N,X
+0,00/000011/,05,D,X
+0,00/000011/,06,A,X
+0,00/000011/,06,G,X
+0,00/000011/,06,O,X
+0,00/000011/,07,P,X
+0,00/000011/,07,E,X
+0,00/000011/,07,G,X
+Streams - end
+Revert and Startup Stage - start
+0,00/000011/,,,1
+Revert and Startup Stage - end
+Phase Timings - start
+A,7,,25,,T
+B,,,,,D
+C,7,,20,,T
+D,7,,20,,T
+E,7,,20,,T
+F,7,,25,,T
+G,7,,,,T
+H,6,,,8,P
+I,6,,,6,P
+J,6,,,7,P
+K,6,,,7,P
+L,6,,,5,P
+M,3,,,,D
+N,1,,,,D
+O,1,,,,D
+P,1,,,,D
+Phase Timings - end
+Intergreens - start
+A,D,7
+A,E,8
+A,F,7
+A,H,14
+A,I,11
+A,J,12
+A,K,5
+A,L,9
+A,L,11
+A,M,3
+A,N,7
+A,P,8
+C,D,8
+C,E,7
+C,F,5
+C,I,7
+C,J,12
+C,L,15
+C,M,3
+C,N,8
+C,O,3
+C,P,7
+D,A,6
+D,C,6
+D,F,6
+D,H,14
+D,I,14
+D,J,7
+D,L,12
+D,M,3
+D,O,6
+D,P,3
+E,A,6
+E,C,6
+E,F,6
+E,H,12
+E,I,13
+E,J,10
+E,L,7
+E,M,3
+E,N,3
+E,O,6
+F,A,7
+F,C,6
+F,D,10
+F,E,8
+F,H,7
+F,I,12
+F,J,13
+F,M,3
+F,N,10
+F,O,7
+F,P,8
+G,K,5
+G,M,3
+H,A,13
+H,D,13
+H,E,13
+H,F,13
+H,M,8
+H,N,13
+H,O,13
+H,P,13
+I,A,11
+I,C,11
+I,D,11
+I,E,11
+I,F,11
+I,M,6
+I,N,11
+I,O,11
+I,P,11
+J,A,12
+J,C,12
+J,D,12
+J,E,12
+J,F,12
+J,M,7
+J,N,12
+J,O,12
+J,P,12
+K,A,12
+K,G,12
+K,M,7
+K,N,12
+K,O,12
+K,P,12
+L,A,10
+L,C,10
+L,D,10
+L,E,10
+L,M,5
+L,N,10
+L,O,10
+L,P,10
+M,A,2
+M,C,2
+M,D,2
+M,E,2
+M,F,2
+M,G,2
+M,H,2
+M,I,2
+M,J,2
+M,K,2
+M,L,2
+M,N,2
+M,O,2
+M,P,2
+N,A,6
+N,C,6
+N,E,8
+N,F,6
+N,H,14
+N,I,14
+N,J,7
+N,K,5
+N,L,12
+N,M,3
+N,O,6
+N,P,8
+O,C,2
+O,D,7
+O,E,8
+O,F,7
+O,H,14
+O,I,11
+O,J,12
+O,K,5
+O,L,9
+O,M,3
+O,N,7
+O,P,8
+P,A,6
+P,C,6
+P,D,8
+P,F,6
+P,H,12
+P,I,13
+P,J,10
+P,K,5
+P,L,7
+P,M,3
+P,N,8
+P,O,6
+Intergreens - end
+Phase Delays - start
+1,0,G,8
+1,3,E,10
+1,2,C,7
+2,0,G,7
+2,7,C,1
+2,4,G,7
+2,1,C,2
+3,0,G,7
+3,4,G,7
+4,0,I,2
+4,7,L,3
+4,3,J,1
+4,3,I,2
+4,3,L,3
+4,3,K,1
+4,6,L,3
+4,6,K,1
+4,6,J,1
+4,6,I,2
+4,5,L,3
+4,5,K,1
+4,7,J,1
+4,7,I,2
+4,5,J,1
+4,7,K,1
+4,5,I,2
+4,1,L,3
+4,1,K,1
+4,1,J,1
+4,1,I,2
+4,2,L,3
+4,2,K,1
+4,2,J,1
+4,2,I,2
+4,0,L,3
+4,0,K,1
+4,0,J,1
+5,4,G,5
+5,0,G,5
+6,4,G,7
+6,0,G,7
+6,3,D,8
+7,0,G,7
+7,4,G,7
+Phase Delays - end
+Detection - start
+Detection - end
+Phase type and conditions - start
+A,MANSION HOUSE E/BND,T,0,0,
+B,REMOVED FOR INTERIM LAYOUT,D,0,0,
+C,CORNHILL,T,0,0,
+D,KING WILLIAM STREET,T,0,0,
+E,PRINCES STREET,T,0,0,
+F,THREADNEEDLE STREET,T,0,0,
+G,MANSION HOUSE WEST BND,T,0,0,
+H,PEDS X THREADNEEDLE STREET,P,0,0,
+I,PEDS X CORNHILL,P,0,0,
+J,PEDS X KING WILLIAM STREET,P,0,0,
+K,PEDS X MANSION HOUSE STREET,P,0,0,
+L,PEDS X PRINCES STREET,P,0,0,
+M,ALL RED,D,0,0,
+N,DUMMY PHASE N STAGE 5,D,0,0,
+O,DUMMY PHASE O STAGE 6,D,0,0,
+P,DUMMY PHASE P STAGE 7,D,0,0,
+Phase type and conditions - end
+Bus Priority - start
+1,01,SMB0,14,,,N,Y,Y,Y,N,N,N,N
+2,02,SMB1,11,,,Y,N,Y,Y,N,N,N,N
+3,03,SMB2,11,,,Y,Y,N,Y,N,N,N,N
+3,03,SMB2,11,,,Y,Y,N,Y,N,N,N,N
+4,04,,,,,,,,,,,,
+5,05,,,,,,,,,,,,
+6,06,,,,,,,,,,,,
+7,07,,,,,,,,,,,,
+Bus Priority - end
+Stage Movements Under UTC Control - start
+0,CLF (Non Base Time),Y
+0,UTC,Y
+0,Manual,Y
+1,Fixed Time,Y
+Stage Movements Under UTC Control - end
+Prohibited Stages - start
+5,3,0
+6,2,0
+7,3,0
+Prohibited Stages - end
+Phase Stage Demand Dependency - start
+04,H,X
+04,I,X
+04,J,X
+04,K,X
+04,L,X
+Phase Stage Demand Dependency - end
+Linked Sites - start
+Link Number,Link To Ped Controller On Site,Stage or Phase,Trigger Point,Memory,Link Delay Time,Inhibit Release Period,Override Time
+Linked Sites - end
+Comments - start
+Version No,25
+Linking,BT LINESHARE WITH 00/087
+Comments,TFL SPEC ISSUE 24.  **Outstanding Snagging**
+Detection,ARIRD - PUSH BUTTONS / TACTILES - PED COUNTDOWN - iBUS (TSN 3649) - VEHICLE SCOOT
+Amendments,SITE DECOMMISSIONED - ALL EQUIPMENT, EXCEPT CONTROLLER & ESP, REMOVED. 25-FEB-2023 YUNEX
+Comments - end

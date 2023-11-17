@@ -1,0 +1,148 @@
+J03/193 Plan 1 Cycle 104 Timeout 0
+01/F1F2,NTO.99/2+
+20/F3.7/3
+39/F4.10/4f
+41/F3F4,NTO.99/4f+
+55/F5.15/5f
+58/F1F5,NTO.99/5f+
+77/F1.8/1
+104/F2.6/2
+% WAT SCOOT AM
+; Object compiled by TCDR. On 17-DEC-2007 at 13:30 ( Created )
+; Object compiled by SWXP. On 20-MAY-2008 at 11:21 ( Created )
+; Object compiled by SWXP. On 21-MAY-2008 at 11:36
+; 01-Mar-2011 17:18:32 Object compiled by TRCT
+; 30-Jan-2012 11:40:03 Object converted by SHJC (V-code removed)
+; 09-Feb-2015 16:04:57 Object compiled by TJGW
+; 10-Feb-2015 14:33:56 Object compiled by TJGW
+; 09-Mar-2015 15:22:26 Object compiled by TJGW
+; 05-Aug-2015 11:19:53 Object compiled by TJGW
+*
+J03/193 Plan 2 Cycle 104 Timeout 0
+12/F1.8/1
+43/F2.6/2
+44/F1F2,NTO.99/2+
+57/F3.7/3
+78/F4.10/4f
+80/F3F4,NTO.99/4f+
+94/F5.15/5f
+97/F1F5,NTO.99/5f+
+% WAT SCOOT OP
+; Object compiled by TCDR. On 17-DEC-2007 at 13:30 ( Created )
+; Object compiled by SWXP. On 20-MAY-2008 at 11:21 ( Created )
+; Object compiled by SWXP. On 21-MAY-2008 at 11:36
+; Object compiled by TCDR. On 16-JUN-2008 at 09:30
+; 01-Mar-2011 17:18:02 Object compiled by TRCT
+; 30-Jan-2012 11:40:03 Object converted by SHJC (V-code removed)
+; 09-Feb-2015 16:30:12 Object compiled by TJGW
+; 10-Feb-2015 14:33:39 Object compiled by TJGW
+; 09-Mar-2015 15:57:10 Object compiled by TJGW
+; 10-Mar-2015 12:08:13 Object compiled by TJGW
+*
+J03/193 Plan 3 Cycle 104 Timeout 0
+17/F1.8/1
+51/F2.6/2
+52/F1F2,NTO.99/2+
+67/F3.7/3
+83/F4.10/4f
+85/F3F4,NTO.99/4f+
+99/F5.15/5f
+102/F1F5,NTO.99/5f+
+% WAT SCOOT PM
+; Object compiled by TCDR. On 17-DEC-2007 at 13:30 ( Created )
+; Object compiled by SWXP. On 20-MAY-2008 at 11:21 ( Created )
+; Object compiled by SWXP. On 21-MAY-2008 at 11:36
+; 01-Mar-2011 17:17:33 Object compiled by TRCT
+; 30-Jan-2012 11:40:03 Object converted by SHJC (V-code removed)
+; 10-Feb-2015 10:31:48 Object compiled by TJGW
+; 10-Feb-2015 14:33:23 Object compiled by TJGW
+; 09-Mar-2015 16:18:36 Object compiled by TJGW
+; 10-Mar-2015 12:09:43 Object compiled by TJGW
+*
+J03/193 Plan 5 Cycle 104 Timeout 0
+12/F1.8/1
+43/F2.6/2
+44/F1F2,NTO.99/2+
+57/F3.7/3
+78/F4.10/4f
+80/F3F4,NTO.99/4f+
+94/F5.15/5f
+97/F1F5,NTO.99/5f+
+% WAT SCOOT ON
+; 19-Aug-2020 19:35:03 Copied from Plan 2 by TPDW
+*
+J03/193 Plan 8 Cycle 104 Timeout 0
+04/F5.15/5f
+07/F1F5,NTO.99/5f+
+20/F1.8/1
+48/F2.6/2
+49/F1F2,NTO.99/2+
+67/F3.7/3
+88/F4.10/4f
+90/F3F4,NTO.99/4f+
+% WAT SCOOT EVENING
+; Object compiled by TCDR. On 17-DEC-2007 at 13:30 ( Created )
+; Object compiled by SWXP. On 20-MAY-2008 at 11:21 ( Created )
+; Object compiled by SWXP. On 21-MAY-2008 at 11:36
+; 01-Mar-2011 17:19:49 Object compiled by TRCT
+; 30-Jan-2012 11:40:03 Object converted by SHJC (V-code removed)
+; 10-Jul-2012 18:57:29 Object compiled by TRCT
+; 10-Feb-2015 14:32:31 Object compiled by TJGW
+; 10-Feb-2015 15:17:58 Object compiled by TJGW
+; 09-Mar-2015 16:29:32 Object compiled by TJGW
+; 29-Jan-2019 11:32:21 Object compiled by TCTB
+*
+J03/193 Plan 11 Cycle 104 Timeout 0
+17/F1.8/1
+51/F2.6/2
+52/F1F2,NTO.99/2+
+67/F3.7/3
+83/F4.10/4f
+85/F3F4,NTO.99/4f+
+99/F5.15/5f
+102/F1F5,NTO.99/5f+
+% ATM LEVEL 1
+; 04-Mar-2020 17:07:37 Copied from Plan 3 by TPDW
+*
+J03/193 Plan 12 Cycle 104 Timeout 0
+17/F1.8/1
+51/F2.6/2
+52/F1F2,NTO.99/2+
+67/F3.7/3
+83/F4.10/4f
+85/F3F4,NTO.99/4f+
+99/F5.15/5f
+102/F1F5,NTO.99/5f+
+% ATM LEVEL 2
+; 04-Mar-2020 17:07:53 Copied from Plan 11 by TPDW
+*
+J03/193 Plan 13 Cycle 104 Timeout 0
+17/F1.8/1
+51/F2.6/2
+52/F1F2,NTO.99/2+
+67/F3.7/3
+83/F4.10/4f
+85/F3F4,NTO.99/4f+
+99/F5.15/5f
+102/F1F5,NTO.99/5f+
+% ATM LEVEL 3
+; 04-Mar-2020 17:08:07 Copied from Plan 12 by TPDW
+*
+J03/193 Plan 32 Cycle 100 Timeout 0
+01/F1.5/
+20/F2,DX.6/
+40/F3.5/
+60/F4,DX.9/
+80/F5.13/
+% MINS CHECK
+; Object compiled by TCDR. On 14-FEB-2006 at 11:17
+; Object compiled by TCDR. On 16-FEB-2006 at 10:02
+; Object compiled by TCDR. On 17-FEB-2006 at 11:07
+; Object compiled by SJAP. On 12-SEP-2006 at 13:31 ( Created )
+; Object compiled by SWXP. On 20-MAY-2008 at 11:21 ( Created )
+; Object compiled by SWXP. On 21-MAY-2008 at 11:36
+; 13-Apr-2010 09:27:44 Object compiled by TNSB
+; 09-Mar-2015 10:42:23 Object compiled by TNSB
+; 09-Mar-2015 10:46:34 Object compiled by TNSB
+; 09-Mar-2015 13:14:18 Object compiled by TNSB
+*

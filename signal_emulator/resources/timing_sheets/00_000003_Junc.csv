@@ -1,0 +1,147 @@
+Controller - start
+00/000003/U,STCL ELV T900 MK 1 UTC Semi VA Controller,533656/180944,23,00/000003/U
+Controller - end
+Site Details - start
+Site Number,00/000003/U
+Controller Type,STCL ELV T900 MK 1 UTC Semi VA Controller
+Grid Reference,533656/180944
+Address,A1211 MINORIES - CROSSWALL - PORTSOKEN STREET
+Issue,30
+Control Group,23
+Control Subgroup,00/000003/U
+Site Link Number,
+SFM Version Number,0
+Site Details - end
+Stages - start
+0,00
+1,01
+2,02
+3,03
+4,04
+5,05
+6,06
+Stages - end
+Streams - start
+0,00/000003/U,00,F,X
+0,00/000003/U,01,A,X
+0,00/000003/U,01,D,X
+0,00/000003/U,02,B,X
+0,00/000003/U,03,C,X
+0,00/000003/U,04,E,X
+0,00/000003/U,05,A,X
+0,00/000003/U,05,G,X
+0,00/000003/U,06,D,X
+0,00/000003/U,06,H,X
+Streams - end
+Revert and Startup Stage - start
+0,00/000003/U,,,1
+Revert and Startup Stage - end
+Phase Timings - start
+A,7,,50,,T
+B,7,,20,,T
+C,7,,20,,T
+D,7,,50,,T
+E,6,,,5,P
+F,3,,,,D
+G,1,,,,D
+H,1,,,,D
+Phase Timings - end
+Intergreens - start
+A,B,6
+A,C,6
+A,E,8
+A,F,3
+A,H,5
+B,A,6
+B,C,6
+B,D,6
+B,E,8
+B,F,3
+B,G,6
+B,H,6
+C,A,6
+C,B,6
+C,D,6
+C,E,9
+C,F,3
+C,G,6
+C,H,6
+D,B,6
+D,C,6
+D,E,8
+D,F,3
+D,G,3
+E,A,10
+E,B,10
+E,C,10
+E,D,10
+E,F,10
+E,G,10
+E,H,10
+F,A,2
+F,B,2
+F,C,2
+F,D,2
+F,E,2
+F,G,2
+F,H,2
+G,B,6
+G,C,6
+G,D,5
+G,E,8
+G,F,3
+G,H,5
+H,A,3
+H,B,6
+H,C,6
+H,E,8
+H,F,3
+H,G,3
+Intergreens - end
+Phase Delays - start
+Phase Delays - end
+Detection - start
+Detection - end
+Phase type and conditions - start
+A,MINORIES SB,T,0,0,
+B,CROSSWALL,T,0,0,
+C,PORTSOKEN STREET,T,0,0,
+D,MINORIES NB,T,0,0,
+E,ALL ROUND PEDS,P,0,0,
+F,DUMMY ALL RED,D,0,0,
+G,DUMMY STAGE 5,D,0,0,
+H,DUMMY STAGE 6,D,0,0,
+Phase type and conditions - end
+Bus Priority - start
+1,01,,,,,,,,,,,,
+2,02,,,,,,,,,,,,
+3,03,,,,,,,,,,,,
+4,04,,,,,,,,,,,,
+5,05,,,,,,,,,,,,
+6,06,,,,,,,,,,,,
+Bus Priority - end
+Stage Movements Under UTC Control - start
+0,CLF (Non Base Time),Y
+0,UTC,Y
+0,Manual,Y
+1,Fixed Time,Y
+Stage Movements Under UTC Control - end
+Prohibited Stages - start
+1,6,0
+5,1,0
+Prohibited Stages - end
+Phase Stage Demand Dependency - start
+02,B,X
+03,C,X
+04,E,X
+Phase Stage Demand Dependency - end
+Linked Sites - start
+Link Number,Link To Ped Controller On Site,Stage or Phase,Trigger Point,Memory,Link Delay Time,Inhibit Release Period,Override Time
+Linked Sites - end
+Comments - start
+Version No,15
+Linking,NONE
+Comments,TFL SPEC ISSUE 15.  AUDIBLES TIMESWITCHED OFF BETWEEN 20:00 AND 07:00.
+Detection,SMVDs - PUSH BUTTONS / TACTILES & AUDIBLES - PED COUNTDOWN - iBUS (TSN 3547)  - VEHICLE SCOOT
+Amendments,CSMVD6 REPLACED.  21-JUN-2022 SIEMENS
+Comments - end

@@ -1,0 +1,199 @@
+J00/139 Plan 1/V Cycle 96/F Timeout 0
+03/F1,DUM.99/4f
+06/F2.5/4f+
+07/F1F2,NTO.99/4f+
+18/F1.10/1
+57/F1,DUM.99/2
+79/F1,DUM.99/3
+% AM PEAK - WAT
+; 09-Feb-2017 13:38:36 Copied from Plan 2 by TMXS
+; 09-Feb-2017 14:32:32 Object compiled by TMXS
+; 10-Feb-2017 08:52:47 Object compiled by TMXS
+; 10-Mar-2017 15:10:32 Object compiled by TMXS
+; 15-Mar-2017 12:23:59 Object compiled by TMXS
+; 15-Mar-2017 13:07:54 Object compiled by TMXS
+; 16-Mar-2017 12:08:42 Object compiled by TMXS
+; 20-Mar-2017 15:57:33 Object compiled by TMLH
+; 21-Mar-2017 08:45:54 Object compiled by TMLH
+; 22-Nov-2017 09:17:53 Object compiled by TNSB
+; 26-Jun-2019 10:19:45 Object compiled by TNSB
+; 16-Jul-2019 09:21:52 Object compiled by TNSB
+; 08-Mar-2021 09:50:20 Object compiled by TMXS
+*
+J00/139 Plan 2/V Cycle 96/F Timeout 0
+03/F1,DUM.99/4F
+06/F2.5/4F+
+07/F1F2,NTO.99/4F+
+18/F1.10/1
+57/F1,DUM.99/2
+79/F1,DUM.99/3
+% OFF PEAK - WAT
+; 17-Oct-2016 16:15:56 Copied from Plan 1 by TJDB
+; 18-Oct-2016 14:48:34 Object compiled by TJDB
+; 29-Nov-2016 17:02:51 Object compiled by TJDB
+; 09-Feb-2017 13:37:59 Object compiled by TMXS
+; 09-Feb-2017 14:31:57 Object compiled by TMXS
+; 10-Feb-2017 08:52:02 Object compiled by TMXS
+; 10-Mar-2017 14:49:23 Object compiled by TMXS
+; 15-Mar-2017 12:24:37 Object compiled by TMXS
+; 15-Mar-2017 13:08:20 Object compiled by TMXS
+; 16-Mar-2017 11:52:13 Object compiled by TMXS
+; 21-Mar-2017 09:03:36 Object compiled by TMLH
+; 22-Nov-2017 09:15:48 Object compiled by TNSB
+; 25-Jun-2019 14:26:32 Object compiled by TNSB
+; 26-Jun-2019 10:24:10 Object compiled by TNSB
+; 16-Jul-2019 09:20:02 Object compiled by TNSB
+; 08-Mar-2021 09:50:14 Object compiled by TMXS
+*
+J00/139 Plan 3/V Cycle 96/F Timeout 0
+09/F1,DUM.99/4f
+12/F2.5/4f+
+13/F1F2,NTO.99/4f+
+24/F1.10/1
+63/F1,DUM.99/2
+83/F1,DUM.99/3
+% PM PEAK - WAT
+; 17-Oct-2016 11:35:27 Object compiled by TJDB
+; 18-Oct-2016 14:49:13 Object compiled by TJDB
+; 29-Nov-2016 16:58:53 Object compiled by TJDB
+; 09-Feb-2017 14:18:07 Object compiled by TMXS
+; 09-Feb-2017 14:32:41 Object compiled by TMXS
+; 09-Feb-2017 16:21:01 Object compiled by TMXS
+; 10-Feb-2017 08:52:05 Object compiled by TMXS
+; 10-Mar-2017 15:12:24 Object compiled by TMXS
+; 15-Mar-2017 12:25:26 Object compiled by TMXS
+; 15-Mar-2017 13:08:50 Object compiled by TMXS
+; 16-Mar-2017 12:08:45 Object compiled by TMXS
+; 21-Mar-2017 09:17:48 Object compiled by TMLH
+; 22-Nov-2017 08:48:42 Object compiled by TNSB
+; 26-Jun-2019 10:25:05 Object compiled by TNSB
+; 16-Jul-2019 09:19:30 Object compiled by TNSB
+; 08-Mar-2021 09:50:52 Object compiled by TMXS
+*
+J00/139 Plan 5/V Cycle 88/F Timeout 0
+04/F1,DUM.99/4f
+07/F2.5/4f+
+08/F1F2,NTO.99/4f+
+19/F1.10/1
+55/F1,DUM.99/2
+70/F1,DUM.99/3
+% OVERNIGHT - WAT
+; 09-Feb-2017 14:38:51 Copied from Plan 8 by TMXS
+; 01-Mar-2017 22:36:54 Object compiled by TMLH
+; 10-Mar-2017 15:45:17 Object compiled by TMXS
+; 15-Mar-2017 12:26:34 Object compiled by TMXS
+; 15-Mar-2017 13:09:40 Object compiled by TMXS
+; 16-Mar-2017 12:10:55 Object compiled by TMXS
+; 21-Mar-2017 09:34:19 Object compiled by TMLH
+; 22-Nov-2017 09:11:53 Object compiled by TNSB
+; 26-Jun-2019 10:25:57 Object compiled by TNSB
+; 16-Jul-2019 09:18:31 Object compiled by TNSB
+; 16-Jul-2019 09:19:10 Object compiled by TNSB
+*
+J00/139 Plan 8/V Cycle 96/F Timeout 0
+09/F1,DUM.99/4f
+12/F2.5/4f+
+13/F1F2,NTO.99/4f+
+24/F1.10/1
+67/F1,DUM.99/2
+83/F1,DUM.99/3
+% HEAVY ASSIST GUNTER GROVE NB
+; 18-Oct-2016 14:49:51 Copied from Plan 5 by TJDB
+; 29-Nov-2016 17:03:22 Object compiled by TJDB
+; 09-Feb-2017 14:38:06 Object compiled by TMXS
+; 01-Mar-2017 22:36:42 Object compiled by TMLH
+; 10-Mar-2017 15:45:28 Object compiled by TMXS
+; 15-Mar-2017 12:27:56 Object compiled by TMXS
+; 15-Mar-2017 13:10:01 Object compiled by TMXS
+; 16-Mar-2017 12:11:09 Object compiled by TMXS
+; 21-Mar-2017 09:24:00 Object compiled by TMLH
+; 22-Nov-2017 09:08:10 Object compiled by TNSB
+; 26-Jun-2019 10:26:43 Object compiled by TNSB
+; 16-Jul-2019 09:18:18 Object compiled by TNSB
+; 16-Jul-2019 09:18:56 Object compiled by TNSB
+; 29-Jun-2020 13:29:17 Object compiled by TNSB
+; 08-Mar-2021 09:50:29 Object compiled by TMXS
+*
+J00/139 Plan 11/V Cycle 96 Timeout 0
+03/F1,DUM.99/4f
+06/F2.5/4f+
+07/F1F2,NTO.99/4f+
+18/F1.10/5F
+033/F1.10/1
+57/F1,DUM.99/2
+79/F1,DUM.99/3
+% ATM LEVEL 1
+; 22-Mar-2017 15:46:55 Object compiled by TMLH
+; 22-Nov-2017 09:06:44 Object compiled by TNSB
+; 09-Apr-2019 08:33:55 Object compiled by TCTB
+; 24-Jun-2019 09:23:46 Object compiled by TCTB
+; 26-Jun-2019 10:28:19 Object compiled by TNSB
+*
+J00/139 Plan 12/V Cycle 96/F Timeout 0
+03/F1,DUM.99/4f
+06/F2.5/4f+
+07/F1F2,NTO.99/4f+
+18/F1.10/5F
+35/F1.10/1
+57/F1,DUM.99/2
+79/F1,DUM.99/3
+% ATM LEVEL 2
+; 17-Nov-2016 11:42:43 Copied from Plan 2 by TJDB
+; 17-Nov-2016 11:43:48 Object compiled by TJDB
+; 22-Mar-2017 15:47:35 Object compiled by TMLH
+; 22-Nov-2017 09:03:37 Object compiled by TNSB
+; 09-Apr-2019 08:35:03 Object compiled by TCTB
+; 24-Jun-2019 09:24:23 Object compiled by TCTB
+; 26-Jun-2019 10:29:18 Object compiled by TNSB
+*
+J00/139 Plan 13/V Cycle 96 Timeout 0
+03/F1,DUM.99/4f
+06/F2.5/4f+
+07/F1F2,NTO.99/4f+
+18/F1.10/5F
+37/F1.10/1
+57/F1,DUM.99/2
+79/F1,DUM.99/3
+% ATM LEVEL 3
+; 22-Mar-2017 15:45:52 Object compiled by TMLH
+; 22-Nov-2017 08:59:35 Object compiled by TNSB
+; 09-Apr-2019 08:35:51 Object compiled by TCTB
+; 24-Jun-2019 09:25:17 Object compiled by TCTB
+; 26-Jun-2019 10:30:07 Object compiled by TNSB
+*
+J00/139 Plan 19/V Cycle 96 Timeout 0
+03/F1,DUM.99/4f
+06/F2.5/4f+
+07/F1F2,NTO.99/4f+
+18/F1.10/1
+57/F1,DUM.99/2
+79/F1,DUM.99/3
+% ASSIST TOWER BRIDGE N/B & HEAVY HOLD HIGHWAY W/B AT J5/97 (EQUIV TO ATM LEVEL 3)
+; 09-Apr-2019 08:28:39 Copied from Plan 14 by TCTB
+; 26-Jun-2019 10:30:54 Object compiled by TNSB
+*
+J00/139 Plan 22/V Cycle 96 Timeout 0
+06/F2.5/
+07/F1F2,NTO.99/
+17/F1.10/
+% ASSIST TOWER HILL EASTBOUND
+; 24-Mar-2017 15:22:36 Object compiled by TMLH
+; 22-Nov-2017 08:44:32 Object compiled by TNSB
+; 29-Jun-2020 13:32:57 Object compiled by TNSB
+*
+J00/139 Plan 23/V Cycle 96 Timeout 0
+06/F2.5/
+07/F1F2,NTO.99/
+17/F1.10/
+% N/B Tower Bridge Assist
+; 28-Mar-2017 11:20:38 Object compiled by TMLH
+; 22-Nov-2017 08:44:24 Object compiled by TNSB
+*
+J00/139 Plan 32 Cycle 40 Timeout 0
+01/F1.8/
+20/F2,DX.5/
+% MINS CHECK
+; 13-Oct-2016 10:24:13 Copied from Plan 41 by TJDB
+; 13-Oct-2016 10:24:44 Object compiled by TJDB
+; 22-Nov-2017 09:21:24 Object compiled by TNSB
+*

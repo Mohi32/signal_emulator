@@ -1,0 +1,485 @@
+Controller - start
+00/000002/U,STCL ELV T950 MK 1 UTC Semi VA Controller,531633/181174,315,00/000002/U
+Controller - end
+Site Details - start
+Site Number,00/000002/U
+Controller Type,STCL ELV T950 MK 1 UTC Semi VA Controller
+Grid Reference,531633/181174
+Address,NEW BRIDGE STREET - FLEET STREET - LUDGATE HILL - FARRINGDON STREET - LUDGATE CIRCUS
+Issue,48
+Control Group,315
+Control Subgroup,00/000002/U
+Site Link Number,00/502/
+SFM Version Number,0
+Site Details - end
+Stages - start
+0,Stage 0
+1,Stage 1
+2,Stage 2
+3,Stage 3
+4,Stage 4
+5,Stage 5
+6,Stage 6
+7,Stage 7
+8,Stage 8
+9,Stage 9
+Stages - end
+Streams - start
+0,00/000002/U,Stage 0,S,X
+0,00/000002/U,Stage 1,A,X
+0,00/000002/U,Stage 1,J,X
+0,00/000002/U,Stage 1,C,X
+0,00/000002/U,Stage 1,I,X
+0,00/000002/U,Stage 2,B,X
+0,00/000002/U,Stage 2,C,X
+0,00/000002/U,Stage 3,E,X
+0,00/000002/U,Stage 3,O,X
+0,00/000002/U,Stage 3,H,X
+0,00/000002/U,Stage 3,G,X
+0,00/000002/U,Stage 3,K,X
+0,00/000002/U,Stage 3,F,X
+0,00/000002/U,Stage 4,D,X
+0,00/000002/U,Stage 5,L,X
+0,00/000002/U,Stage 5,M,X
+0,00/000002/U,Stage 6,I,X
+0,00/000002/U,Stage 6,P,X
+0,00/000002/U,Stage 6,A,X
+0,00/000002/U,Stage 6,J,X
+0,00/000002/U,Stage 7,Q,X
+0,00/000002/U,Stage 7,B,X
+0,00/000002/U,Stage 8,I,X
+0,00/000002/U,Stage 8,R,X
+0,00/000002/U,Stage 8,J,X
+0,00/000002/U,Stage 9,E,X
+0,00/000002/U,Stage 9,N,X
+0,00/000002/U,Stage 9,M,X
+0,00/000002/U,Stage 9,K,X
+0,00/000002/U,Stage 9,H,X
+0,00/000002/U,Stage 9,G,X
+0,00/000002/U,Stage 9,F,X
+Streams - end
+Revert and Startup Stage - start
+0,00/000002/U,,,1
+Revert and Startup Stage - end
+Phase Timings - start
+A,4,,,,F
+B,7,,,,T
+C,4,,,,F
+D,7,,,,T
+E,7,,,,T
+F,5,,,,T
+G,7,,,,T
+H,5,,,,T
+I,5,,,,T
+J,5,,,,T
+K,4,,,,F
+L,6,,,13,P
+M,6,,,12,P
+N,1,,,,D
+O,1,,,,D
+P,1,,,,D
+Q,1,,,,D
+R,1,,,,D
+S,3,,,,D
+Phase Timings - end
+Intergreens - start
+A,D,5
+A,E,6
+A,F,7
+A,G,6
+A,H,7
+A,K,7
+A,L,8
+A,M,5
+A,N,7
+A,O,7
+A,S,3
+B,D,5
+B,E,6
+B,F,6
+B,G,6
+B,H,6
+B,I,5
+B,J,5
+B,K,7
+B,L,9
+B,M,5
+B,N,7
+B,O,7
+B,P,5
+B,R,5
+B,S,3
+C,E,5
+C,F,5
+C,G,5
+C,H,5
+C,K,5
+C,L,5
+C,M,8
+C,N,8
+C,O,5
+C,S,3
+D,A,5
+D,B,5
+D,E,5
+D,F,5
+D,G,5
+D,H,5
+D,I,5
+D,J,5
+D,K,5
+D,L,9
+D,M,8
+D,N,8
+D,O,5
+D,P,5
+D,Q,5
+D,R,5
+D,S,3
+E,A,7
+E,B,7
+E,C,7
+E,D,7
+E,I,5
+E,J,6
+E,L,10
+E,P,7
+E,Q,7
+E,R,6
+E,S,3
+F,A,6
+F,B,7
+F,C,7
+F,D,7
+F,I,5
+F,J,6
+F,L,10
+F,P,6
+F,Q,7
+F,R,6
+F,S,3
+G,A,6
+G,B,6
+G,C,6
+G,D,7
+G,I,7
+G,J,6
+G,L,11
+G,P,7
+G,Q,6
+G,R,6
+G,S,3
+H,A,5
+H,B,6
+H,C,5
+H,D,6
+H,I,7
+H,J,6
+H,L,11
+H,P,7
+H,Q,6
+H,R,6
+H,S,3
+I,B,5
+I,D,5
+I,E,6
+I,F,7
+I,G,6
+I,H,7
+I,K,7
+I,L,8
+I,M,5
+I,N,7
+I,O,7
+I,Q,5
+I,S,3
+J,B,5
+J,D,5
+J,E,5
+J,F,5
+J,G,5
+J,H,5
+J,K,5
+J,L,8
+J,M,8
+J,N,8
+J,O,5
+J,Q,5
+J,S,3
+K,A,5
+K,B,5
+K,C,5
+K,D,5
+K,I,5
+K,J,5
+K,L,8
+K,P,5
+K,Q,5
+K,R,5
+K,S,3
+L,A,18
+L,B,18
+L,C,18
+L,D,18
+L,E,18
+L,F,18
+L,G,18
+L,H,18
+L,I,18
+L,J,18
+L,K,18
+L,N,18
+L,O,18
+L,P,18
+L,Q,18
+L,R,18
+L,S,13
+M,A,17
+M,B,17
+M,C,17
+M,D,17
+M,I,17
+M,J,17
+M,O,17
+M,P,17
+M,Q,17
+M,R,17
+M,S,12
+N,A,17
+N,B,17
+N,C,17
+N,D,17
+N,I,17
+N,J,17
+N,L,11
+N,O,17
+N,P,17
+N,Q,17
+N,R,17
+N,S,12
+O,A,6
+O,B,7
+O,C,7
+O,D,7
+O,I,7
+O,J,6
+O,L,11
+O,M,11
+O,N,12
+O,P,7
+O,Q,7
+O,R,6
+O,S,3
+P,B,5
+P,C,2
+P,D,5
+P,E,6
+P,F,6
+P,G,6
+P,H,6
+P,K,7
+P,L,8
+P,M,8
+P,N,8
+P,O,7
+P,Q,5
+P,S,3
+Q,D,5
+Q,E,6
+Q,F,7
+Q,G,6
+Q,H,7
+Q,I,5
+Q,J,5
+Q,K,7
+Q,L,8
+Q,M,5
+Q,N,7
+Q,O,7
+Q,P,5
+Q,R,5
+Q,S,3
+R,B,5
+R,D,5
+R,E,6
+R,F,7
+R,G,6
+R,H,7
+R,K,7
+R,L,8
+R,M,8
+R,N,8
+R,O,7
+R,Q,5
+R,S,3
+S,A,2
+S,B,2
+S,C,2
+S,D,2
+S,E,2
+S,F,2
+S,G,2
+S,H,2
+S,I,2
+S,J,2
+S,K,2
+S,L,2
+S,M,2
+S,N,2
+S,O,2
+S,P,2
+S,Q,2
+S,R,2
+Intergreens - end
+Phase Delays - start
+0,3,E,6
+0,9,G,6
+0,9,E,6
+0,3,G,6
+4,3,G,9
+4,9,G,9
+4,9,E,9
+4,3,E,9
+5,3,E,22
+5,7,M,1
+5,9,G,22
+5,9,E,22
+5,8,M,1
+5,1,M,1
+5,2,M,1
+5,3,M,1
+5,4,M,1
+5,3,G,22
+5,6,M,1
+7,3,G,11
+7,9,G,11
+7,9,E,11
+7,3,E,11
+8,3,E,11
+8,9,G,11
+8,9,E,11
+8,3,G,11
+9,1,E,10
+9,8,K,10
+9,8,H,10
+9,8,G,10
+9,8,F,10
+9,8,E,10
+9,7,K,10
+9,7,H,10
+9,7,G,10
+9,7,F,10
+9,7,E,10
+9,6,K,10
+9,6,H,10
+9,6,G,10
+9,6,F,10
+9,6,E,10
+9,4,K,10
+9,4,H,10
+9,4,G,10
+9,4,F,10
+9,4,E,10
+9,2,K,10
+9,2,H,10
+9,2,G,10
+9,2,F,10
+9,2,E,10
+9,1,K,10
+9,1,H,10
+9,1,G,10
+9,1,F,10
+Phase Delays - end
+Detection - start
+Detection - end
+Phase type and conditions - start
+A,NEW BRIDGE ST AHEAD FILTER,F,0,1,B
+B,NEW BRIDGE ST,T,0,0,
+C,FARRINGDON ST AHEAD / LEFT FILTER,F,0,1,D
+D,FARRINGDON ST,T,0,0,
+E,FLEET ST,T,0,0,
+F,FLEET ST CYCLE,T,0,0,
+G,LUDGATE HILL,T,0,0,
+H,LUDGATE HILL CYCLE,T,0,0,
+I,NEW BRIDGE ST CYCLE NB,T,0,0,
+J,NEW BRIDGE ST CYCLE SB,T,0,0,
+K,2SRT CYCLE FILTER,F,0,1,E
+L,PED X N, E, W ARMS,P,0,0,
+M,PED X NEW BRIDGE ST (S ARM),P,0,0,
+N,UTC DUMMY STAGE 9,D,0,0,
+O,UTC DUMMY STAGE 3,D,0,0,
+P,UTC DUMMY STAGE 6,D,0,0,
+Q,UTC DUMMY STAGE 7,D,0,0,
+R,UTC DUMMY STAGE 8,D,0,0,
+S,ALL RED DUMMY,D,0,0,
+Phase type and conditions - end
+Bus Priority - start
+1,Stage 1,,,,,,,,,,,,
+2,Stage 2,,,,,,,,,,,,
+3,Stage 3,,,,,,,,,,,,
+4,Stage 4,,,,,,,,,,,,
+5,Stage 5,,,,,,,,,,,,
+6,Stage 6,,,,,,,,,,,,
+7,Stage 7,,,,,,,,,,,,
+8,Stage 8,,,,,,,,,,,,
+9,Stage 9,,,,,,,,,,,,
+Bus Priority - end
+Stage Movements Under UTC Control - start
+0,UTC,Y
+1,CLF (Non Base Time),Y
+1,Manual,Y
+1,Fixed Time,Y
+Stage Movements Under UTC Control - end
+Prohibited Stages - start
+1,0,2
+1,3,2
+1,4,2
+1,5,2
+1,6,2
+1,7,2
+1,8,2
+1,9,2
+2,0,4
+2,1,4
+2,3,4
+2,5,4
+2,6,4
+2,7,4
+2,8,4
+2,9,4
+3,9,0
+4,1,0
+4,2,0
+6,0,7
+6,3,7
+6,4,7
+6,5,7
+6,8,7
+6,9,7
+7,1,0
+7,6,0
+8,1,0
+8,6,0
+9,3,0
+Prohibited Stages - end
+Phase Stage Demand Dependency - start
+Stage 3,E,X
+Stage 3,G,X
+Stage 3,K,X
+Stage 5,L,X
+Stage 5,M,X
+Stage 9,E,X
+Stage 9,G,X
+Stage 9,K,X
+Stage 9,M,X
+Phase Stage Demand Dependency - end
+Linked Sites - start
+Link Number,Link To Ped Controller On Site,Stage or Phase,Trigger Point,Memory,Link Delay Time,Inhibit Release Period,Override Time
+Linked Sites - end
+Comments - start
+Version No,26
+Linking,NONE
+Comments,TFL SPEC ISSUE 26.  **2ND OTU AT 00/502.**
+Detection,IRDs - PUSH BUTTONS / TACTILES - PED COUNTDOWN - iBUS (TSN 3508) - VEHICLE SCOOT - CYCLE SCOOT
+Amendments,SITE COMMS MIGRATED TO CAPITA SERVICES. 07-SEP-2022 DTA_BM
+Comments - end

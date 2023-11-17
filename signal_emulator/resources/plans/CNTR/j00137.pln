@@ -1,0 +1,65 @@
+J00/137 Plan 1 Cycle 80 Timeout 0
+02/PV./1
+09/./1+
+10/PV./1+
+% WAT AM PEAK
+; 27-Sep-2017 10:27:07 Object compiled by TNSB
+; 02-May-2018 09:38:07 Object compiled by TNSB
+; 08-Apr-2019 11:53:37 Object compiled by TSJS
+; 16-May-2019 13:39:06 Object compiled by TNSB
+; 26-Jun-2019 14:18:58 Object compiled by TFOS
+; 27-Jun-2019 16:32:20 Object compiled by TRJW
+; 18-Jul-2019 09:16:52 Object compiled by TNSB
+*
+J00/137 Plan 2 Cycle 80 Timeout 0
+02/PV./1
+09/./1+
+10/PV./1+
+% WAT OFF PEAK
+; 27-Sep-2017 10:50:36 Object compiled by TNSB
+; 02-May-2018 09:35:46 Object compiled by TNSB
+; 08-Apr-2019 11:53:32 Object compiled by TSJS
+; 14-May-2019 11:14:23 Object compiled by TNSB
+; 26-Jun-2019 14:10:13 Object compiled by TFOS
+; 27-Jun-2019 16:32:41 Object compiled by TRJW
+; 18-Jul-2019 09:18:14 Object compiled by TNSB
+*
+J00/137 Plan 3 Cycle 80 Timeout 0
+02/PV./1
+09/./1+
+10/PV./1+
+% WAT PM PEAK
+; 27-Sep-2017 10:33:17 Object compiled by TNSB
+; 02-May-2018 09:33:18 Object compiled by TNSB
+; 08-Apr-2019 11:53:27 Object compiled by TSJS
+; 16-May-2019 13:38:39 Object compiled by TNSB
+; 26-Jun-2019 14:18:48 Object compiled by TFOS
+; 27-Jun-2019 16:32:49 Object compiled by TRJW
+; 18-Jul-2019 09:17:59 Object compiled by TNSB
+*
+J00/137 Plan 5 Cycle 64 Timeout 0
+02/PV./1
+09/./1+
+10/PV./1+
+% WAT OVERNIGHT
+; 27-Sep-2017 10:28:45 Object compiled by TNSB
+; 02-May-2018 09:30:34 Object compiled by TNSB
+; 08-Apr-2019 11:53:21 Object compiled by TSJS
+; 30-Apr-2019 10:01:44 Object compiled by TNSB
+; 26-Jun-2019 14:18:37 Object compiled by TFOS
+; 27-Jun-2019 16:33:04 Object compiled by TRJW
+; 18-Jul-2019 09:17:47 Object compiled by TNSB
+*
+J00/137 Plan 8 Cycle 72 Timeout 0
+02/PV./1
+09/./1+
+10/PV./1+
+% WAT LATE EVENING
+; 27-Sep-2017 10:30:10 Object compiled by TNSB
+; 02-May-2018 09:27:57 Object compiled by TNSB
+; 08-Apr-2019 11:53:15 Object compiled by TSJS
+; 16-May-2019 13:37:57 Object compiled by TNSB
+; 26-Jun-2019 14:18:24 Object compiled by TFOS
+; 27-Jun-2019 16:33:21 Object compiled by TRJW
+; 18-Jul-2019 09:17:17 Object compiled by TNSB
+*

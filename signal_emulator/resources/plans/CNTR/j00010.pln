@@ -1,0 +1,133 @@
+J00/010 Plan 1 Cycle 88 Timeout 0
+15/F2.6/2
+51/F3.11/3F
+52/F2F3,NTO.99/3F+
+67/F1.21/1
+% AM WAT
+; 05-Apr-2013 14:22:59 Object compiled by TCRC
+; 30-Apr-2013 11:54:01 Object compiled by TMXS
+; 19-Jun-2013 09:51:03 Object compiled by TCRC
+; 18-Jul-2014 10:12:55 Object compiled by TRJW
+; 25-Oct-2017 08:27:33 Object compiled by TNSB
+; 27-Oct-2017 11:52:15 Object compiled by TRJW
+; 14-Dec-2017 10:38:58 Object compiled by TMRS
+; 14-Dec-2017 12:20:08 Object compiled by TMRS
+; 16-Jul-2019 09:38:55 Object compiled by TNSB
+; 03-Sep-2021 14:17:57 Object compiled by TDEH
+; 20-Nov-2022 14:51:36 Object compiled by TJRM
+; 20-Nov-2022 14:54:48 Object compiled by TJRM
+*
+J00/010 Plan 2 Cycle 88 Timeout 0
+15/F2.6/2
+51/F3.11/3F
+52/F2F3,NTO.99/3F+
+67/F1.21/1
+% OP WAT
+; 05-Apr-2013 14:22:59 Object compiled by TCRC
+; 30-Apr-2013 11:54:01 Object compiled by TMXS
+; 19-Jun-2013 09:51:03 Object compiled by TCRC
+; 18-Jul-2014 10:12:55 Object compiled by TRJW
+; 25-Oct-2017 08:27:33 Object compiled by TNSB
+; 27-Oct-2017 11:52:15 Object compiled by TRJW
+; 14-Dec-2017 10:38:58 Object compiled by TMRS
+; 14-Dec-2017 12:20:08 Object compiled by TMRS
+; 16-Jul-2019 09:38:55 Object compiled by TNSB
+; 03-Sep-2021 14:17:57 Object compiled by TDEH
+; 20-Nov-2022 14:54:58 Object compiled by TJRM
+; 17-Apr-2023 11:28:36 Object compiled by TAXH
+*
+J00/010 Plan 3 Cycle 88 Timeout 0
+15/F2.6/2
+51/F3.11/3F
+52/F2F3,NTO.99/3F+
+67/F1.21/1
+% PM WAT
+; 05-Apr-2013 14:22:59 Object compiled by TCRC
+; 30-Apr-2013 11:54:01 Object compiled by TMXS
+; 19-Jun-2013 09:51:03 Object compiled by TCRC
+; 18-Jul-2014 10:12:55 Object compiled by TRJW
+; 25-Oct-2017 08:27:33 Object compiled by TNSB
+; 27-Oct-2017 11:52:15 Object compiled by TRJW
+; 14-Dec-2017 10:38:58 Object compiled by TMRS
+; 14-Dec-2017 12:20:08 Object compiled by TMRS
+; 16-Jul-2019 09:38:55 Object compiled by TNSB
+; 03-Sep-2021 14:17:57 Object compiled by TDEH
+; 20-Nov-2022 14:51:51 Object compiled by TJRM
+; 20-Nov-2022 14:55:11 Object compiled by TJRM
+*
+J00/010 Plan 5 Cycle 88 Timeout 0
+15/F2.6/2
+51/F3.11/3F
+52/F2F3,NTO.99/3F+
+67/F1.21/1
+% ON WAT
+; 05-Apr-2013 14:22:59 Object compiled by TCRC
+; 30-Apr-2013 11:54:01 Object compiled by TMXS
+; 19-Jun-2013 09:51:03 Object compiled by TCRC
+; 18-Jul-2014 10:12:55 Object compiled by TRJW
+; 25-Oct-2017 08:27:33 Object compiled by TNSB
+; 27-Oct-2017 11:52:15 Object compiled by TRJW
+; 14-Dec-2017 10:38:58 Object compiled by TMRS
+; 14-Dec-2017 12:20:08 Object compiled by TMRS
+; 16-Jul-2019 09:38:55 Object compiled by TNSB
+; 03-Sep-2021 14:17:57 Object compiled by TDEH
+; 20-Nov-2022 14:52:06 Object compiled by TJRM
+; 20-Nov-2022 14:55:24 Object compiled by TJRM
+*
+J00/010 Plan 8 Cycle 88 Timeout 0
+15/F2.6/2
+51/F3.11/3F
+52/F2F3,NTO.99/3F+
+67/F1.21/1
+% LE WAT
+; 05-Apr-2013 14:22:59 Object compiled by TCRC
+; 30-Apr-2013 11:54:01 Object compiled by TMXS
+; 19-Jun-2013 09:51:03 Object compiled by TCRC
+; 18-Jul-2014 10:12:55 Object compiled by TRJW
+; 25-Oct-2017 08:27:33 Object compiled by TNSB
+; 27-Oct-2017 11:52:15 Object compiled by TRJW
+; 14-Dec-2017 10:38:58 Object compiled by TMRS
+; 14-Dec-2017 12:20:08 Object compiled by TMRS
+; 16-Jul-2019 09:38:55 Object compiled by TNSB
+; 03-Sep-2021 14:17:57 Object compiled by TDEH
+; 20-Nov-2022 14:52:21 Object compiled by TJRM
+; 20-Nov-2022 14:55:35 Object compiled by TJRM
+*
+J00/010 Plan 21 Cycle 96 Timeout 60
+29/F2.6/
+51/F3.11/
+52/F1F3,NTO.99/
+67/F1.21/
+% ASSIST Northbound Princes Street and Southbound Moorgate
+; 16-Apr-2021 09:15:02 Object compiled by TRJW
+; 03-Sep-2021 14:12:43 Object compiled by TDEH
+*
+J00/010 Plan 22 Cycle 96 Timeout 60
+09/F2.6/
+51/F3.11/
+52/F1F3,NTO.99/
+67/F1.21/
+% ASSIST GRESHAM STREET AND LOTHBURY
+; 16-Apr-2021 09:14:59 Object compiled by TRJW
+; 03-Sep-2021 14:14:09 Object compiled by TDEH
+*
+J00/010 Plan 32 Cycle 60 Timeout 0
+01/F1.20/
+28/F2.6/
+41/F3,DX.10/
+% MINS CHECK
+; Object compiled by SJMW. On  5-NOV-2002 at 15:59 ( Created )
+; Object compiled by SJAP. On 19-APR-2004 at 11:21 ( Created )
+; Object compiled by SDIM. On 21-AUG-2006 at 14:37 ( Created )
+; Object compiled by TNSB. On 23-APR-2008 at 11:57 ( Created )
+; Object compiled by TNSB. On 20-NOV-2008 at 08:36
+; Object compiled by TNSB. On 20-NOV-2008 at 10:37
+; 05-Nov-2010 10:27:21 Object compiled by TFOS
+; 05-Nov-2010 10:28:02 Object compiled by TFOS
+; 17-Jul-2014 11:50:37 Object compiled by TLDR
+; 18-Jul-2014 10:16:14 Object compiled by TRJW
+; 22-Sep-2015 14:14:32 Object compiled by TNSB
+; 25-Oct-2017 08:28:47 Object compiled by TNSB
+; 02-Sep-2021 09:33:06 Object compiled by TDEH
+; 03-Sep-2021 14:14:52 Object compiled by TDEH
+*

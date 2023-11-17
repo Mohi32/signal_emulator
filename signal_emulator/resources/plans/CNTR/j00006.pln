@@ -1,0 +1,297 @@
+J00/006 Plan 1 Cycle 120 Timeout 0
+02/F1.9/7F+
+09/F1,DUM.99/1
+#30/F1,DUM.99/2F
+32/F1,DUM.99/3
+43/F2.6/3+
+58/F3.7/4
+76/F4.5/5F
+99/F4,DUM.99/6
+111/F4,DUM.99/7F
+% WAT AM
+; 04-Jul-2017 15:16:27 Copied from Plan 4 by TMRS
+; 20-Sep-2017 10:17:56 Object compiled by TNSB
+; 01-Dec-2017 11:33:22 Object compiled by TMRS
+; 22-Jan-2018 11:03:23 Object compiled by TMRS
+*
+J00/006 Plan 2 Cycle 120 Timeout 0
+02/F1.9/7F+
+13/F1,DUM.99/1
+#32/F1,DUM.99/2F
+34/F1,DUM.99/3
+45/F2.6/3+
+58/F3.7/4
+76/F4.5/5F
+99/F4,DUM.99/6
+111/F4,DUM.99/7F
+% WAT OP
+; 13-Feb-2017 15:51:07 Copied from Plan 1 by TMRS
+; 13-Feb-2017 15:58:42 Object compiled by TMRS
+; 14-Feb-2017 11:06:38 Object compiled by TMRS
+; 21-Feb-2017 16:23:46 Object compiled by TMRS
+; 04-Jul-2017 15:28:09 Object compiled by TMRS
+; 05-Jul-2017 12:38:25 Object compiled by TMRS
+; 05-Jul-2017 12:42:52 Object compiled by TMRS
+; 20-Sep-2017 10:17:35 Object compiled by TNSB
+; 01-Dec-2017 11:35:57 Object compiled by TMRS
+; 22-Jan-2018 10:24:39 Object compiled by TMRS
+; 04-Sep-2018 11:29:26 Object compiled by TMRS
+; 26-Sep-2018 13:28:36 Object compiled by TMRS
+; 26-Sep-2018 14:01:04 Object compiled by TMRS
+*
+J00/006 Plan 3 Cycle 120 Timeout 0
+02/F1.9/7F+
+11/F1,DUM.99/1
+#32/F1,DUM.99/2F
+34/F1,DUM.99/3
+45/F2.6/3+
+58/F3.7/4
+76/F4.5/5F
+99/F4,DUM.99/6
+111/F4,DUM.99/7F
+% WAT PM
+; 14-Feb-2017 11:05:58 Copied from Plan 1 by TMRS
+; 21-Feb-2017 16:23:05 Object compiled by TMRS
+; 04-Jul-2017 15:28:49 Object compiled by TMRS
+; 20-Sep-2017 10:16:53 Object compiled by TNSB
+; 01-Dec-2017 11:39:35 Object compiled by TMRS
+; 22-Jan-2018 11:06:53 Object compiled by TMRS
+*
+J00/006 Plan 4 Cycle 120 Timeout 0
+02/F1.9/7F+
+09/F1,DUM.99/1
+28/F1,DUM.99/2F
+32/F1,DUM.99/3
+43/F2.6/3+
+58/F3.7/4
+76/F4.5/5F
+99/F4,DUM.99/6
+111/F4,DUM.99/7F
+% ASSIST NB RGT TURN
+; 22-Feb-2018 13:16:55 Copied from Plan 1 by TMRS
+; 22-Feb-2018 14:00:39 Object compiled by TMRS
+*
+J00/006 Plan 5 Cycle 112 Timeout 0
+02/F1.9/7F+
+06/F1,DUM.99/1
+30/F1,DUM.99/3
+39/F2.5/3+
+52/F3.7/4
+68/F4.5/5F
+91/F4,DUM.99/6
+103/F4,DUM.99/7F
+% WAT ON
+; 02-Jan-2018 13:37:41 Copied from Plan 8 by TMRS
+; 02-Jan-2018 13:48:09 Object compiled by TMRS
+; 02-Jan-2018 14:29:21 Object compiled by TMRS
+; 22-Jan-2018 11:15:49 Object compiled by TMRS
+; 13-Nov-2018 21:21:59 Object compiled by TMRS
+; 13-Nov-2018 22:33:45 Object compiled by TMRS
+*
+J00/006 Plan 6 Cycle 112 Timeout 0
+02/F1.9/7F+
+09/F1,DUM.99/1
+#26/F1,DUM.99/2F
+28/F1,DUM.99/3
+39/F2.5/3+
+52/F3.7/4
+68/F4.5/5F
+91/F4,DUM.99/6
+103/F4,DUM.99/7F
+% WAT WKEND
+; 02-Jan-2018 14:30:42 Copied from Plan 5 by TMRS
+; 21-Sep-2018 15:45:44 Object compiled by TMRS
+; 21-Sep-2018 15:49:04 Object compiled by TMRS
+*
+J00/006 Plan 8 Cycle 112 Timeout 0
+02/F1.9/7F+
+06/F1,DUM.99/1
+30/F1,DUM.99/3
+39/F2.5/3+
+52/F3.7/4
+68/F4.5/5F
+91/F4,DUM.99/6
+103/F4,DUM.99/7F
+% WAT LE
+; 02-Jan-2018 14:31:00 Copied from Plan 5 by TMRS
+; 22-Jan-2018 11:13:36 Object compiled by TMRS
+; 13-Nov-2018 22:33:58 Object compiled by TMRS
+*
+J00/006 Plan 21 Cycle 120 Timeout 60
+02/F1.9/
+45/F2.5/
+58/F3.7/
+76/F4.5/
+% NORTHBOUND ASSIST R315
+; 19-Oct-2016 17:34:36 Copied from Plan 51 by TMRS
+; 19-Oct-2016 17:40:32 Object compiled by TMRS
+; 07-Dec-2016 13:12:58 Object compiled by TMRS
+; 16-Feb-2017 09:56:03 Object compiled by TMRS
+; 21-Feb-2017 16:31:02 Object compiled by TMRS
+; 20-Sep-2017 10:18:57 Object compiled by TNSB
+*
+J00/006 Plan 22 Cycle 120 Timeout 60
+45/F2.5/
+58/F3.7/
+76/F4.5/
+105/F1.9/
+#120/F1.9/
+% HEAVY NORTHBOUND ASSIST R315
+; 16-Feb-2017 09:58:24 Copied from Plan 21 by TMRS
+; 16-Feb-2017 09:59:15 Object compiled by TMRS
+; 21-Feb-2017 16:31:25 Object compiled by TMRS
+; 20-Sep-2017 10:18:52 Object compiled by TNSB
+; 04-Feb-2018 10:21:26 Object compiled by TODT
+*
+J00/006 Plan 23 Cycle 120 Timeout 30
+07/F1.9/
+45/F2.5/
+58/F3.7/
+76/F4.5/
+% SOUTHBOUND ASSIST @ 00/006
+; 19-Oct-2016 17:29:47 Copied from Plan 24 by TMRS
+; 16-Feb-2017 11:43:38 Object compiled by TMRS
+; 21-Feb-2017 16:31:39 Object compiled by TMRS
+; 20-Sep-2017 10:18:44 Object compiled by TNSB
+*
+J00/006 Plan 24 Cycle 120 Timeout 30
+07/F1.9/
+45/F2.5/
+58/F3.7/
+76/F4.5/
+% HEAVY SOUTHBOUND ASSIST @ 00/006
+; 20-Oct-2016 10:50:36 Copied from Plan 23 by TMRS
+; 20-Oct-2016 10:51:44 Object compiled by TMRS
+; 16-Feb-2017 11:47:10 Object compiled by TMRS
+; 21-Feb-2017 16:32:01 Object compiled by TMRS
+; 20-Sep-2017 10:18:38 Object compiled by TNSB
+*
+J00/006 Plan 25 Cycle 120 Timeout 60
+02/F1.9/
+45/F2.5/
+58/F3.7/
+76/F4.5/
+% ASSIST NTHBND AND NTHBND RIGHT TURN INTO QVS (GATES S/B) @ 00/006
+; 03-May-2016 14:44:10 Copied from Plan 51 by TMRS
+; 28-Jun-2016 12:21:48 Object compiled by TMRS
+; 29-Jun-2016 11:39:20 Object compiled by TMRS
+; 08-Jul-2016 08:39:59 Object compiled by TMRS
+; 30-Jul-2016 09:44:26 Object compiled by TVZV
+; 30-Jul-2016 11:13:27 Object compiled by TMRS
+; 30-Jul-2016 14:06:45 Object compiled by TMRS
+; 30-Jul-2016 19:12:09 Object compiled by TSPC
+; 01-Aug-2016 13:44:10 Object compiled by TMRS
+; 11-Sep-2016 16:40:32 Object compiled by TSPC
+; 19-Oct-2016 17:19:31 Object compiled by TMRS
+; 16-Feb-2017 11:58:11 Object compiled by TMRS
+; 21-Feb-2017 16:32:15 Object compiled by TMRS
+; 20-Sep-2017 10:17:19 Object compiled by TNSB
+*
+J00/006 Plan 26 Cycle 120 Timeout 60
+10/F1.9/
+45/F2.5/
+58/F3.7/
+76/F4.5/
+% ASSIST QUEEN VICTORIA STREET @ 00/006
+; 03-May-2016 15:17:37 Copied from Plan 51 by TMRS
+; 03-May-2016 15:22:54 Object compiled by TMRS
+; 29-Jun-2016 11:44:35 Object compiled by TMRS
+; 19-Oct-2016 17:33:04 Object compiled by TMRS
+; 16-Feb-2017 12:07:26 Object compiled by TMRS
+; 21-Feb-2017 16:32:30 Object compiled by TMRS
+; 20-Sep-2017 10:12:13 Object compiled by TNSB
+*
+J00/006 Plan 27 Cycle 120 Timeout 60
+05/F1.9/
+41/F2.5/
+54/F3.7/
+76/F4.5/
+% ASSIST EMBANKMENT @ 00/006
+; 20-Oct-2016 10:34:46 Copied from Plan 29 by TMRS
+; 20-Oct-2016 10:36:56 Object compiled by TMRS
+; 16-Feb-2017 13:44:19 Object compiled by TMRS
+; 21-Feb-2017 16:33:47 Object compiled by TMRS
+; 20-Sep-2017 10:12:07 Object compiled by TNSB
+*
+J00/006 Plan 28 Cycle 120 Timeout 0
+050/F2.6/
+062/F3.7/
+076/F4.5/
+#111/f1.9/ SPC@29/7/17
+116/F1.9/
+% RIDE LONDON FREE CYCLE - CAUTION
+; 27-Jul-2017 13:25:31 Copied from Plan 51 by TMRS
+; 27-Jul-2017 13:57:41 Object compiled by TMRS
+; 29-Jul-2017 20:04:20 Object compiled by TSPC
+; 20-Sep-2017 10:11:47 Object compiled by TNSB
+*
+J00/006 Plan 29 Cycle 120 Timeout 60
+03/F1.9/
+37/F2.5/
+50/F3.7/
+76/F4.5/
+% HEAVY ASSIST EMBANKMENT @ 00/006
+; 10-May-2016 15:57:47 Copied from Plan 24 by TMRS
+; 10-May-2016 16:01:15 Object compiled by TMRS
+; 29-Jun-2016 12:07:15 Object compiled by TMRS
+; 11-Sep-2016 19:16:52 Object compiled by TSPC
+; 19-Oct-2016 17:26:18 Object compiled by TMRS
+; 16-Feb-2017 13:53:17 Object compiled by TMRS
+; 21-Feb-2017 16:34:47 Object compiled by TMRS
+; 20-Sep-2017 10:11:36 Object compiled by TNSB
+*
+J00/006 Plan 30 Cycle 120 Timeout 0
+45/F2.5/
+58/F3.7/
+76/F4.5/
+90/F1.9/
+% RideLondon 2022
+
+; 29-May-2022 13:14:05 Object compiled by THSA
+*
+J00/006 Plan 32 Cycle 80 Timeout 0
+01/F1.9/
+20/F2.6/
+40/F3.7/
+60/F4.5/
+% MINS CHECK
+; 22-Apr-2016 14:45:10 Object compiled by TMRS
+; 31-Oct-2016 09:04:11 Object compiled by TNSB
+; 21-Feb-2017 16:35:38 Object compiled by TMRS
+; 20-Sep-2017 10:13:09 Object compiled by TNSB
+*
+J00/006 Plan 60 Cycle 112 Timeout 0
+5/F1.9/
+37/F2.6/
+51/F3.7/
+68/F4.5/
+% SPLIT NORTH-SOUTH (5234) AND ASSIST QVS
+; 21-Aug-2020 13:21:10 Object compiled by TRJW
+*
+J00/006 Plan 61 Cycle 112 Timeout 0
+5/F1.9/
+37/F2.6/
+51/F3.7/
+68/F4.5/
+% SPLIT NORTH-SOUTH (5234)
+; 21-Aug-2020 13:24:12 Copied from Plan 60 by TRJW
+*
+J00/006 Plan 62 Cycle 112 Timeout 60
+11/F1.2/
+20/F2.6/
+40/F3.7/
+62/F4.5/
+90/F5.9/
+% ASSIST VIC.EMK E/B SLIP & Q.VIC ST W/B
+; 20-Jan-2021 08:08:40 Copied from Plan 21 by TMXS
+; 20-Jan-2021 08:12:58 Object compiled by TMXS
+; 20-Jan-2021 08:18:25 Object compiled by TMXS
+*
+J00/006 Plan 68 Cycle 120 Timeout 0
+30/F2.5/
+41/F3.7/
+76/F4.5/
+120/F1.9/
+% SEVERE ASSIST EMBANKMENT - UTS EB CLOSURE
+; 21-Aug-2020 13:22:07 Object compiled by TRJW
+*

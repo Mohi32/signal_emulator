@@ -1,0 +1,286 @@
+Controller - start
+00/000009/U,STCL T800 MK 1 UTC Cntr  Integral Facilities,532710/181554,13,00/000009/U
+Controller - end
+Site Details - start
+Site Number,00/000009/U
+Controller Type,STCL T800 MK 1 UTC Cntr  Integral Facilities
+Grid Reference,532710/181554
+Address,A1211 LONDON WALL - MOORGATE
+Issue,34
+Control Group,13
+Control Subgroup,00/000009/U
+Site Link Number,
+SFM Version Number,0
+Site Details - end
+Stages - start
+0,All Red - Stream 0
+1,Moorgate
+2,Moorgate Southbound and Right Turn
+3,London Wall
+4,London Wall Westbound and Right Turn
+5,All Round Pedestrians
+6,Moorgate Northbound
+7,All Red - 00/070 Stream 1
+8,Vehicles - 00/070 Stream 1
+9,Peds - 00/070 Stream 1
+Stages - end
+Streams - start
+0,00/000009/U,All Red - Stream 0,R,X
+0,00/000009/U,All Round Pedestrians,G,X
+0,00/000009/U,All Round Pedestrians,F,X
+0,00/000009/U,All Round Pedestrians,I,X
+0,00/000009/U,All Round Pedestrians,H,X
+0,00/000009/U,London Wall,C,X
+0,00/000009/U,London Wall,H,X
+0,00/000009/U,London Wall,D,X
+0,00/000009/U,London Wall Westbound and Right Turn,C,X
+0,00/000009/U,London Wall Westbound and Right Turn,H,X
+0,00/000009/U,London Wall Westbound and Right Turn,E,X
+0,00/000009/U,Moorgate,A,X
+0,00/000009/U,Moorgate,G,X
+0,00/000009/U,Moorgate,B,X
+0,00/000009/U,Moorgate Northbound,B,X
+0,00/000009/U,Moorgate Northbound,T,X
+0,00/000009/U,Moorgate Northbound,G,X
+0,00/000009/U,Moorgate Southbound and Right Turn,A,X
+0,00/000009/U,Moorgate Southbound and Right Turn,P,X
+1,00/000070/,All Red - 00/070 Stream 1,S,X
+1,00/000070/,Peds - 00/070 Stream 1,M,X
+1,00/000070/,Peds - 00/070 Stream 1,O,X
+1,00/000070/,Vehicles - 00/070 Stream 1,L,X
+1,00/000070/,Vehicles - 00/070 Stream 1,N,X
+Streams - end
+Revert and Startup Stage - start
+0,00/000009/U,,,1
+1,00/000070/,,,8
+Revert and Startup Stage - end
+Phase Timings - start
+A,7,,14,,T
+B,7,,14,,T
+C,7,,18,,T
+D,7,,18,,T
+E,4,,8,,F
+F,6,,,7,P
+G,6,,,5,P
+H,6,,,5,P
+I,6,,,8,P
+J,,,,,F
+K,,,,,F
+L,7,,,,T
+M,6,,,7,P
+N,7,,,,T
+O,6,,,7,P
+P,1,,,,D
+Q,,,,,D
+R,3,,,,D
+S,3,,,,D
+T,1,,,,D
+Phase Timings - end
+Intergreens - start
+A,C,7
+A,D,7
+A,E,7
+A,F,6
+A,H,8
+A,I,10
+A,R,3
+A,T,3
+B,C,5
+B,D,6
+B,E,5
+B,F,8
+B,H,5
+B,I,8
+B,P,3
+B,R,3
+C,A,5
+C,B,6
+C,F,10
+C,G,6
+C,I,8
+C,P,5
+C,R,3
+C,T,6
+D,A,6
+D,B,5
+D,E,5
+D,F,8
+D,G,8
+D,I,6
+D,P,6
+D,R,3
+D,T,8
+E,A,5
+E,B,6
+E,D,6
+E,F,10
+E,G,6
+E,P,5
+E,R,3
+E,T,6
+F,A,15
+F,B,15
+F,C,15
+F,D,15
+F,E,15
+F,P,15
+F,R,7
+F,T,15
+G,C,12
+G,D,12
+G,E,12
+G,P,5
+G,R,5
+H,A,12
+H,B,12
+H,P,12
+H,R,5
+H,T,12
+I,A,17
+I,B,17
+I,C,17
+I,D,17
+I,P,17
+I,R,8
+I,T,17
+L,M,6
+L,S,3
+M,L,16
+M,S,7
+N,O,6
+N,S,3
+O,N,16
+O,S,7
+P,B,5
+P,C,7
+P,D,7
+P,E,7
+P,F,6
+P,G,3
+P,H,8
+P,I,10
+P,R,3
+P,T,5
+R,A,2
+R,B,2
+R,C,2
+R,D,2
+R,E,2
+R,F,2
+R,G,2
+R,H,2
+R,I,2
+R,P,2
+R,T,2
+S,L,2
+S,M,2
+S,N,2
+S,O,2
+T,A,5
+T,C,12
+T,D,12
+T,E,12
+T,F,8
+T,H,5
+T,I,8
+T,P,5
+T,R,5
+Intergreens - end
+Phase Delays - start
+1,3,B,4
+1,3,A,4
+3,1,C,4
+3,6,C,4
+3,6,D,4
+3,2,D,6
+3,1,D,4
+3,2,C,6
+4,1,C,6
+4,6,C,6
+4,2,C,7
+5,6,F,2
+5,2,H,5
+5,2,G,12
+5,2,F,2
+5,1,H,5
+5,1,F,2
+5,3,G,5
+5,6,H,5
+5,3,F,2
+6,3,B,6
+6,2,B,2
+Phase Delays - end
+Detection - start
+Detection - end
+Phase type and conditions - start
+A,MOORGATE SB,T,0,0,
+B,MOORGATE NB,T,0,0,
+C,LONDON WALL WB,T,0,0,
+D,LONDON WALL EB,T,0,0,
+E,LONDON WALL WB R/T,F,0,2,C
+F,PEDS X MOORGATE NORTH,P,0,0,
+G,PEDS X LONDON WALL EAST,P,0,0,
+H,PEDS X MOORGATE SOUTH,P,0,0,
+I,PEDS X LONDON WALL WEST,P,0,0,
+J,not used,F,0,0,
+K,not used,F,0,0,
+L,LONDON WALL WEST SIDE EB,T,0,0,
+M,PEDS X LONDON WALL WEST SIDE EB,P,0,0,
+N,LONDON WALL WEST SIDE WB,T,0,0,
+O,PEDS X LONDON WALL WEST SIDE WB,P,0,0,
+P,UTC DUMMY STAGE 2,D,0,0,
+Q,not used,D,0,0,
+R,ALL RED DUMMY STREAM 0,D,0,0,
+S,ALL RED DUMMY STREAM 1,D,0,0,
+T,UTC DUMMY STAGE 6,D,0,0,
+Phase type and conditions - end
+Bus Priority - start
+1,Moorgate,,,,,,,,,,,,
+2,Moorgate Southbound and Right Turn,,,,,,,,,,,,
+3,London Wall,,,,,,,,,,,,
+4,London Wall Westbound and Right Turn,,,,,,,,,,,,
+5,All Round Pedestrians,,,,,,,,,,,,
+6,Moorgate Northbound,,,,,,,,,,,,
+7,All Red - 00/070 Stream 1,,,,,,,,,,,,
+8,Vehicles - 00/070 Stream 1,,,,,,,,,,,,
+9,Peds - 00/070 Stream 1,,,,,,,,,,,,
+Bus Priority - end
+Stage Movements Under UTC Control - start
+1,CAB,N
+1,UTC,Y
+1,Manual,Y
+1,CLF (Non Base Time),Y
+2,Fixed Time,Y
+Stage Movements Under UTC Control - end
+Prohibited Stages - start
+0,4,3
+1,4,3
+1,6,0
+2,1,0
+2,4,3
+2,6,0
+4,3,0
+5,4,3
+6,4,3
+Prohibited Stages - end
+Phase Stage Demand Dependency - start
+All Round Pedestrians,F,X
+All Round Pedestrians,I,X
+London Wall,C,X
+London Wall,D,X
+London Wall,H,X
+London Wall Westbound and Right Turn,E,X
+Peds - 00/070 Stream 1,M,X
+Peds - 00/070 Stream 1,O,X
+Phase Stage Demand Dependency - end
+Linked Sites - start
+Link Number,Link To Ped Controller On Site,Stage or Phase,Trigger Point,Memory,Link Delay Time,Inhibit Release Period,Override Time
+0,00/000070/,C,E,RAM,7,2,0
+Linked Sites - end
+Comments - start
+Version No,19
+Linking,NONE
+Comments,TFL SPEC ISSUE 19.  **2ND OTU @ 00/509.**  **Outstanding Snagging**
+Detection,MVD - SINGLE LOOP - PUSH BUTTONS / TACTILES - iBUS (TSN 3557) - VEHICLE SCOOT
+Amendments,NEW PROM (TFL SPEC ISSUE 19) INSTALLED & UTC COMMISSIONED FOR REVISED iBUS LAYOUT. 26-MAR-2023 SMITHP
+Comments - end

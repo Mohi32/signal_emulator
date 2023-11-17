@@ -1,0 +1,268 @@
+J00/007 Plan 1/V Cycle 72 Timeout 0
+01/F1.19/1
+29/F2.6/2
+30/F1F2,NTO.99/2+
+39/F3.10/3F
+41/F1F2F3,NTO.99/3F+
+57/F4.12/4F
+60/F1F4,NTO.99/4F+
+% AM - WAT
+; 03-Mar-2010 08:22:47 Object compiled by TSPC
+; 03-Mar-2010 14:51:18 Object compiled by TSPC
+; 04-Mar-2010 15:33:36 Object compiled by TSPC
+; 10-Mar-2010 09:06:49 Object compiled by TSPC
+; 10-Mar-2010 09:40:44 Object compiled by TSPC
+; 10-Mar-2010 10:36:42 Object compiled by TSPC
+; 12-Mar-2010 13:15:14 Object compiled by TSPC
+; 19-Mar-2010 09:03:44 Object compiled by TSPC
+; 01-Apr-2010 12:48:25 Object compiled by TSPC
+; 29-Apr-2010 12:01:23 Object compiled by TSPC
+; 17-Aug-2010 13:02:47 Object compiled by TMXS
+; 08-Mar-2013 14:13:34 Object compiled by TRCT
+; 04-May-2013 07:59:03 Object compiled by TRJW
+; 04-May-2013 08:01:26 Object compiled by TRJW
+; 07-May-2013 08:15:43 Object compiled by TRJW
+; 20-Feb-2015 15:20:08 Object compiled by TRJW
+; 18-Oct-2017 11:33:14 Object compiled by TNSB
+; 16-Jul-2019 09:31:42 Object compiled by TNSB
+; 18-Jan-2021 10:09:07 Object compiled by TAPG
+; 25-Oct-2022 08:04:39 Object compiled by TCTB
+*
+J00/007 Plan 2/V Cycle 72 Timeout 0
+25/F2.6/2
+26/F1F2,NTO.99/2+
+35/F3.10/3F
+37/F1F2F3,NTO.99/3F+
+54/F4.12/4F
+57/F1F4,NTO.99/4F+
+70/F1.19/1
+% OP WAT
+; 03-Mar-2010 08:22:47 Object compiled by TSPC
+; 03-Mar-2010 14:51:18 Object compiled by TSPC
+; 04-Mar-2010 15:33:36 Object compiled by TSPC
+; 10-Mar-2010 09:06:49 Object compiled by TSPC
+; 10-Mar-2010 09:40:44 Object compiled by TSPC
+; 10-Mar-2010 10:36:42 Object compiled by TSPC
+; 12-Mar-2010 13:17:07 Object compiled by TSPC
+; 18-Mar-2010 19:43:21 Object compiled by TSPC
+; 01-Apr-2010 12:47:37 Object compiled by TSPC
+; 29-Apr-2010 12:01:03 Object compiled by TSPC
+; 17-Aug-2010 13:09:23 Object compiled by TMXS
+; 11-Jul-2011 11:27:33 Object compiled by TSPC
+; 11-Jul-2011 12:16:18 Object compiled by TSPC
+; 08-Mar-2013 14:14:26 Object compiled by TRCT
+; 04-May-2013 07:58:02 Object compiled by TRJW
+; 04-May-2013 08:01:54 Object compiled by TRJW
+; 20-Feb-2015 15:19:43 Object compiled by TRJW
+; 18-Oct-2017 11:33:04 Object compiled by TNSB
+; 16-Jul-2019 09:31:24 Object compiled by TNSB
+; 18-Jan-2021 12:22:07 Object compiled by TAPG
+; 25-Oct-2022 08:04:33 Object compiled by TCTB
+; 05-Nov-2022 12:43:14 Object compiled by TNVG
+; 05-Nov-2022 14:16:36 Object compiled by TNVG
+*
+J00/007 Plan 3/V Cycle 72 Timeout 0
+23/F2.6/2
+24/F1F2,NTO.99/2+
+33/F3.10/3F
+35/F1F2F3,NTO.99/3F+
+55/F4.12/4F
+58/F1F4,NTO.99/4F+
+71/F1.19/1
+% PM WAT
+; 03-Mar-2010 08:22:47 Object compiled by TSPC
+; 03-Mar-2010 14:51:18 Object compiled by TSPC
+; 04-Mar-2010 15:33:36 Object compiled by TSPC
+; 10-Mar-2010 09:06:49 Object compiled by TSPC
+; 10-Mar-2010 09:40:44 Object compiled by TSPC
+; 10-Mar-2010 10:36:42 Object compiled by TSPC
+; 12-Mar-2010 13:15:14 Object compiled by TSPC
+; 18-Mar-2010 16:29:41 Object compiled by TSPC
+; 01-Apr-2010 12:46:37 Object compiled by TSPC
+; 29-Apr-2010 11:59:39 Object compiled by TSPC
+; 29-Apr-2010 15:16:39 Object compiled by TSPC
+; 17-Aug-2010 13:09:38 Object compiled by TMXS
+; 08-Mar-2013 14:27:06 Object compiled by TRCT
+; 04-May-2013 07:56:43 Object compiled by TRJW
+; 04-May-2013 08:02:25 Object compiled by TRJW
+; 20-Feb-2015 15:19:20 Object compiled by TRJW
+; 18-Oct-2017 11:32:49 Object compiled by TNSB
+; 16-Jul-2019 09:31:05 Object compiled by TNSB
+; 25-Oct-2022 08:04:26 Object compiled by TCTB
+*
+J00/007 Plan 5/V Cycle 64 Timeout 0
+04/F1.18/1
+33/F3.10/3F
+34/F1F3,NTO.99/3F+
+52/F4.11/4F
+54/F1F4,NTO.99/4F+
+% OVERNIGHT - WAT
+; 03-Mar-2010 08:22:47 Object compiled by TSPC
+; 03-Mar-2010 14:51:18 Object compiled by TSPC
+; 04-Mar-2010 15:33:36 Object compiled by TSPC
+; 10-Mar-2010 09:06:49 Object compiled by TSPC
+; 10-Mar-2010 09:40:44 Object compiled by TSPC
+; 10-Mar-2010 10:36:42 Object compiled by TSPC
+; 12-Mar-2010 13:17:07 Object compiled by TSPC
+; 18-Mar-2010 19:45:39 Object compiled by TSPC
+; 29-Apr-2010 11:59:09 Object compiled by TSPC
+; 17-Aug-2010 13:09:49 Object compiled by TMXS
+; 08-Mar-2013 14:27:39 Object compiled by TRCT
+; 04-May-2013 07:55:28 Object compiled by TRJW
+; 04-May-2013 08:02:48 Object compiled by TRJW
+; 20-Feb-2015 15:18:30 Object compiled by TRJW
+; 18-Oct-2017 11:32:31 Object compiled by TNSB
+; 16-Jul-2019 09:30:50 Object compiled by TNSB
+; 25-Oct-2022 08:04:20 Object compiled by TCTB
+*
+J00/007 Plan 6 Cycle 80/F Timeout 0
+25/F2.6/2
+26/F1F2,NTO.99/2+
+35/F3,dx.10/3F
+62/F4.12/4F
+64/F1F4,NTO.99/4F+
+70/F1.19/1
+% Assist Puddle Dock N/B (stage 3)
+; 19-Jan-2021 09:59:39 Object compiled by TMXS
+; 25-Oct-2022 08:04:12 Object compiled by TCTB
+*
+J00/007 Plan 8/V Cycle 72 Timeout 0
+25/F2.6/2
+26/F1F2,NTO.99/2+
+35/F3.10/3F
+37/F1F2F3,NTO.99/3F+
+54/F4.12/4F
+57/F1F4,NTO.99/4F+
+70/F1.19/1
+% EVENING - WAT
+; 03-Mar-2010 08:22:47 Object compiled by TSPC
+; 03-Mar-2010 14:51:18 Object compiled by TSPC
+; 04-Mar-2010 15:33:36 Object compiled by TSPC
+; 10-Mar-2010 09:06:49 Object compiled by TSPC
+; 10-Mar-2010 09:40:44 Object compiled by TSPC
+; 10-Mar-2010 10:36:42 Object compiled by TSPC
+; 12-Mar-2010 13:17:07 Object compiled by TSPC
+; 18-Mar-2010 19:43:55 Object compiled by TSPC
+; 20-Mar-2010 18:07:59 Object compiled by TRXB
+; 20-Mar-2010 20:41:10 Object compiled by TRXB
+; 01-Apr-2010 12:42:49 Object compiled by TSPC
+; 29-Apr-2010 11:58:38 Object compiled by TSPC
+; 15-Aug-2010 22:42:47 Object compiled by TSPC
+; 17-Aug-2010 13:10:16 Object compiled by TMXS
+; 08-Mar-2013 14:28:22 Object compiled by TRCT
+; 04-May-2013 07:54:14 Object compiled by TRJW
+; 04-May-2013 08:03:17 Object compiled by TRJW
+; 20-Feb-2015 15:18:10 Object compiled by TRJW
+; 18-Oct-2017 11:32:18 Object compiled by TNSB
+; 16-Jul-2019 09:30:33 Object compiled by TNSB
+; 25-Oct-2022 08:03:56 Object compiled by TCTB
+*
+J00/007 Plan 21 Cycle 80 Timeout 0
+26/F2,DX.6/
+45/F3,DX.9/
+64/F4.11/
+65/F4F1,NTO.99/
+80/F1.17/
+% ASSIST E/B Q/VICTORIA ST + R/TURN INTO PUDDLE DOCK
+; Object compiled by TKXM. On 30-JUN-2004 at 10:18 ( Created )
+; Object compiled by TKXM. On 30-JUN-2004 at 11:42
+; Object compiled by SDIM. On 21-AUG-2006 at 14:37 ( Created )
+; Object compiled by TNSB. On 23-APR-2008 at 11:57 ( Created )
+; Object compiled by TSJC. On 29-SEP-2008 at 09:56
+; Object compiled by TNSB. On 20-NOV-2008 at 08:36
+; Object compiled by TNSB. On 20-NOV-2008 at 10:37
+; 21-Feb-2009 08:36:57 Object compiled by TMXS
+; 21-Feb-2009 09:03:20 Object compiled by TMXS
+; 21-Feb-2009 09:04:48 Object compiled by TMXS
+; 23-Mar-2009 14:44:17 Object compiled by TRJW
+; 29-Apr-2010 15:54:37 Object compiled by TSPC
+; 06-May-2010 16:06:28 Object compiled by TSPC
+; 08-Mar-2013 14:37:47 Object compiled by TRCT
+; 04-May-2013 08:47:04 Object compiled by TRJW
+; 18-Oct-2017 11:34:49 Object compiled by TNSB
+*
+J00/007 Plan 22 Cycle 88 Timeout 0
+26/F2,DX.6/
+53/F3.9/
+54/F2F3,NTO.99/
+72/F4.11/
+74/F4F1,NTO.99/
+88/F1.18/
+% Assist E/B Q/Vic St & R/T into Puddle Dock, more than plan 21
+; Object compiled by TKXM. On 30-JUN-2004 at 10:18 ( Created )
+; Object compiled by TKXM. On 30-JUN-2004 at 11:42
+; Object compiled by SDIM. On 21-AUG-2006 at 14:37 ( Created )
+; Object compiled by TNSB. On 23-APR-2008 at 11:57 ( Created )
+; Object compiled by TSJC. On 29-SEP-2008 at 09:56
+; Object compiled by TNSB. On 20-NOV-2008 at 08:36
+; Object compiled by TNSB. On 20-NOV-2008 at 10:37
+; 21-Feb-2009 08:36:57 Object compiled by TMXS
+; 21-Feb-2009 09:02:47 Object compiled by TMXS
+; 21-Feb-2009 09:05:19 Object compiled by TMXS
+; 23-Mar-2009 14:47:13 Object compiled by TRJW
+; 29-Apr-2010 15:57:41 Object compiled by TSPC
+; 07-May-2010 16:15:40 Object compiled by TSPC
+; 08-Mar-2013 14:38:29 Object compiled by TRCT
+; 04-May-2013 08:46:19 Object compiled by TRJW
+; 18-Oct-2017 11:34:40 Object compiled by TNSB
+*
+J00/007 Plan 24 Cycle 88 Timeout 0
+20/F2.6/
+21/F1F2,NTO.99/
+30/F3,DX.10/
+64/F4.10/
+65/F4F3,NTO.99/
+80/F1.17/
+% ASSIST N/B PUDDLE DOCK
+; Object compiled by TPCM. On 25-NOV-2005 at 13:53 ( Created )
+; Object compiled by SDIM. On 21-AUG-2006 at 14:37 ( Created )
+; Object compiled by TNSB. On 23-APR-2008 at 11:57 ( Created )
+; Object compiled by TSJC. On 29-SEP-2008 at 09:56
+; Object compiled by TNSB. On 20-NOV-2008 at 08:36
+; Object compiled by TNSB. On 20-NOV-2008 at 10:37
+; 23-Mar-2009 14:51:59 Object compiled by TRJW
+; 08-Mar-2013 14:39:02 Object compiled by TRCT
+; 04-May-2013 08:45:06 Object compiled by TRJW
+; 31-Jan-2017 12:56:46 Object compiled by TMXS
+; 18-Oct-2017 11:35:13 Object compiled by TNSB
+*
+J00/007 Plan 25 Cycle 88 Timeout 0
+20/F2.6/
+21/F2F1,NTO.99/
+30/F3,DX.10/
+69/F4.12/
+70/F3F4,NTO.99/
+85/F1.17/
+% HEAVY ASSIST N/B PUDDLE DOCK
+; 29-Mar-2016 15:23:18 Object compiled by TMRS
+; 31-Jan-2017 12:56:44 Object compiled by TMXS
+; 18-Oct-2017 11:34:28 Object compiled by TNSB
+*
+J00/007 Plan 26 Cycle 96 Timeout 0
+20/F2.6/
+21/F2F1,NTO.99/
+30/F3,DX.10/
+77/F4.12/
+79/F3F4,NTO.99/
+93/F1.17/
+% SEVERE ASSIST N/B PUDDLE DOCK
+; 31-Jan-2017 12:56:41 Object compiled by TMXS
+; 18-Oct-2017 11:34:19 Object compiled by TNSB
+*
+J00/007 Plan 32 Cycle 80 Timeout 0
+01/F1.16/
+20/F2,DX.6/
+40/F3,DX.9/
+60/F4,DX.10/
+% MINS CHECK
+; Object compiled by SJAP. On 19-APR-2004 at 11:21 ( Created )
+; Object compiled by TNSB. On 25-APR-2004 at 07:35
+; Object compiled by SDIM. On 21-AUG-2006 at 14:37 ( Created )
+; Object compiled by TNSB. On 23-APR-2008 at 11:57 ( Created )
+; Object compiled by TSJC. On 29-SEP-2008 at 09:56
+; Object compiled by TNSB. On 20-NOV-2008 at 08:36
+; Object compiled by TNSB. On 20-NOV-2008 at 10:37
+; 20-Mar-2009 08:52:40 Object compiled by TSJC
+; 04-May-2013 08:43:54 Object compiled by TRJW
+; 18-Oct-2017 11:35:40 Object compiled by TNSB
+*

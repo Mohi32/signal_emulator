@@ -1,0 +1,275 @@
+J00/122 Plan 1 Cycle 120 Timeout 0
+09/F1,DUM.99/1
+#30/F2.16/2F
+32/F2.16/3
+58/F2,DUM.99/4
+76/F2,DUM.99/5F
+82/F3.11/5F+
+99/F4.14/6
+111/F4,DUM.99/7F
+120/F1.15/7F+
+% WAT AM
+; 04-Jul-2017 15:16:27 Copied from Plan 4 by TMRS
+; 20-Sep-2017 10:17:56 Object compiled by TNSB
+; 01-Dec-2017 11:33:22 Object compiled by TMRS
+; 22-Jan-2018 11:03:23 Object compiled by TMRS
+*
+J00/122 Plan 2 Cycle 120 Timeout 0
+13/F1,DUM.99/1
+#32/F2.16/2F
+34/F2.16/3
+58/F2,DUM.99/4
+76/F2,DUM.99/5F
+82/F3.11/5F+
+99/F4.14/6
+111/F4,DUM.99/7F
+120/F1.15/7F+
+% WAT OP
+; 13-Feb-2017 15:51:07 Copied from Plan 1 by TMRS
+; 13-Feb-2017 15:58:43 Object compiled by TMRS
+; 14-Feb-2017 11:06:38 Object compiled by TMRS
+; 21-Feb-2017 16:23:47 Object compiled by TMRS
+; 04-Jul-2017 15:28:09 Object compiled by TMRS
+; 05-Jul-2017 12:38:26 Object compiled by TMRS
+; 05-Jul-2017 12:42:52 Object compiled by TMRS
+; 20-Sep-2017 10:17:35 Object compiled by TNSB
+; 01-Dec-2017 11:35:57 Object compiled by TMRS
+; 22-Jan-2018 10:24:39 Object compiled by TMRS
+; 04-Sep-2018 11:29:26 Object compiled by TMRS
+; 26-Sep-2018 13:28:36 Object compiled by TMRS
+; 26-Sep-2018 14:01:04 Object compiled by TMRS
+*
+J00/122 Plan 3 Cycle 120 Timeout 0
+11/F1,DUM.99/1
+#32/F2.16/2F
+34/F2.16/3
+58/F2,DUM.99/4
+76/F2,DUM.99/5F
+82/F3.11/5F+
+99/F4.14/6
+111/F4,DUM.99/7F
+120/F1.15/7F+
+% WAT PM
+; 14-Feb-2017 11:05:58 Copied from Plan 1 by TMRS
+; 21-Feb-2017 16:23:05 Object compiled by TMRS
+; 04-Jul-2017 15:28:49 Object compiled by TMRS
+; 20-Sep-2017 10:16:53 Object compiled by TNSB
+; 01-Dec-2017 11:39:35 Object compiled by TMRS
+; 22-Jan-2018 11:06:53 Object compiled by TMRS
+*
+J00/122 Plan 4 Cycle 120 Timeout 0
+09/F1,DUM.99/1
+28/F2.16/2F
+32/F2,DUM.99/3
+58/F2,DUM.99/4
+76/F2,DUM.99/5F
+82/F3.11/5F+
+99/F4.14/6
+111/F4,DUM.99/7F
+120/F1.15/7F+
+% ASSIST NB RGT TURN
+; 22-Feb-2018 13:16:55 Copied from Plan 1 by TMRS
+; 22-Feb-2018 14:00:39 Object compiled by TMRS
+*
+J00/122 Plan 5 Cycle 112 Timeout 0
+06/F1,DUM.99/1
+30/F2.16/3
+52/F2,DUM.99/4
+68/F2,DUM.99/5F
+74/F3.11/5F+
+91/F4.14/6
+103/F4,DUM.99/7F
+112/F1.15/7F+
+% WAT ON
+; 02-Jan-2018 13:37:41 Copied from Plan 8 by TMRS
+; 02-Jan-2018 13:48:09 Object compiled by TMRS
+; 02-Jan-2018 14:29:21 Object compiled by TMRS
+; 22-Jan-2018 11:15:49 Object compiled by TMRS
+; 13-Nov-2018 21:21:59 Object compiled by TMRS
+; 13-Nov-2018 22:33:45 Object compiled by TMRS
+*
+J00/122 Plan 6 Cycle 112 Timeout 0
+09/F1,DUM.99/1
+#26/F2.16/2F
+28/F2.16/3
+52/F2,DUM.99/4
+68/F2,DUM.99/5F
+74/F3.11/5F+
+91/F4.14/6
+103/F4,DUM.99/7F
+112/F1.15/7F+
+% WAT WKEND
+; 02-Jan-2018 14:30:42 Copied from Plan 5 by TMRS
+; 21-Sep-2018 15:45:44 Object compiled by TMRS
+; 21-Sep-2018 15:49:04 Object compiled by TMRS
+*
+J00/122 Plan 8 Cycle 112 Timeout 0
+06/F1,DUM.99/1
+30/F2.16/3
+52/F2,DUM.99/4
+68/F2,DUM.99/5F
+74/F3.11/5F+
+91/F4.14/6
+103/F4,DUM.99/7F
+112/F1.15/7F+
+% WAT LE
+; 02-Jan-2018 14:31:00 Copied from Plan 5 by TMRS
+; 22-Jan-2018 11:13:36 Object compiled by TMRS
+; 13-Nov-2018 22:33:58 Object compiled by TMRS
+*
+J00/122 Plan 21 Cycle 120 Timeout 60
+032/F2.16/
+082/F3.11/
+099/F4.14/
+120/F1.15/
+% NORTHBOUND ASSIST R315
+; 19-Oct-2016 17:34:36 Copied from Plan 51 by TMRS
+; 07-Dec-2016 13:12:51 Object compiled by TMRS
+; 20-Sep-2017 10:11:10 Object compiled by TNSB
+*
+J00/122 Plan 22 Cycle 120 Timeout 60
+032/F2.16/
+082/F3.11/
+099/F4.14/
+120/F1.15/
+% HEAVY NORTHBOUND ASSIST R315
+; 16-Feb-2017 09:58:24 Copied from Plan 21 by TMRS
+; 20-Sep-2017 10:11:00 Object compiled by TNSB
+; 29-May-2022 13:31:36 Object compiled by THSA
+*
+J00/122 Plan 23 Cycle 120 Timeout 30
+037/F2.16/
+082/F3.11/
+099/F4.14/
+120/F1.15/
+% SOUTHBOUND ASSIST @ 00/006
+; 19-Oct-2016 17:29:48 Copied from Plan 24 by TMRS
+; 20-Sep-2017 10:10:50 Object compiled by TNSB
+*
+J00/122 Plan 24 Cycle 120 Timeout 30
+041/F2.16/
+082/F3.11/
+099/F4.14/
+120/F1.15/
+% HEAVY SOUTHBOUND ASSIST @ 00/006
+; 20-Oct-2016 10:50:36 Copied from Plan 23 by TMRS
+; 20-Oct-2016 10:51:06 Object compiled by TMRS
+; 20-Sep-2017 10:10:42 Object compiled by TNSB
+*
+J00/122 Plan 25 Cycle 120 Timeout 60
+026/F2.16/
+082/F3.11/
+099/F4.14/
+120/F1.15/
+% ASSIST NTHBND AND NTHBND RIGHT TURN INTO QVS (GATES S/B) @ 00/006
+; 03-May-2016 14:44:10 Copied from Plan 51 by TMRS
+; 03-May-2016 14:46:06 Object compiled by TMRS
+; 28-Jun-2016 12:21:41 Object compiled by TMRS
+; 29-Jun-2016 11:37:58 Object compiled by TMRS
+; 30-Jul-2016 09:44:22 Object compiled by TVZV
+; 30-Jul-2016 10:50:03 Object compiled by TMRS
+; 30-Jul-2016 12:55:14 Object compiled by TMRS
+; 30-Jul-2016 14:04:46 Object compiled by TMRS
+; 01-Aug-2016 13:44:03 Object compiled by TMRS
+; 19-Oct-2016 17:19:39 Object compiled by TMRS
+; 20-Sep-2017 10:09:16 Object compiled by TNSB
+*
+J00/122 Plan 26 Cycle 120 Timeout 60
+030/F2.16/
+076/F3.11/
+093/F4.14/
+120/F1.15/
+% ASSIST QUEEN VICTORIA STREET @ 00/006
+; 03-May-2016 15:17:37 Copied from Plan 51 by TMRS
+; 03-May-2016 15:25:45 Object compiled by TMRS
+; 29-Jun-2016 11:44:54 Object compiled by TMRS
+; 19-Oct-2016 17:33:25 Object compiled by TMRS
+; 20-Sep-2017 10:09:05 Object compiled by TNSB
+*
+J00/122 Plan 27 Cycle 120 Timeout 60
+028/F2.16/
+082/F3.11/
+099/F4.14/
+120/F1.15/
+% ASSIST EMBANKMENT @ 00/006
+; 20-Oct-2016 10:34:46 Copied from Plan 29 by TMRS
+; 20-Oct-2016 10:36:11 Object compiled by TMRS
+; 20-Sep-2017 10:08:56 Object compiled by TNSB
+*
+J00/122 Plan 28 Cycle 120 Timeout 0
+059/F2.16/
+082/F3.11/
+099/F4.14/
+120/F1.15/
+% RIDE LONDON FREE CYCLE - CAUTION
+; 27-Jul-2017 13:25:32 Copied from Plan 51 by TMRS
+; 27-Jul-2017 13:30:26 Object compiled by TMRS
+; 20-Sep-2017 10:08:45 Object compiled by TNSB
+*
+J00/122 Plan 29 Cycle 120 Timeout 60
+024/F2.16/
+082/F3.11/
+099/F4.14/
+120/F1.15/
+% HEAVY ASSIST EMBANKMENT @ 00/006
+; 10-May-2016 15:57:47 Copied from Plan 24 by TMRS
+; 10-May-2016 16:02:00 Object compiled by TMRS
+; 29-Jun-2016 12:08:30 Object compiled by TMRS
+; 19-Oct-2016 17:26:11 Object compiled by TMRS
+; 20-Sep-2017 10:08:33 Object compiled by TNSB
+*
+J00/122 Plan 30 Cycle 120 Timeout 0
+032/F2.16/
+082/F3.11/
+099/F4.14/
+120/F1.15/
+% RideLondon 2022
+; 29-May-2022 13:31:17 Object compiled by THSA
+*
+J00/122 Plan 32 Cycle 80 Timeout 0
+01/F1.15/
+20/F2.16/
+40/F3.10/
+60/F4.14/
+% MINS CHECK
+; 19-Apr-2016 22:27:42 Object compiled by TRJW
+; 20-Sep-2017 10:10:30 Object compiled by TNSB
+; 03-Sep-2020 11:18:55 Object compiled by TNSB
+*
+J00/122 Plan 60 Cycle 112 Timeout 0
+05/F5.15/
+28/F2.16/
+74/F3.11/
+91/F4.14/
+% SPLIT NORTH-SOUTH (5234) AND ASSIST QVS
+; 25-Mar-2019 13:29:53 Object compiled by TRJW
+*
+J00/122 Plan 61 Cycle 112 Timeout 0
+05/F5.15/
+21/F2.16/
+74/F3.11/
+91/F4.14/
+% SPLIT NORTH-SOUTH (5234)
+; 21-Aug-2020 13:24:12 Copied from Plan 60 by TRJW
+; 21-Aug-2020 13:32:07 Object compiled by TRJW
+*
+J00/122 Plan 62 Cycle 112 Timeout 60
+20/F2.16/
+68/F3.11/
+85/F4.14/
+112/F1.15/
+% ASSIST VIC.EMK E/B SLIP & Q.VIC ST W/B
+; 20-Jan-2021 08:08:41 Copied from Plan 21 by TMXS
+; 20-Jan-2021 08:13:02 Object compiled by TMXS
+; 20-Jan-2021 08:18:59 Object compiled by TMXS
+*
+J00/122 Plan 68 Cycle 120 Timeout 60
+022/F2.16/
+082/F3.11/
+099/F4.14/
+120/F1.15/
+% SEVERE ASSIST EMBANKMENT - UTS EB CLOSURE
+; 07-Feb-2017 17:32:21 Copied from Plan 29 by TMRS
+; 07-Feb-2017 17:36:01 Object compiled by TMRS
+; 20-Sep-2017 10:06:26 Object compiled by TNSB
+*

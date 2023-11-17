@@ -1,0 +1,93 @@
+Controller - start
+05/000078/U,STCL ELV T950 MK 1 UTC Semi VA Controller,537093/182773,726,05/000078/U
+Controller - end
+Site Details - start
+Site Number,05/000078/U
+Controller Type,STCL ELV T950 MK 1 UTC Semi VA Controller
+Grid Reference,537093/182773
+Address,A11 BOW ROAD BY BOW ROAD STATION
+Issue,22
+Control Group,726
+Control Subgroup,05/000078/U
+Site Link Number,05/384/U,05/385/
+SFM Version Number,0
+Site Details - end
+Stages - start
+0,ALL RED DUMMY (STREAM 0)
+1,MILE END ROAD E/B\t\t\t\t\t\t\t\t\t\t\t\t\t
+2,PED X MILE END ROAD E/B
+3,ALL RED DUMMY (STREAM 1)
+4,MILE END ROAD W/B\t\t\t\t\t\t\t\t\t\t\t\t\t (STREAM 1)
+5,PED X MILE END ROAD W/B (STREAM 1)
+Stages - end
+Streams - start
+0,05/000078/U,ALL RED DUMMY (STREAM 0),E,X
+0,05/000078/U,MILE END ROAD E/B\t\t\t\t\t\t\t\t\t\t\t\t\t,A,X
+0,05/000078/U,PED X MILE END ROAD E/B,B,X
+1,05/000079/,ALL RED DUMMY (STREAM 1),F,X
+1,05/000079/,MILE END ROAD W/B\t\t\t\t\t\t\t\t\t\t\t\t\t (STREAM 1),C,X
+1,05/000079/,PED X MILE END ROAD W/B (STREAM 1),D,X
+Streams - end
+Revert and Startup Stage - start
+0,05/000078/U,,,1
+1,05/000079/,,,4
+Revert and Startup Stage - end
+Phase Timings - start
+A,7,,,,T
+B,6,,,5,P
+C,7,,,,T
+D,6,,,5,P
+E,3,,,,D
+F,3,,,,D
+Phase Timings - end
+Intergreens - start
+A,B,5
+A,E,3
+B,A,10
+B,E,5
+C,D,5
+C,F,3
+D,C,10
+D,F,5
+E,A,2
+E,B,2
+F,C,2
+F,D,2
+Intergreens - end
+Phase Delays - start
+Phase Delays - end
+Detection - start
+Detection - end
+Phase type and conditions - start
+A,BOW  ROAD E/B,T,0,0,
+B,PED X BOW ROAD E/B,P,0,0,
+C,BOW  ROAD W/B,T,0,0,
+D,PED X BOW ROAD W/B,P,0,0,
+E,ALL RED DUMMY (STREAM 0),D,0,0,
+F,ALL RED DUMMY (STREAM 1),D,0,0,
+Phase type and conditions - end
+Bus Priority - start
+1,MILE END ROAD E/B\t\t\t\t\t\t\t\t\t\t\t\t\t,,,,,,,,,,,,
+2,PED X MILE END ROAD E/B,,,,,,,,,,,,
+3,ALL RED DUMMY (STREAM 1),,,,,,,,,,,,
+4,MILE END ROAD W/B\t\t\t\t\t\t\t\t\t\t\t\t\t (STREAM 1),,,,,,,,,,,,
+5,PED X MILE END ROAD W/B (STREAM 1),,,,,,,,,,,,
+Bus Priority - end
+Stage Movements Under UTC Control - start
+Stage Movements Under UTC Control - end
+Prohibited Stages - start
+Prohibited Stages - end
+Phase Stage Demand Dependency - start
+PED X MILE END ROAD E/B,B,X
+PED X MILE END ROAD W/B (STREAM 1),D,X
+Phase Stage Demand Dependency - end
+Linked Sites - start
+Link Number,Link To Ped Controller On Site,Stage or Phase,Trigger Point,Memory,Link Delay Time,Inhibit Release Period,Override Time
+Linked Sites - end
+Comments - start
+Version No,7
+Linking,LINE SHARE 05/384 & 385
+Comments,TFL SPEC ISSUE 7.
+Detection,PKDs - PUSH BUTTONS / TACTILES - PED COUNTDOWN - VEHICLE SCOOT
+Amendments,BPKD7 REPLACED.  23-SEP-2021 SIEMENS
+Comments - end

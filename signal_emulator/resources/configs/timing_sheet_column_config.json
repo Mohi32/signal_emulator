@@ -1,0 +1,118 @@
+{
+  "Controller": {
+    "1": "code",
+    "2": "controller_name",
+    "3": "grid_ref",
+    "4": "controller_number",
+    "5": "code_again"
+  },
+  "Site Details": {
+    "1": "field_name",
+    "2": "value"
+  },
+  "Timings": {
+    "1": "ped_aspect",
+    "2": "road_aspect",
+    "3": "period_change_key",
+    "4": "min_time",
+    "5": "max_time"
+  },
+  "Stages": {
+    "1": "stage_number",
+    "2": "stage_name"
+  },
+  "Streams": {
+    "1": "stream_number",
+    "2": "site_code",
+    "3": "stage_name",
+    "4": "phase_ref",
+    "5": "x"
+  },
+  "Revert and Startup Stage": {
+    "1": "stream_number",
+    "2": "site_code",
+    "3": "stage_number",
+    "4": "blank",
+    "5": "number"
+  },
+  "Phase Timings": {
+    "1": "phase_ref",
+    "2": "min_time",
+    "3": "unused",
+    "4": "unused",
+    "5": "unused",
+    "6": "phase_type"
+  },
+  "Intergreens": {
+    "1": "end_phase_key",
+    "2": "start_phase_key",
+    "3": "intergreen_time"
+  },
+  "Phase Delays": {
+    "1": "end_stage_key",
+    "2": "start_stage_key",
+    "3": "phase_ref",
+    "4": "delay_time"
+  },
+  "Detection": {
+    "1": "code1",
+    "2": "code2",
+    "3": "letter",
+    "4": "blank1"
+  },
+  "Phase type and conditions": {
+    "1": "phase_ref",
+    "2": "phase_name",
+    "3": "phase_type",
+    "4": "appearance_type",
+    "5": "termination_type",
+    "6": "associated_phase_ref"
+  },
+  "Bus Priority": {
+    "1": "stage_number",
+    "2": "stage_name",
+    "3": "blank1",
+    "4": "blank2",
+    "5": "blank3",
+    "6": "blank4",
+    "7": "blank5",
+    "8": "blank6",
+    "9": "blank7",
+    "10": "blank8",
+    "11": "blank9",
+    "12": "blank10",
+    "13": "blank11",
+    "14": "blank12"
+  },
+  "Stage Movements Under UTC Control": {
+    "1": "number",
+    "2": "utc_mode",
+    "3": "bool"
+  },
+  "Prohibited Stages": {
+    "1": "end_stage_key",
+    "2": "start_stage_key",
+    "3": "value"
+  },
+  "Phase Stage Demand Dependency": {
+    "1": "stage_name",
+    "2": "phase_ref",
+    "3": "stream_number"
+  },
+  "Linked Sites": {
+    "1": "link_number",
+    "2": "link_to_ped_controller_on_site",
+    "3": "stage_or_phase",
+    "4": "trigger_point",
+    "5": "memory",
+    "6": "link_delay",
+    "7": "inhibit_release_period",
+    "8": "override_time"
+  },
+  "Comments": {
+    "1": "field_name",
+    "2": "value"
+  }
+}
+
+

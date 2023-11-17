@@ -1,0 +1,13 @@
+{
+    "postgres_connection": {
+        "host": "localhost",
+        "database": "tfl_signal_timings",
+        "user": "postgres",
+        "password": "password",
+        "port": "5433",
+        "schema": "v1"
+    },
+    "load_from_postgres": true,
+    "output_directory_visum": "signal_emulator/output/VISUM",
+    "output_directory_linsig": "signal_emulator/output/LINSIG"
+}

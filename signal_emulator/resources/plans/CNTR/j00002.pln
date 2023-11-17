@@ -1,0 +1,415 @@
+J00/002 Plan 1 Cycle 120 Timeout 0
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+21/F5.11/5F
+22/F5F6,NTO.99/5F+
+38/F6.19/6
+61/F1.3/1
+83/F2.5/2
+98/F4.5/4
+110/F3,D1,DX.9/3
+% WAT AM **RUNS STAGE 9 NO RIGHT TURN**
+; 30-Nov-2016 12:01:09 Copied from Plan 2 by TMRS
+; 07-Dec-2016 08:16:09 Object compiled by TMRS
+; 09-Dec-2016 09:42:21 Object compiled by TMRS
+; 09-Dec-2016 09:45:18 Object compiled by TMRS
+; 15-Dec-2016 14:45:16 Object compiled by TMRS
+; 20-Sep-2017 09:54:30 Object compiled by TNSB
+; 15-Dec-2019 17:20:11 Object compiled by TRJW
+; 16-Dec-2019 08:42:58 Object compiled by TRJW
+; 16-Dec-2019 11:08:13 Object compiled by TRJW
+; 17-Dec-2019 13:34:48 Object compiled by TRJW
+; 25-Jul-2022 15:13:59 Object compiled by TMXS
+*
+J00/002 Plan 2 Cycle 120 Timeout 0
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+21/F5.11/5F
+22/F5F6,NTO.99/5F+
+38/F6.19/6
+60/F1.3/1
+73/F2.5/2
+94/F4.5/4
+106/F3,D1,DX.9/3
+% WAT OP **RUNS STAGE 9 NO RIGHT TURN**
+; 16-Sep-2016 10:11:27 Object compiled by TMRS
+; 21-Sep-2016 14:48:19 Object compiled by TMRS
+; 21-Sep-2016 16:22:13 Object compiled by TMRS
+; 11-Oct-2016 13:18:53 Object compiled by TMRS
+; 30-Nov-2016 12:51:24 Object compiled by TMRS
+; 07-Dec-2016 08:16:34 Object compiled by TMRS
+; 09-Dec-2016 09:42:38 Object compiled by TMRS
+; 15-Dec-2016 14:47:01 Object compiled by TMRS
+; 20-Sep-2017 09:54:23 Object compiled by TNSB
+; 15-Dec-2019 17:20:50 Object compiled by TRJW
+; 16-Dec-2019 08:42:38 Object compiled by TRJW
+; 16-Dec-2019 10:57:54 Object compiled by TRJW
+; 17-Dec-2019 13:35:05 Object compiled by TRJW
+; 25-Jul-2022 15:15:03 Object compiled by TMXS
+*
+J00/002 Plan 3 Cycle 120 Timeout 0
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+20/F5.11/5F
+21/F5F6,NTO.99/5F+
+38/F6.19/6
+61/F1.3/1
+83/F2.5/2
+98/F4.5/4
+110/F3,D1,DX.9/3
+% WAT PM **RUNS STAGE 9 NO RIGHT TURN**
+; 30-Nov-2016 12:01:41 Copied from Plan 2 by TMRS
+; 07-Dec-2016 08:16:54 Object compiled by TMRS
+; 09-Dec-2016 09:42:50 Object compiled by TMRS
+; 15-Dec-2016 14:49:43 Object compiled by TMRS
+; 20-Sep-2017 09:54:13 Object compiled by TNSB
+; 15-Dec-2019 17:22:00 Object compiled by TRJW
+; 16-Dec-2019 08:42:19 Object compiled by TRJW
+; 16-Dec-2019 11:08:27 Object compiled by TRJW
+; 17-Dec-2019 13:34:50 Object compiled by TRJW
+; 25-Jul-2022 15:14:52 Object compiled by TMXS
+*
+J00/002 Plan 5 Cycle 112 Timeout 0
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+06/F3,d2,DX.9/3
+30/F5,d2.11/5F
+31/F5F6,d2,NTO.99/5F+
+48/F6,d2.19/6
+68/F1,d2.3/1
+77/F2,d2.5/2
+98/F4,d2.5/4
+#06/F3,DX.9/3
+#30/F5.11/5F
+#31/F5F6,NTO.99/5F+
+#48/F6.19/6
+#68/F1.3/1
+#77/F2.5/2
+#98/F4.5/4
+% WAT 112 **RUNS STAGE 3 RIGHT TURN ALLOWED**D2 bit on all stages only on plan 5
+; 06-Dec-2016 09:33:58 Copied from Plan 8 by TMRS
+; 07-Dec-2016 08:17:16 Object compiled by TMRS
+; 09-Dec-2016 09:43:06 Object compiled by TMRS
+; 09-Dec-2016 09:45:28 Object compiled by TMRS
+; 15-Dec-2016 14:49:18 Object compiled by TMRS
+; 20-Sep-2017 09:54:05 Object compiled by TNSB
+; 21-Oct-2018 21:16:02 Object compiled by TSPC
+; 22-Oct-2018 17:20:05 Object compiled by TSPC
+; 15-Dec-2019 17:23:49 Object compiled by TRJW
+; 17-Dec-2019 13:35:50 Object compiled by TRJW
+; 18-Mar-2021 16:22:42 Object compiled by TJRM
+; 25-Jul-2022 14:34:22 Object compiled by TMXS
+; 25-Jul-2022 15:14:42 Object compiled by TMXS
+; 25-Jul-2022 15:25:41 Object compiled by TMXS
+*
+J00/002 Plan 6 Cycle 112 Timeout 0
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+21/F5.11/5F
+22/F5F6,NTO.99/5F+
+38/F6.19/6
+60/F1.3/1
+73/F2.5/2
+94/F4.5/4
+106/F3,D1,DX.9/3
+% WAT WEEKEND **RUNS STAGE 9 NO RIGHT TURN**
+; 25-Mar-2017 11:18:45 Copied from Plan 8 by TMRS
+; 20-Sep-2017 09:53:56 Object compiled by TNSB
+; 08-Aug-2019 13:02:43 Object compiled by TSPC
+; 15-Dec-2019 17:14:00 Object compiled by TRJW
+; 16-Dec-2019 08:46:44 Object compiled by TRJW
+; 16-Dec-2019 11:08:41 Object compiled by TRJW
+; 17-Dec-2019 13:35:16 Object compiled by TRJW
+; 25-Jul-2022 15:14:31 Object compiled by TMXS
+*
+J00/002 Plan 8 Cycle 112 Timeout 0
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+06/F3,D1,DX.9/3
+31/F5.11/5F
+32/F5F6,NTO.99/5F+
+48/F6.19/6
+68/F1.3/1
+77/F2.5/2
+98/F4.5/4
+% WAT 112 **RUNS STAGE 9 NO RIGHT TURN**
+; 05-Dec-2016 13:30:26 Copied from Plan 2 by TMRS
+; 05-Dec-2016 13:35:43 Object compiled by TMRS
+; 07-Dec-2016 08:17:37 Object compiled by TMRS
+; 09-Dec-2016 09:43:18 Object compiled by TMRS
+; 09-Dec-2016 09:45:13 Object compiled by TMRS
+; 15-Dec-2016 14:47:16 Object compiled by TMRS
+; 20-Sep-2017 09:53:46 Object compiled by TNSB
+; 21-Oct-2018 02:03:56 Object compiled by TSPC
+; 07-Dec-2018 18:09:57 Object compiled by TSPC
+; 15-Dec-2019 17:24:42 Object compiled by TRJW
+; 16-Dec-2019 08:41:53 Object compiled by TRJW
+; 16-Dec-2019 11:08:59 Object compiled by TRJW
+; 17-Dec-2019 13:34:52 Object compiled by TRJW
+; 25-Jul-2022 15:14:20 Object compiled by TMXS
+*
+J00/002 Plan 21 Cycle 120 Timeout 60
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+12/F5.11/
+13/F5F6,NTO.99/
+30/F6.19/
+49/F1.3/
+76/F2.5/
+102/F4.5/
+114/F3,D1,DX.9/
+% NB ASSIST R315 **RUNS STAGE 9 NO RIGHT TURN**
+; 19-Oct-2016 17:07:41 Copied from Plan 25 by TMRS
+; 19-Oct-2016 17:08:26 Object compiled by TMRS
+; 24-Jan-2017 15:39:24 Object compiled by TMRS
+; 29-Jul-2017 12:55:55 Object compiled by TVZV
+; 20-Sep-2017 09:54:55 Object compiled by TNSB
+; 15-Dec-2019 17:57:44 Object compiled by TRJW
+; 16-Dec-2019 08:45:38 Object compiled by TRJW
+; 16-Dec-2019 11:10:06 Object compiled by TRJW
+; 17-Dec-2019 13:54:45 Object compiled by TRJW
+; 25-Jul-2022 15:17:09 Object compiled by TMXS
+*
+J00/002 Plan 22 Cycle 120 Timeout 30
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+20/F5.11/
+21/F5F6,NTO.99/
+38/F6.19/
+57/F1.3/
+76/F2.5/
+104/F4.5/
+116/F3,D1,DX.9/
+% HEAVY NB ASSIST R315 **RUNS STAGE 9 NO RIGHT TURN**
+; 19-Oct-2016 17:09:01 Copied from Plan 27 by TMRS
+; 24-Jan-2017 15:41:09 Object compiled by TMRS
+; 20-Sep-2017 09:56:10 Object compiled by TNSB
+; 15-Dec-2019 17:58:14 Object compiled by TRJW
+; 16-Dec-2019 08:45:17 Object compiled by TRJW
+; 16-Dec-2019 11:10:18 Object compiled by TRJW
+; 17-Dec-2019 13:54:35 Object compiled by TRJW
+; 25-Jul-2022 15:16:58 Object compiled by TMXS
+*
+J00/002 Plan 32 Cycle 120 Timeout 0
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+#001/F1.2/
+#020/F2.5/
+#040/F4.7/
+#060/F3,DX.9/
+#080/F5,DX.11/
+#100/F6.18/
+06/F3,d2,DX.9/
+30/F5,d2,DX.11/
+48/F6,d2.19/
+68/F1,d2.3/
+77/F2,d2.5/
+98/F4,d2.5/
+% MINS CHECK
+; Object compiled by SJMW. On  5-NOV-2002 at 15:59 ( Created )
+; Object compiled by SJAP. On 19-APR-2004 at 11:21 ( Created )
+; Object compiled by TRRR. On 20-JUN-2005 at 09:28
+; Object compiled by TRRR. On 20-JUN-2005 at 10:02
+; Object compiled by TNSB. On  5-FEB-2006 at 08:43
+; Object compiled by SDIM. On 21-AUG-2006 at 14:37 ( Created )
+; Object compiled by TNSB. On 23-APR-2008 at 11:57 ( Created )
+; Object compiled by TNSB. On  5-MAY-2008 at 06:59
+; Object compiled by TJGB. On 25-SEP-2008 at 09:37
+; Object compiled by TNSB. On 20-NOV-2008 at 08:36
+; 18-Jan-2012 05:51:11 Object compiled by TRJW
+; 22-Jan-2016 06:11:36 Object compiled by TMXS
+; 01-Apr-2016 04:31:38 Object compiled by TRJW
+; 09-May-2016 09:04:27 Object compiled by TNSB
+; 17-Jun-2016 11:16:21 Object compiled by TMRS
+; 05-Jul-2017 16:14:31 Object compiled by TRJW
+; 20-Sep-2017 09:57:37 Object compiled by TNSB
+; 15-Dec-2019 16:59:26 Object compiled by TNSB
+; 25-Jul-2022 15:21:14 Object compiled by TMXS
+*
+J00/002 Plan 61 Cycle 120 Timeout 60
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+04/F3,D1,DX.9/
+37/F5.11/
+38/F5F6,NTO.99/
+55/F6.19/
+74/F1.3/
+95/F2.5/
+112/F4.5/
+% ASSIST LUDGATE & FLEET @ 00/002 **RUNS STAGE 9 NO RIGHT TURN**
+; 19-Oct-2016 17:02:26 Copied from Plan 26 by TMRS
+; 24-Jan-2017 15:49:26 Object compiled by TMRS
+; 20-Sep-2017 09:55:47 Object compiled by TNSB
+; 15-Dec-2019 17:59:50 Object compiled by TRJW
+; 16-Dec-2019 08:44:59 Object compiled by TRJW
+; 16-Dec-2019 11:10:31 Object compiled by TRJW
+; 17-Dec-2019 13:57:15 Object compiled by TRJW
+; 25-Jul-2022 15:16:27 Object compiled by TMXS
+*
+J00/002 Plan 62 Cycle 120 Timeout 30
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+37/F5.11/
+38/F5F6,NTO.99/
+55/F6.19/
+74/F1.3/
+91/F2.5/
+107/F4.5/
+119/F3,D1,DX.9/
+% HVY ASSIST LUDGATE & FLEET @ 00/002 **RUNS STAGE 9 NO RIGHT TURN**
+; 19-Oct-2016 17:00:48 Copied from Plan 23 by TMRS
+; 24-Jan-2017 15:47:28 Object compiled by TMRS
+; 20-Sep-2017 09:55:40 Object compiled by TNSB
+; 15-Dec-2019 18:00:08 Object compiled by TRJW
+; 16-Dec-2019 08:44:40 Object compiled by TRJW
+; 16-Dec-2019 11:10:44 Object compiled by TRJW
+; 17-Dec-2019 13:57:41 Object compiled by TRJW
+; 25-Jul-2022 15:16:17 Object compiled by TMXS
+*
+J00/002 Plan 63 Cycle 120 Timeout 60
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+08/F3,D1,DX.9/
+37/F5.11/
+38/F5F6,NTO.99/
+55/F6.19/
+74/F1.3/
+96/F2.5/
+109/F4.5/
+% ASSIST SB RT @ 00/002 **RUNS STAGE 9 NO RIGHT TURN**
+; 19-Oct-2016 16:58:13 Copied from Plan 24 by TMRS
+; 24-Jan-2017 15:34:49 Object compiled by TMRS
+; 20-Sep-2017 09:55:32 Object compiled by TNSB
+; 15-Dec-2019 18:00:37 Object compiled by TRJW
+; 16-Dec-2019 08:44:23 Object compiled by TRJW
+; 16-Dec-2019 11:10:57 Object compiled by TRJW
+; 17-Dec-2019 13:56:53 Object compiled by TRJW
+; 25-Jul-2022 15:16:09 Object compiled by TMXS
+*
+J00/002 Plan 64 Cycle 120 Timeout 30
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+20/F5.11/
+21/F5F6,NTO.99/
+38/F6.19/
+57/F1.3/
+66/F2.5/
+100/F4.5/
+112/F3,D1,DX.9/
+% ASSIST NB LT @ 00/002 (RED CYC GRN) **RUNS STAGE 9 NO RIGHT TURN**
+; 19-Oct-2016 16:54:15 Copied from Plan 28 by TMRS
+; 19-Oct-2016 16:57:43 Object compiled by TMRS
+; 24-Jan-2017 15:53:28 Object compiled by TMRS
+; 20-Sep-2017 09:55:26 Object compiled by TNSB
+; 15-Dec-2019 18:01:02 Object compiled by TRJW
+; 16-Dec-2019 08:44:06 Object compiled by TRJW
+; 16-Dec-2019 11:11:09 Object compiled by TRJW
+; 17-Dec-2019 13:58:55 Object compiled by TRJW
+; 25-Jul-2022 15:16:01 Object compiled by TMXS
+*
+J00/002 Plan 65 Cycle 120 Timeout 60
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+04/F3,DX.9/
+29/F5.11/
+30/F5F6,NTO.99/
+47/F6.19/
+75/F7.5/
+92/F4.5/
+% SPLIT PHASE NORTH & SOUTH MOVMNTS @ 00/002 - USE WITH CAUTION e.g. S/B lne clsre
+; 19-Oct-2016 16:45:27 Copied from Plan 22 by TMRS
+; 17-May-2017 16:40:29 Object compiled by TMRS
+; 26-Jun-2017 15:02:12 Object compiled by TMRS
+; 20-Sep-2017 09:55:18 Object compiled by TNSB
+; 15-Dec-2019 18:02:47 Object compiled by TRJW
+; 25-Jul-2022 15:15:51 Object compiled by TMXS
+*
+J00/002 Plan 66 Cycle 120 Timeout 0
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+20/F5.11/
+21/F4F5,NTO.99/
+38/F8.19/
+64/F2.7/
+100/F4.5/
+112/F3,DX.9/
+% SPLIT PHASE CYCLE LANE & TRAFFIC @ 00/002 - USE WITH CAUTION - ASSIST N/B
+; 19-Oct-2016 16:39:13 Copied from Plan 29 by TMRS
+; 19-Oct-2016 16:40:19 Object compiled by TMRS
+; 07-Dec-2016 08:23:36 Object compiled by TMRS
+; 24-Jan-2017 15:51:35 Object compiled by TMRS
+; 26-Jun-2017 15:02:53 Object compiled by TMRS
+; 01-Sep-2017 10:05:59 Object compiled by TMRS
+; 20-Sep-2017 09:55:08 Object compiled by TNSB
+; 21-Dec-2017 14:21:04 Object compiled by TMRS
+; 28-Dec-2017 12:23:17 Object compiled by TTJT
+; 28-Dec-2017 14:43:20 Object compiled by TTJT
+; 15-Dec-2019 18:02:37 Object compiled by TRJW
+; 25-Jul-2022 15:15:43 Object compiled by TMXS
+*
+J00/002 Plan 68 Cycle 112 Timeout 60
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+20/F5.11/
+21/F4F5,NTO.99/
+38/F8.19/
+63/F2.7/
+94/F4.5/
+106/F3,DX.9/
+% SPLIT PHASE CYCLE LANE & TRAFFIC @ 00/002 - USE WITH CAUTION - OVERNIGHT
+; 01-Sep-2017 10:06:38 Object compiled by TMRS
+; 20-Sep-2017 09:54:43 Object compiled by TNSB
+; 21-Dec-2017 14:22:20 Object compiled by TMRS
+; 15-Dec-2019 18:03:41 Object compiled by TRJW
+; 25-Jul-2022 15:15:34 Object compiled by TMXS
+*
+J00/002 Plan 69 Cycle 120 Timeout 60
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+20/F5.11/
+21/F4F5,NTO.99/
+38/F8.19/
+68/F2.7/
+100/F4.5/
+112/F3,DX.9/
+% SPLIT PHASE CYCLE LANE & TRAFFIC @ 00/002 - USE WITH CAUTION - ASSIST CYCLES
+; 20-Oct-2017 08:54:09 Object compiled by TFOS
+; 20-Oct-2017 10:54:19 Object compiled by TMRS
+; 24-Nov-2017 14:46:30 Object compiled by TMRS
+; 24-Nov-2017 15:15:08 Object compiled by TMRS
+; 21-Dec-2017 14:37:06 Object compiled by TMRS
+; 15-Dec-2019 18:04:05 Object compiled by TRJW
+; 25-Jul-2022 15:15:23 Object compiled by TMXS
+*
+J00/002 Plan 70 Cycle 120 Timeout 60
+#****Do not use D2 bit on any plan except SCOOT plan 5, as this mimics a special facility SX1,
+#****which is currently broken, and temporarily moved to bit 12, and replaced by a D2 bit as a
+# ***interim solution.*****
+20/F5.11/
+21/F4F5,NTO.99/
+38/F8.19/
+64/F2.7/
+94/F4.5/
+106/F3,DX.9/
+% SPLIT PHASE CYCLE LANE & TRAFFIC @ 00/002 - USE WITH CAUTION - ASSIST EAST-WEST
+; 21-Dec-2017 14:23:37 Object compiled by TMRS
+; 15-Dec-2019 18:04:26 Object compiled by TRJW
+; 25-Jul-2022 15:15:13 Object compiled by TMXS
+*

@@ -1,0 +1,223 @@
+Controller - start
+00/000007/U,STCL T800 MK 1 UTC Cntr  Integral Facilities,531798/180950,615,00/000007/U
+Controller - end
+Site Details - start
+Site Number,00/000007/U
+Controller Type,STCL T800 MK 1 UTC Cntr  Integral Facilities
+Grid Reference,531798/180950
+Address,QUEEN VICTORIA STREET - PUDDLE DOCK
+Issue,32
+Control Group,615
+Control Subgroup,00/000007/U
+Site Link Number,
+SFM Version Number,0
+Site Details - end
+Stages - start
+0,00
+1,01
+2,02
+3,03
+4,04
+5,05
+Stages - end
+Streams - start
+0,00/000007/U,00,J,X
+0,00/000007/U,01,A,X
+0,00/000007/U,01,F,X
+0,00/000007/U,01,B,X
+0,00/000007/U,02,B,X
+0,00/000007/U,02,F,X
+0,00/000007/U,02,C,X
+0,00/000007/U,03,D,X
+0,00/000007/U,03,G,X
+0,00/000007/U,03,E,X
+0,00/000007/U,04,F,X
+0,00/000007/U,04,G,X
+0,00/000007/U,04,H,X
+0,00/000007/U,04,I,X
+0,00/000007/U,05,A,X
+0,00/000007/U,05,K,X
+Streams - end
+Revert and Startup Stage - start
+0,00/000007/U,1,,1
+Revert and Startup Stage - end
+Phase Timings - start
+A,7,,,,T
+B,7,,,,T
+C,4,,,,F
+D,7,,,,T
+E,7,,,,T
+F,6,,,4,P
+G,6,,,6,P
+H,6,,,7,P
+I,6,,,7,P
+J,3,,,,D
+K,1,,,,D
+Phase Timings - end
+Intergreens - start
+A,C,6
+A,D,9
+A,E,7
+A,G,9
+A,H,6
+A,I,8
+A,J,3
+B,E,5
+B,G,6
+B,H,9
+B,I,10
+B,J,3
+B,K,3
+C,A,7
+C,E,6
+C,G,6
+C,I,10
+C,J,3
+C,K,5
+D,A,5
+D,F,6
+D,J,3
+D,K,5
+E,A,5
+E,B,6
+E,C,6
+E,H,10
+E,I,7
+E,J,3
+E,K,5
+F,D,9
+F,J,4
+F,K,4
+G,A,14
+G,B,14
+G,C,14
+G,J,6
+G,K,14
+H,A,15
+H,B,15
+H,E,15
+H,J,7
+H,K,15
+I,A,16
+I,B,16
+I,C,16
+I,E,16
+I,J,7
+I,K,16
+J,A,2
+J,B,2
+J,C,2
+J,D,2
+J,E,2
+J,F,2
+J,G,2
+J,H,2
+J,I,2
+J,K,2
+K,B,2
+K,C,6
+K,D,8
+K,E,7
+K,F,2
+K,G,9
+K,H,6
+K,I,8
+K,J,3
+Intergreens - end
+Phase Delays - start
+1,3,B,3
+1,4,A,1
+2,3,B,3
+2,5,F,3
+3,1,E,8
+3,5,D,9
+3,5,E,9
+3,2,D,8
+3,2,E,8
+3,4,D,4
+3,1,D,9
+4,2,G,1
+4,3,H,1
+4,5,G,2
+4,5,F,12
+4,5,H,1
+4,1,F,12
+4,1,G,2
+4,1,H,1
+4,2,H,1
+Phase Delays - end
+Detection - start
+CIRD13,,,
+DIRD9,,,
+DMVD10,,,
+EIRD6,,,
+EMVD8,,,
+PB P1,,,
+PB P10,,,
+PB P11,,,
+PB P12,,,
+PB P13,,,
+PB P14,,,
+PB P15,,,
+PB P2,,,
+PB P3,,,
+PB P4,,,
+PB P5,,,
+PB P6,,,
+PB P8,,,
+PB P9,,,
+SD0,,,
+SD1,,,
+SD2,,,
+SD3,,,
+SD4,,,
+SD5,,,
+Detection - end
+Phase type and conditions - start
+A,QUEEN VICTORIA STREET W/B,T,0,0,
+B,QUEEN VICTORIA STREET E/B,T,0,0,
+C,QUEEN VICTORIA ST E/B RT,F,0,2,B
+D,PUDDLE DOCK W/BND,T,0,0,
+E,PUDDLE DOCK E/BND,T,0,0,
+F,PEDS X PUDDLE DOCK W/SIDE,P,0,0,
+G,PED X QUEEN VICTORIA ST W/S,P,0,0,
+H,PED X Q.V.S EAST,P.DOCK EAST,P,0,0,
+I,PED X PUDDLE DOCK E/SIDE,P,0,0,
+J,ALL RED DUMMY PHASE J,D,0,0,
+K,UTC DUMMY PHASE K,D,0,0,
+Phase type and conditions - end
+Bus Priority - start
+1,01,,,,,,,,,,,,
+2,02,,,,,,,,,,,,
+3,03,,,,,,,,,,,,
+4,04,,,,,,,,,,,,
+5,05,,,,,,,,,,,,
+Bus Priority - end
+Stage Movements Under UTC Control - start
+0,CLF (Non Base Time),Y
+0,UTC,Y
+0,Manual,Y
+0,Fixed Time,Y
+Stage Movements Under UTC Control - end
+Prohibited Stages - start
+1,5,0
+2,1,0
+Prohibited Stages - end
+Phase Stage Demand Dependency - start
+02,C,X
+03,D,X
+03,E,X
+04,G,X
+04,H,X
+04,I,X
+Phase Stage Demand Dependency - end
+Linked Sites - start
+Link Number,Link To Ped Controller On Site,Stage or Phase,Trigger Point,Memory,Link Delay Time,Inhibit Release Period,Override Time
+Linked Sites - end
+Comments - start
+Version No,17
+Linking,NONE
+Comments,TFL SPEC ISSUE 17.
+Detection,PRESENCE LOOP - SMVDs - IRDs - PUSH BUTTONS / TACTILES - VEHICLE SCOOT
+Amendments,iBUS EQUIPMENT REMOVED AS NO LONGER REQUIRED ON SITE. 24-APR-2023 YUNEX
+Comments - end
