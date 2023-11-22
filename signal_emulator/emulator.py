@@ -82,9 +82,10 @@ class SignalEmulator:
         self.plan_timetables = PlanTimetables(
             signal_emulator=self, pja_directory_path=config.get("PJA_directory", None)
         )
+        self.phase_to_saturn_turns = PhaseToSaturnTurns(
+            signal_emulator=self, saturn_lookup_file=config.get("saturn_lookup_file", None)
+        )        
         self.linsig = Linsig(self, config.get("output_directory_linsig", None))
-        self.phase_to_saturn_turns = PhaseToSaturnTurns([], self)
-
         if config.get("timing_sheet_directory"):
             self.load_timing_sheets_from_directory(config["timing_sheet_directory"])
         if config.get("plan_directory"):

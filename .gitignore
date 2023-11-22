@@ -3,10 +3,4 @@
 *.pyc
 *.lsg
 *.net
-signal_emulator/resources/configs/signal_emulator_from_pg_config.json
-signal_emulator/resources/configs/signal_emulator_from_pg_config.json
-signal_emulator/resources/configs/signal_emulator_from_files_config.json
 .vscode/launch.json
-signal_emulator/resources/configs/signal_emulator_from_files_config.json
-signal_emulator/resources/configs/signal_emulator_from_pg_config.json
-signal_emulator/resources/configs/signal_emulator_from_files_config.json
