@@ -146,6 +146,8 @@ def clean_site_number(site_number) -> str:
     parts = site_number.split("/")
     if parts[0].isnumeric():
         parts[0] = f"J{parts[0]}"
+    elif parts[0][0].isalpha():
+        parts[0] = f"J{parts[0][1:]}"
     return f"{parts[0]}/{parts[1][-3:]}"
 
 

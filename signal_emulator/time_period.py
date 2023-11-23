@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from datetime import timedelta
 from typing import Optional
 
+import numpy as np
+
 from signal_emulator.controller import BaseCollection
 from signal_emulator.utilities.utility_functions import time_str_to_timedelta
 
@@ -85,10 +87,23 @@ class TimePeriods(BaseCollection):
         :return: list of Period objects
         """
         periods_list = []
-        for period in self.data:
+        for period in self:
             if period.start_time <= target_timedelta <= period.end_time:
                 periods_list.append(period)
         return periods_list
+
+    def get_period_id_for_timedelta(self, target_timedelta: timedelta):
+        """
+        Function to return a list of Periods that contain target_timedelta
+        :param target_timedelta: timedelta
+        :return: list of Period objects
+        """
+        for period in self:
+            if period.start_time <= target_timedelta <= period.end_time:
+                return period.name
+        return np.NAN
+
+
 
 
 if __name__ == "__main__":

@@ -5,12 +5,17 @@
         "user": "postgres",
         "password": "password",
         "port": "5433",
-        "schema": "v1"
+        "schema": "v1_10_sites"
     },
     "load_from_postgres": false,
     "M37": {
         "m37_path": "signal_emulator/resources/M37/averaged/m37_averaged_10_sites.csv",
         "source_type": "averaged",
+        "export_to_csv_path": false
+    },
+    "M16": {
+        "m16_path": "signal_emulator/resources/M16/",
+        "source_type": "raw",
         "export_to_csv_path": false
     },
     "timing_sheet_directory": "signal_emulator/resources/timing_sheets",

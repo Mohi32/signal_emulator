@@ -19,6 +19,7 @@ from signal_emulator.enums import Cell
 from signal_emulator.file_parsers.plan_parser import PlanParser
 from signal_emulator.file_parsers.timing_sheet_parser import TimingSheetParser
 from signal_emulator.linsig import Linsig
+from signal_emulator.m16_average import M16Averages
 from signal_emulator.m37_average import M37Averages
 from signal_emulator.plan import Plans, PlanSequenceItems
 from signal_emulator.plan_timetable import PlanTimetables
@@ -52,11 +53,7 @@ class SignalEmulator:
             ),
             self,
         )
-        self.m37s = M37Averages(
-            periods=self.time_periods,
-            **config.get("M37", {"source_type": None, "m37_path": None}),
-            signal_emulator=self,
-        )
+
         self.controllers = Controllers([], self)
         self.streams = Streams([], self)
         self.stages = Stages([], self)
@@ -67,8 +64,28 @@ class SignalEmulator:
         self.phase_delays = PhaseDelays([], self)
         self.modified_phase_delays = ModifiedPhaseDelays([], self)
         self.prohibited_stage_moves = ProhibitedStageMoves([], self)
+
+        if config.get("timing_sheet_directory"):
+            self.load_timing_sheets_from_directory(config["timing_sheet_directory"])
         self.plans = Plans([], self)
         self.plan_sequence_items = PlanSequenceItems([], self)
+        if config.get("plan_directory"):
+            self.load_plans_from_cell_directories(config["plan_directory"])
+        self.plan_timetables = PlanTimetables(
+            signal_emulator=self, pja_directory_path=config.get("PJA_directory", None)
+        )
+        # self.m16s = M16Averages(
+        #     periods=self.time_periods,
+        #     **config.get("M16", {"source_type": None, "m16_path": None}),
+        #     signal_emulator=self,
+        #
+        # )
+        self.m37s = M37Averages(
+            periods=self.time_periods,
+            **config.get("M37", {"source_type": None, "m37_path": None}),
+            signal_emulator=self,
+        )
+
         self.signal_plans = SignalPlans([], self)
         self.signal_plan_streams = SignalPlanStreams([], self)
         self.signal_plan_stages = SignalPlanStages([], self)
@@ -79,16 +96,8 @@ class SignalEmulator:
         self.visum_signal_controllers = VisumSignalControllers(
             [], self, config.get("output_directory_visum", None)
         )
-        self.plan_timetables = PlanTimetables(
-            signal_emulator=self, pja_directory_path=config.get("PJA_directory", None)
-        )
         self.linsig = Linsig(self, config.get("output_directory_linsig", None))
         self.phase_to_saturn_turns = PhaseToSaturnTurns([], self)
-
-        if config.get("timing_sheet_directory"):
-            self.load_timing_sheets_from_directory(config["timing_sheet_directory"])
-        if config.get("plan_directory"):
-            self.load_plans_from_cell_directories(config["plan_directory"])
 
     @staticmethod
     def setup_logger():
@@ -243,9 +252,10 @@ class SignalEmulator:
             schema = self.postgres_connection.schema
             self.postgres_connection.schema = schema
         self.logger.info(f"Exporting signal data to postgres: {self.postgres_connection}")
+        self.postgres_connection.create_schema(schema)
         for collection in self.base_collection_iterator():
             if collection.WRITE_TO_DATABASE:
-                collection.write_to_database()
+                collection.write_to_database(schema)
 
     def generate_phase_timings(self, remove_existing=True):
         if remove_existing:

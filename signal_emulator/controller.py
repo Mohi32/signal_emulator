@@ -114,11 +114,11 @@ class BaseCollection:
         df = pd.DataFrame(item_data)
         return df
 
-    def write_to_database(self):
+    def write_to_database(self, schema=None):
         df = self.to_dataframe()
         dtypes = self.get_dtypes_from_fields()
         self.signal_emulator.postgres_connection.write_df_to_table(
-            df, self.TABLE_NAME, dtypes=dtypes
+            df, self.TABLE_NAME, schema, dtypes=dtypes
         )
         self.signal_emulator.logger.info(f"Collection: {self.TABLE_NAME} written to postgres")
 
@@ -704,8 +704,11 @@ class Streams(BaseCollection):
         self.data[stream.get_key()] = stream
         self.data_by_site_id[stream.get_site_key()] = stream
 
-    def get_by_site_id(self, site_number):
-        return self.data_by_site_id[site_number]
+    def get_by_site_id(self, site_number, strict=True):
+        if strict:
+            return self.data_by_site_id[site_number]
+        else:
+            return self.data.get(site_number, None)
 
     def site_id_exists(self, site_number):
         return site_number in self.data_by_site_id

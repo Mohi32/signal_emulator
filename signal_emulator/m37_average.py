@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 import pandas as pd
 
+from signal_emulator.enums import M37StageToStageNumber
 from signal_emulator.controller import BaseCollection
 from signal_emulator.time_period import TimePeriods
 
@@ -44,12 +45,12 @@ class M37Averages(BaseCollection):
     Class to represent a collection of M37 objects
     """
 
-    # permitted SCOOT cycle times
-    CYCLE_TIMES = [32, 36, 40, 44, 48, 52, 56, 60, 64, 72, 80, 88, 96, 104, 112, 120]
-    STAGE_IDS = ["G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "PG", "GX"]
     TABLE_NAME = "m37_averages"
     ITEM_CLASS = M37Average
     WRITE_TO_DATABASE = True
+    COLUMN_DTYPES = {"FinalGreenTime": int, "FinalInterstageTime": int, "ScootCycleTime": int}
+    # permitted SCOOT cycle times
+    CYCLE_TIMES = [32, 36, 40, 44, 48, 52, 56, 60, 64, 72, 80, 88, 96, 104, 112, 120]
 
     def __init__(
         self,
@@ -77,7 +78,7 @@ class M37Averages(BaseCollection):
         elif source_type == "averaged":
             self.m37_df = pd.read_csv(
                 m37_path,
-                dtype={"FinalGreenTime": int, "FinalInterstageTime": int, "ScootCycleTime": int},
+                dtype=self.COLUMN_DTYPES,
             )
         self.data = {}
         for index, row in self.m37_df.iterrows():
@@ -94,9 +95,9 @@ class M37Averages(BaseCollection):
             self.data[m37.get_key()] = m37
 
     def get_cycle_time_by_site_id_and_period_id(self, site_id, period_id):
-        for stage_id in self.STAGE_IDS:
-            if self.key_exists((site_id, stage_id, period_id)):
-                return self.get_by_key((site_id, stage_id, period_id)).cycle_time
+        for stage_id in M37StageToStageNumber:
+            if self.key_exists((site_id, stage_id.name, period_id)):
+                return self.get_by_key((site_id, stage_id.name, period_id)).cycle_time
         else:
             return None
 
@@ -230,6 +231,7 @@ class M37Averages(BaseCollection):
         :param directory_path: path to directory
         :return: DataFrame of M37 data
         """
+
         m37_all_df = pd.DataFrame()
         for filename in os.listdir(directory_path):
             file_path = os.path.join(directory_path, filename)
