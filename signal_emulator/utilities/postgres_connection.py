@@ -1,19 +1,26 @@
 import psycopg2
 import pandas as pd
 from sqlalchemy import create_engine
+from psycopg2 import OperationalError
 
 
 class PostgresConnection:
-    def __init__(self, host, database, user, password, port, schema=None):
+    def __init__(self, host, database, user, port, schema=None):
         self.host = host
         self.database = database
         self.user = user
-        self.password = password
         self.port = port
         self.schema = schema
-        self.conn = psycopg2.connect(
-            host=host, database=database, user=user, password=password, port=port
-        )
+        try:
+            self.conn = psycopg2.connect(
+                host=host, port=port, database=database, user=user
+            )
+        except OperationalError as e:
+            raise OperationalError(
+                f"{e}"
+                f"Windows users: Postgres credentials pgpass should be stored in "
+                "%APPDATA%/Roaming/postgresql/pgpass.conf"
+            )
         self.engine = create_engine(self.connection_uri)
 
     def __repr__(self):
@@ -21,7 +28,7 @@ class PostgresConnection:
 
     @property
     def connection_uri(self):
-        return f"postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}"
+        return f"postgresql+psycopg2://{self.user}@{self.host}:{self.port}/{self.database}"
 
     def read_table_from_df(self, schema, table):
         return pd.read_sql_query(f"SELECT * FROM {schema}.{table}", self.engine)
