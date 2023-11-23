@@ -13,13 +13,13 @@ class PostgresConnection:
         self.schema = schema
         try:
             self.conn = psycopg2.connect(
-                host=host, database=database, user=user, port=port
+                host=host, port=port, database=database, user=user
             )
         except OperationalError as e:
             raise OperationalError(
                 f"{e}"
                 f"Windows users: Postgres credentials pgpass should be stored in "
-                "$USERPROFILE/AppData/Roaming/postgresql/pgpass.conf"
+                "%APPDATA%/Roaming/postgresql/pgpass.conf"
             )
         self.engine = create_engine(self.connection_uri)
 
