@@ -3,8 +3,7 @@
         "host": "localhost",
         "database": "tfl_signal_timings",
         "user": "postgres",
-        "password": "password",
-        "port": "5432",
+        "port": 5432,
         "schema": "v1"
     },
     "load_from_postgres": true,
