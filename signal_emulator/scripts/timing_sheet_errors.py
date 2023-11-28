@@ -1,11 +1,14 @@
 import os
-from signal_emulator.controller import Controller
 from collections import Counter
+
+from signal_emulator.controller import Controller
+from signal_emulator.emulator import SignalEmulator
+from signal_emulator.utilities.utility_functions import load_json_to_dict
 
 
 class TimingSheetErrors:
-    def __init__(self):
-        pass
+    def __init__(self, config):
+        self.signal_emulator = SignalEmulator(config=config)
 
     def timing_sheet_iterator(self, timing_sheet_directory_path):
         for filename in os.listdir(timing_sheet_directory_path):
@@ -32,8 +35,8 @@ class TimingSheetErrors:
                     if not controller.is_parallel():
                         yield controller
 
-    def find_repeated_stage_names(self, timing_sheet_directory_path):
-        for controller in self.timing_sheet_iterator(timing_sheet_directory_path):
+    def find_repeated_stage_names(self):
+        for controller in self.signal_emulator.controllers:
             stream_stage_names = [
                 (stage.stream_number, stage.stage_name) for stage in controller.stages
             ]
@@ -42,8 +45,8 @@ class TimingSheetErrors:
             if len(stage_names_repeated) > 0:
                 print(controller.site_number, stage_names_repeated)
 
-    def find_invalid_phase_delays(self, timing_sheet_directory_path):
-        for controller in self.timing_sheet_iterator(timing_sheet_directory_path):
+    def find_invalid_phase_delays(self):
+        for controller in self.signal_emulator.controllers:
             for phase_delay in list(controller.phase_delays):
                 if (
                     phase_delay.phase_ref not in phase_delay.end_stage.phase_keys_in_stage
@@ -60,6 +63,10 @@ class TimingSheetErrors:
 
 
 if __name__ == "__main__":
-    tse = TimingSheetErrors()
-    tse.find_repeated_stage_names(timing_sheet_directory_path="../resources/timing_sheets")
-    tse.find_invalid_phase_delays(timing_sheet_directory_path="../resources/timing_sheets")
+    signal_emulator_config = load_json_to_dict(
+        json_file_path="signal_emulator/resources/configs/signal_emulator_empty_config.json"
+    )
+    tse = TimingSheetErrors(config=signal_emulator_config)
+    tse.signal_emulator.load_timing_sheets_from_directory("signal_emulator/resources/timing_sheets")
+    tse.find_repeated_stage_names()
+    tse.find_invalid_phase_delays()

@@ -85,6 +85,7 @@ class M16Averages(BaseCollection):
         self.periods = periods
         if source_type is None:
             self.m16_df = pd.DataFrame()
+            self.m16_average_df = pd.DataFrame()
         elif source_type == "raw":
             self.m16_raw_df = self.load_all_m16_in_directory_df(m16_path)
             self.m16_average_df = self.calculate_modal_cycle_times()
