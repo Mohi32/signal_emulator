@@ -1,16 +1,22 @@
 import os
-from datetime import datetime
-import pandas as pd
 from dataclasses import dataclass
+from datetime import datetime
+
+import pandas as pd
+
 from signal_emulator.controller import BaseCollection, BaseItem
-from numpy import NAN
 
 
 @dataclass(eq=False)
 class M16Average(BaseItem):
+    region_id: str
     node_id: str
     time_period_id: str
     node_cycle_time: int
+    region_cycle_time: int
+    ratio: float
+    single_double_triple: int
+    cycle_time_independent: bool
     signal_emulator: object
 
     def get_key(self):
@@ -27,10 +33,11 @@ class M16Averages(BaseCollection):
     """
 
     TABLE_NAME = "m16_averages"
-    ITEM_CLASS = None
-    WRITE_TO_DATABASE = False
+    ITEM_CLASS = M16Average
+    WRITE_TO_DATABASE = True
     COLUMN_LIMITS = [
         (0, 8),
+        (13, 16),
         (18, 26),
         (33, 37),
         (43, 47),
@@ -42,6 +49,7 @@ class M16Averages(BaseCollection):
     ]
     COLUMN_NAMES = [
         "timestamp",
+        "message_type",
         "node_id",
         "time_now",
         "node_cycle_time",
@@ -65,37 +73,32 @@ class M16Averages(BaseCollection):
     def __init__(
         self,
         m16_path,
-        periods,
+        periods=None,
         source_type="averaged",
         export_to_csv_path=None,
         signal_emulator=None,
     ):
         super().__init__(item_data=[], signal_emulator=signal_emulator)
         assert source_type in ("averaged", "raw", None)
+        if not periods and signal_emulator:
+            periods = signal_emulator.time_periods
         self.periods = periods
-
         if source_type is None:
             self.m16_df = pd.DataFrame()
         elif source_type == "raw":
             self.m16_raw_df = self.load_all_m16_in_directory_df(m16_path)
             self.m16_average_df = self.calculate_modal_cycle_times()
-            if export_to_csv_path:
-                self.export_to_csv(export_to_csv_path)
         elif source_type == "averaged":
-            self.m16_df = pd.read_csv(
+            self.m16_average_df = pd.read_csv(
                 m16_path,
                 dtype=self.COLUMN_DTYPES,
             )
         self.data = {}
-        for index, row in self.m16_average_df.iterrows():
-            m16 = M16Average(
-                node_id=row["node_id"],
-                time_period_id=row["time_period_id"],
-                node_cycle_time=row["node_cycle_time"],
-                signal_emulator=signal_emulator,
-            )
+        for row in self.m16_average_df.to_dict(orient="records"):
+            m16 = M16Average(**row, signal_emulator=signal_emulator)
             self.data[m16.get_key()] = m16
-        ff = 66
+        if export_to_csv_path:
+            self.write_to_csv(export_to_csv_path)
 
     def calculate_modal_cycle_times(self):
         self.m16_raw_df["timedelta"] = self.m16_raw_df["timestamp"].dt.time.apply(
@@ -122,12 +125,6 @@ class M16Averages(BaseCollection):
         ct_count["proportion"] = ct_count["count"] / ct_count["count_total"]
         ct_count.to_csv("D:/dump/out.csv")
 
-        # region_id_grouped = (
-        #     self.m16_raw_df.groupby(["region_id", "time_period_id"])["node_cycle_time"]
-        #     .apply(lambda x: x.mode().iloc[0])
-        #     .reset_index()
-        # ).rename(columns={"node_cycle_time": "region_cycle_time"})
-
         # group by region, node and time period, calculate the modal cycle time
         node_id_grouped = (
             self.m16_raw_df.groupby(["region_id", "node_id", "time_period_id"])["node_cycle_time"]
@@ -140,7 +137,6 @@ class M16Averages(BaseCollection):
             .reset_index()
         ).rename(columns={"node_cycle_time": "region_cycle_time"})
 
-        # merged_df = pd.merge(node_id_grouped, region_id_grouped, on=["region_id", "time_period_id"])
         merged_df = pd.merge(
             node_id_grouped, node_id_grouped_max, on=["region_id", "time_period_id"]
         )
@@ -153,18 +149,12 @@ class M16Averages(BaseCollection):
         merged_df["single_double_triple"][merged_df["ratio"] == 2] = 2
         merged_df["single_double_triple"][merged_df["ratio"] == 3] = 3
 
-        # # set the final cycle time, use region_cycle_time unless it is multi cycling
-        # merged_df["final_cycle_time"] = merged_df["region_cycle_time"]
-        # merged_df["final_cycle_time"][merged_df["single_double_triple"] > 1] = merged_df[
-        #     "node_cycle_time"
-        # ]
+        # set the final cycle time, use region_cycle_time unless it is multi cycling
         merged_df["cycle_time_independent"] = False
         merged_df["cycle_time_independent"][
-            (merged_df["node_cycle_time"] != merged_df["region_cycle_time"]) & (merged_df["single_double_triple"] == 1)
+            (merged_df["node_cycle_time"] != merged_df["region_cycle_time"])
+            & (merged_df["single_double_triple"] == 1)
         ] = True
-        merged_df.to_csv("D:/dump/m16_summary.csv")
-        merged_df_odd = merged_df[~merged_df["ratio"].isin([1, 0.5, 2])]
-
         return merged_df
 
     @staticmethod
@@ -195,9 +185,9 @@ class M16Averages(BaseCollection):
                 (stream_key, time_period_id)
             ).region
         else:
-            print(stream_key)
             region_id = f"{node_id}_NO_GROUP"
-        # Region / Group 0 is a temporary group for commissioning, each node can run with independent cycle time
+        # Region / Group 0 is a temporary group for commissioning, assign composite region_id so that
+        # each node can run with independent cycle time
         if region_id in {"R0000", "G0000"}:
             region_id += f"_{node_id}"
         return region_id[1:]
@@ -226,12 +216,10 @@ class M16Averages(BaseCollection):
                     names=self.COLUMN_NAMES,
                     dtypes=self.COLUMN_DTYPES,
                 )
+                m16_df = m16_df[m16_df["message_type"] == "M16"]
                 m16_df["timestamp"] = pd.to_timedelta(m16_df["timestamp"]) + date
                 m16_all_df = pd.concat([m16_all_df, m16_df], ignore_index=True)
         return m16_all_df
-
-    def join_region_code(self):
-        pass
 
 
 if __name__ == "__main__":
