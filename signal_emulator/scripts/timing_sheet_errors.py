@@ -1,7 +1,5 @@
-import os
 from collections import Counter
 
-from signal_emulator.controller import Controller
 from signal_emulator.emulator import SignalEmulator
 from signal_emulator.utilities.utility_functions import load_json_to_dict
 
@@ -9,31 +7,6 @@ from signal_emulator.utilities.utility_functions import load_json_to_dict
 class TimingSheetErrors:
     def __init__(self, config):
         self.signal_emulator = SignalEmulator(config=config)
-
-    def timing_sheet_iterator(self, timing_sheet_directory_path):
-        for filename in os.listdir(timing_sheet_directory_path):
-            timing_sheet_path = os.path.join(timing_sheet_directory_path, filename)
-            if os.path.exists(
-                os.path.join(
-                    f"{timing_sheet_directory_path}_fixed", filename.replace(".csv", "_fixed.csv")
-                )
-            ):
-                timing_sheet_path = os.path.join(
-                    f"{timing_sheet_directory_path}_fixed", filename.replace(".csv", "_fixed.csv")
-                )
-            if (
-                filename.endswith("csv")
-                and os.path.isfile(timing_sheet_path)
-                and "_Junc" in filename
-            ):
-                if Controller.validate_timing_sheet_csv(timing_sheet_path):
-                    controller = Controller.init_from_timing_sheet_csv(
-                        timing_sheet_csv_path=timing_sheet_path,
-                        output_timing_sheet_json=False,
-                        signal_emulator=self,
-                    )
-                    if not controller.is_parallel():
-                        yield controller
 
     def find_repeated_stage_names(self):
         for controller in self.signal_emulator.controllers:
