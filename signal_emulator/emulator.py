@@ -22,7 +22,7 @@ from signal_emulator.linsig import Linsig
 from signal_emulator.m37_average import M37Averages
 from signal_emulator.plan import Plans, PlanSequenceItems
 from signal_emulator.plan_timetable import PlanTimetables
-from signal_emulator.saturn_objects import PhaseToSaturnTurns
+from signal_emulator.saturn_objects import PhaseToSaturnTurns, SaturnSignalGroups
 from signal_emulator.signal_plan import SignalPlans, SignalPlanStreams, SignalPlanStages
 from signal_emulator.time_period import TimePeriods
 from signal_emulator.utilities.postgres_connection import PostgresConnection
@@ -73,6 +73,9 @@ class SignalEmulator:
         self.signal_plan_streams = SignalPlanStreams([], self)
         self.signal_plan_stages = SignalPlanStages([], self)
         self.phase_timings = PhaseTimings([], self)
+        self.saturn_signal_groups = SaturnSignalGroups(
+            [], self, config.get("output_directory_saturn", None)
+        )        
         self.visum_signal_groups = VisumSignalGroups(
             [], self, config.get("output_directory_visum", None)
         )
@@ -262,6 +265,13 @@ class SignalEmulator:
         for phase_timing in self.phase_timings:
             self.visum_signal_groups.add_from_phase_timing(phase_timing)
 
+    def generate_saturn_signal_groups(self):
+        """
+        Method to generate SATURN format signal groups from Phase Timings
+        :return:
+        """
+        for phase_timing in self.phase_timings:
+            self.saturn_signal_groups.add_from_phase_timing(phase_timing)
 
 if __name__ == "__main__":
     signal_emulator_config = load_json_to_dict(
@@ -276,6 +286,7 @@ if __name__ == "__main__":
     signal_emulator.generate_signal_plans()
     signal_emulator.generate_phase_timings()
     signal_emulator.generate_visum_signal_groups()
+    signal_emulator.generate_saturn_signal_groups()    
     signal_emulator.export_to_database()
     # signal_emulator.visum_signal_controllers.export_to_net_files()
     # signal_emulator.visum_signal_groups.export_to_net_files()
