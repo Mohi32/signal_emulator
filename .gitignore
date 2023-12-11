@@ -1,0 +1,6 @@
+
+*.log
+*.pyc
+*.lsg
+*.net
+.vscode/launch.json

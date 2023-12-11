@@ -2,6 +2,7 @@ import pandas as pd
 import psycopg2
 from psycopg2 import OperationalError
 from sqlalchemy import create_engine
+from psycopg2 import OperationalError
 
 
 class PostgresConnection:
