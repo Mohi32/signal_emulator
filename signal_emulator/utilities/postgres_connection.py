@@ -39,10 +39,12 @@ class PostgresConnection:
             schema_name = self.schema
         self.execute_sql(f'CREATE SCHEMA IF NOT EXISTS "{schema_name}";')
 
-    def execute_sql(self, sql_query):
+    def execute_sql(self, sql_query, return_data=False):
         with self.connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(sql_query)
+                if return_data:
+                    return cursor.fetchall()
 
     def read_table_from_df(self, schema, table):
         return pd.read_sql_query(f"SELECT * FROM {schema}.{table}", self.engine)
@@ -57,8 +59,20 @@ class PostgresConnection:
     def read_table_to_df(self, table, schema=None, to_dict=False):
         if not schema:
             schema = self.schema
-        df = pd.read_sql_query(f"SELECT * FROM {schema}.{table}", con=self.engine)
+        table_exists = self.table_exists(schema, table)
+        if table_exists:
+            df = pd.read_sql_query(f"SELECT * FROM {schema}.{table}", con=self.engine)
+        else:
+            df = pd.DataFrame()
         if to_dict:
             return df.to_dict(orient="records")
         else:
             return df
+
+    def table_exists(self, schema_name, table_name):
+        table_exists = self.execute_sql(
+            f"SELECT EXISTS(SELECT 1 FROM information_schema.tables "
+            f"WHERE table_schema = '{schema_name}' AND table_name = '{table_name}')",
+            return_data=True
+        )
+        return table_exists[0][0]

@@ -14,6 +14,7 @@ from signal_emulator.controller import (
     PhaseTimings,
     ModifiedIntergreens,
     ModifiedPhaseDelays,
+    PhaseStageDemandDependencies
 )
 from signal_emulator.enums import Cell
 from signal_emulator.file_parsers.plan_parser import PlanParser
@@ -58,6 +59,7 @@ class SignalEmulator:
         self.streams = Streams([], self)
         self.stages = Stages([], self)
         self.phases = Phases([], self)
+        self.phase_stage_demand_dependencies = PhaseStageDemandDependencies([], self)
         self.phases.set_indicative_arrow_phases(self.phases)
         self.intergreens = Intergreens([], self)
         self.modified_intergreens = ModifiedIntergreens([], self)
@@ -66,7 +68,10 @@ class SignalEmulator:
         self.prohibited_stage_moves = ProhibitedStageMoves([], self)
 
         if config.get("timing_sheet_directory"):
-            self.load_timing_sheets_from_directory(config["timing_sheet_directory"])
+            self.load_timing_sheets_from_directory(
+                timing_sheet_directory=config["timing_sheet_directory"],
+                borough_codes=config.get("borough_codes")
+            )
         self.plans = Plans([], self)
         self.plan_sequence_items = PlanSequenceItems([], self)
         if config.get("plan_directory"):
@@ -74,12 +79,12 @@ class SignalEmulator:
         self.plan_timetables = PlanTimetables(
             signal_emulator=self, pja_directory_path=config.get("PJA_directory", None)
         )
-        # self.m16s = M16Averages(
-        #     periods=self.time_periods,
-        #     **config.get("M16", {"source_type": None, "m16_path": None}),
-        #     signal_emulator=self,
-        #
-        # )
+        self.m16s = M16Averages(
+            periods=self.time_periods,
+            **config.get("M16", {"source_type": None, "m16_path": None}),
+            signal_emulator=self,
+
+        )
         self.m37s = M37Averages(
             periods=self.time_periods,
             **config.get("M37", {"source_type": None, "m37_path": None}),
@@ -98,6 +103,7 @@ class SignalEmulator:
         )
         self.linsig = Linsig(self, config.get("output_directory_linsig", None))
         self.phase_to_saturn_turns = PhaseToSaturnTurns([], self)
+        self.run_datestamp = f'signal emulator run {datetime.now().strftime("%Y-%m-%d")}'
 
     @staticmethod
     def setup_logger():
@@ -201,9 +207,9 @@ class SignalEmulator:
             self.logger.warning(f"plan: {plan_filename} does not exist")
             return None
 
-    def load_timing_sheets_from_directory(self, timing_sheet_directory):
+    def load_timing_sheets_from_directory(self, timing_sheet_directory, borough_codes=None):
         for csv_filepath in self.timing_sheet_parser.timing_sheet_file_iterator(
-            timing_sheet_directory
+            timing_sheet_directory, borough_codes
         ):
             self.load_timing_sheet_csv(csv_filepath)
 
@@ -217,6 +223,7 @@ class SignalEmulator:
         self.phase_delays.add_items(attrs_dict.get("phase_delays", []), self)
         self.phase_delays.remove_invalid()
         self.prohibited_stage_moves.add_items(attrs_dict.get("prohibited_stage_moves", []), self)
+        self.phase_stage_demand_dependencies.add_items(attrs_dict.get("phase_stage_demand_dependencies", []), self)
         controller = self.controllers.get_by_key(attrs_dict["controllers"][0]["controller_key"])
         self.phases.set_indicative_arrow_phases(controller.phases)
 

@@ -6,6 +6,7 @@ import pandas as pd
 from signal_emulator.controller import BaseCollection
 from signal_emulator.enums import M37StageToStageNumber
 from signal_emulator.time_period import TimePeriods
+from signal_emulator.utilities.utility_functions import clean_site_number
 
 
 @dataclass(eq=False)
@@ -18,6 +19,7 @@ class M37Average:
     node_id: str
     site_id: str
     utc_stage_id: str
+    stage_number: int
     period_id: str
     green_time: int
     interstage_time: int
@@ -29,7 +31,7 @@ class M37Average:
         )
 
     def get_key(self):
-        return self.site_id, self.utc_stage_id, self.period_id
+        return self.site_id, self.stage_number, self.period_id
 
     @staticmethod
     def clean_site_id(site_id):
@@ -110,9 +112,9 @@ class M37Averages(BaseCollection):
             self.write_to_csv(export_to_csv_path)
 
     def get_cycle_time_by_site_id_and_period_id(self, site_id, period_id):
-        for stage_id in M37StageToStageNumber:
-            if self.key_exists((site_id, stage_id.name, period_id)):
-                return self.get_by_key((site_id, stage_id.name, period_id)).cycle_time
+        for (stage_id, stage_number) in M37StageToStageNumber.__members__.items():
+            if self.key_exists((site_id, stage_number, period_id)):
+                return self.get_by_key((site_id, stage_number, period_id)).cycle_time
         else:
             return None
 
@@ -218,11 +220,14 @@ class M37Averages(BaseCollection):
             m37_all["green_time"] = m37_all["final_green_time"].astype(int)
             m37_all["interstage_time"] = m37_all["final_interstage_time"].astype(int)
             m37_all["cycle_time"] = m37_all["node_cycle_time"].astype(int)
+        m37_all["stage_number"] = m37_all["utc_stage_id"].apply(self.map_utc_stage_id_to_number)
+        m37_all["site_id"] = m37_all["site_id"].apply(lambda x: clean_site_number(x))
         m37_all = m37_all[
             [
                 "node_id",
                 "site_id",
                 "utc_stage_id",
+                "stage_number",
                 "period_id",
                 "green_time",
                 "interstage_time",
@@ -230,6 +235,10 @@ class M37Averages(BaseCollection):
             ]
         ]
         return m37_all
+
+    @staticmethod
+    def map_utc_stage_id_to_number(utc_stage_id):
+        return M37StageToStageNumber[utc_stage_id].value
 
     @staticmethod
     def rounding_function(original_series):
