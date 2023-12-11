@@ -29,6 +29,10 @@ class SignalPlan(BaseItem):
         return self.signal_emulator.time_periods.get_by_key(self.time_period_id)
 
     def emulate(self):
+        self.signal_emulator.visum_signal_controllers.add_visum_signal_controller(
+            self.controller_key, self.controller.address, self.cycle_time, self.time_period_id, self.signal_emulator.run_datestamp
+        )
+        #self.controller_key, self.controller.address, cycle_time, self.signal_plan.time_period_id, self.signal_emulator.run_datestamp
         for signal_plan_stream in self.signal_plan_streams:
             self.signal_emulator.logger.info(
                 f"Emulating Signal Plan Stream: {signal_plan_stream.site_id}"
@@ -48,7 +52,13 @@ class SignalPlans(BaseCollection):
     def add_from_stream_plan_dict(self, streams_and_plans, period, signal_plan_number):
         first_plan = next(iter(streams_and_plans.values()))
         first_stream = next(iter(streams_and_plans.keys()))
-        max_cycle_time = max(plan.cycle_time for plan in streams_and_plans.values())
+        # max_cycle_time = max(plan.cycle_time for plan in streams_and_plans.values())
+        # max_cycle_time = self.signal_emulator.m16s.get_by_key(
+        #     (first_stream.controller_key.replace("J", "N"), period.get_key())
+        # ).node_cycle_time
+        cycle_times = [self.get_cycle_time(stream, plan) for stream, plan in streams_and_plans.items()]
+        print(first_stream.controller_key, period.get_key(), cycle_times)
+        max_cycle_time = self.get_cycle_time(first_stream, first_plan)
 
         signal_plan = SignalPlan(
             controller_key=first_stream.controller.controller_key,
@@ -70,7 +80,7 @@ class SignalPlans(BaseCollection):
                 signal_plan_number=signal_plan_number,
                 stream_number=stream.stream_number_linsig,
                 first_stage_time=stage_sequence[0].pulse_time,
-                cycle_time=plan.cycle_time,
+                cycle_time=self.get_cycle_time(stream, plan),
                 single_double_triple=1,
                 is_va=False,
             )
@@ -104,31 +114,73 @@ class SignalPlans(BaseCollection):
                 self.signal_emulator.signal_plan_stages.add_instance(signal_plan_stage)
                 signal_plan_sequence_number += 1
 
+    def get_cycle_time(self, stream, plan):
+        cycle_time = self.get_m37_cycle_time(stream)
+        if cycle_time:
+            return cycle_time
+        else:
+            return self.get_plan_cycle_time(plan)
+
+    def get_m37_cycle_time(self, stream):
+        for stage in M37StageToStageNumber:
+            if self.signal_emulator.m37s.key_exists((
+                stream.site_number, stage.value, self.signal_emulator.time_periods.active_period_id
+            )):
+                return self.signal_emulator.m37s.get_by_key((
+                stream.site_number, stage.value, self.signal_emulator.time_periods.active_period_id
+            )).cycle_time
+        if stream.site_number != stream.controller_key:
+            return self.get_m37_cycle_time(self.signal_emulator.streams.get_by_key((stream.controller_key, 0)))
+        else:
+            return None
+
+    @staticmethod
+    def get_plan_cycle_time(plan):
+        return plan.cycle_time
+
     @staticmethod
     def get_stage_length_from_pulse_points(pulse_point_1, pulse_point_2, cycle_time):
         return (pulse_point_2 - pulse_point_1 + cycle_time) % cycle_time
 
     def get_m37_stage_numbers(self, site_number):
         m37_stages_numbers = set()
-        for m37_stage_to_stage_number in M37StageToStageNumber:
+        for (m37_bit, stage_number) in M37StageToStageNumber.__members__.items():
             if (
                 self.signal_emulator.m37s.key_exists(
                     (
                         site_number,
-                        m37_stage_to_stage_number.name,
+                        stage_number.value,
                         self.signal_emulator.time_periods.active_period_id,
                     )
                 )
                 and self.signal_emulator.m37s.get_by_key(
                     (
                         site_number,
-                        m37_stage_to_stage_number.name,
+                        stage_number.value,
                         self.signal_emulator.time_periods.active_period_id,
                     )
                 ).total_time
                 > 0
             ):
-                m37_stages_numbers.add(m37_stage_to_stage_number.value)
+                m37_stages_numbers.add(stage_number.value)
+            elif (
+                self.signal_emulator.m37s.key_exists(
+                    (
+                        site_number.replace("J", "P"),
+                        m37_bit,
+                        self.signal_emulator.time_periods.active_period_id,
+                    )
+                )
+                and self.signal_emulator.m37s.get_by_key(
+                    (
+                        site_number.replace("J", "P"),
+                        m37_bit,
+                        self.signal_emulator.time_periods.active_period_id,
+                    )
+                ).total_time
+                > 0
+            ):
+                m37_stages_numbers.add(stage_number.value)
         return m37_stages_numbers
 
 
@@ -167,6 +219,10 @@ class SignalPlanStream(BaseItem):
         return self.signal_emulator.signal_plans.get_by_key(self.get_signal_plan_key())
 
     @property
+    def controller(self):
+        return self.signal_emulator.controllers.get_by_key(self.controller_key)
+
+    @property
     def stream(self):
         return self.signal_emulator.streams.get_by_key(
             (self.controller_key, self.stream_number_controller)
@@ -192,9 +248,9 @@ class SignalPlanStream(BaseItem):
                 "M37s not found, plan pulse times used for stage lengths"
             )
 
-        self.signal_emulator.visum_signal_controllers.add_visum_signal_controller(
-            self.site_number_int, cycle_time, self.signal_plan.time_period_id
-        )
+        # self.signal_emulator.visum_signal_controllers.add_visum_signal_controller(
+        #     self.controller_key, self.controller.address, cycle_time, self.signal_plan.time_period_id, self.signal_emulator.run_datestamp
+        # )
 
         stream.active_stage_key = stream.controller_key, self.signal_plan_stages[-1].stage_number
         if len(self.signal_plan_stages) == 1:
@@ -221,7 +277,7 @@ class SignalPlanStream(BaseItem):
             m37 = self.signal_emulator.m37s.get_by_key(
                 (
                     self.site_id,
-                    signal_plan_stage.stage.m37_stage_id,
+                    signal_plan_stage.stage.stream_stage_number,
                     self.signal_emulator.time_periods.active_period_id,
                 )
             )
@@ -229,7 +285,7 @@ class SignalPlanStream(BaseItem):
                 m37 = self.signal_emulator.m37s.get_by_key(
                     (
                         self.site_id,
-                        signal_plan_stage.stage.m37_stage_id_ped,
+                        signal_plan_stage.stage.stream_stage_number,
                         self.signal_emulator.time_periods.active_period_id,
                     )
                 )
@@ -246,7 +302,7 @@ class SignalPlanStream(BaseItem):
             )
             if (
                 m37_check
-                and m37.stage_id not in {"PG", "GX"}
+                and m37.utc_stage_id not in {"PG", "GX"}
                 and interstage_time > m37.interstage_time
             ):
                 self.signal_emulator.logger.info(

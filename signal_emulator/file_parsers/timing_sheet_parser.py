@@ -89,6 +89,11 @@ class TimingSheetParser:
                 )
             elif section == "Stages" and "Timings" in data_dict:
                 processed_args["stages"] = self.ped_stage_data_factory(section_data, controller_key)
+            elif section == "Phase Stage Demand Dependency":
+                processed_args[
+                    "phase_stage_demand_dependencies"
+                ] = self.phase_stage_demand_dependency_data_factory(section_data, data_dict["Stages"], controller_key)
+
         return processed_args
 
     def ped_stream_data_factory(self, controller_key):
@@ -203,6 +208,7 @@ class TimingSheetParser:
         stage_records = []
         stage_numbers = set()
         phases_in_stage = []
+        stream_data = sorted(stream_data, key=lambda x: (x["stream_number"], x["stage_name"], x["phase_ref"]))
         for stream_record, next_stream_record in zip_longest(stream_data, stream_data[1:]):
             this_stream_number = str_to_int(stream_record["stream_number"])
             this_stage_name = clean_stage_name(stream_record["stage_name"])
@@ -352,7 +358,9 @@ class TimingSheetParser:
                         row[3] = row_copy[timing_index + 1]
                         row[4] = row_copy[timing_index + 2]
                 if num_cols < len(row):
-                    if section == "Stages":
+                    if section == "Site Details":
+                        row[1] = ", ".join(row[1:])
+                    elif section == "Stages":
                         row[1] = " ".join(row[1:])
                     elif section == "Streams":
                         row[2] = " ".join(row[2:-2])
@@ -364,6 +372,10 @@ class TimingSheetParser:
                         row[3] = row[-3]
                         row[4] = row[-2]
                         row[5] = row[-1]
+                    elif section == "Phase Stage Demand Dependency":
+                        row[0] = " ".join(row[:-2])
+                        row[1] = row[-2]
+                        row[2] = row[-1]
                 row = [r.strip() for r in row]
                 section_data.append(row[:num_cols])
         return data_dict
@@ -382,8 +394,13 @@ class TimingSheetParser:
             output_dict.append({v: d[int(k) - 1] for k, v in column_dict.items() if v != "unused"})
         return output_dict
 
-    def timing_sheet_file_iterator(self, timing_sheet_directory_path):
+    def timing_sheet_file_iterator(self, timing_sheet_directory_path, borough_codes):
         for filename in os.listdir(timing_sheet_directory_path):
+            if not filename[:2].isnumeric():
+                continue
+            borough_code = int(filename[:2])
+            if borough_codes and borough_code not in borough_codes:
+                continue
             timing_sheet_path = os.path.join(timing_sheet_directory_path, filename)
             if os.path.exists(
                 os.path.join(
@@ -444,6 +461,23 @@ class TimingSheetParser:
             },
         ]
         return intergreen_records
+
+    def phase_stage_demand_dependency_data_factory(self, section_data, stage_data, controller_key):
+        stage_name_to_number = {stage["stage_name"]: int(stage["stage_number"]) for stage in stage_data}
+        phase_stage_demand_dependency = []
+        for section_record in section_data:
+            if section_record["stream_number"] != "X":
+                print(section_record["stream_number"])
+            phase_stage_demand_dependency.append(
+                {
+                    "controller_key": controller_key,
+                    "stage_number": stage_name_to_number[section_record["stage_name"]],
+                    "phase_ref": section_record["phase_ref"],
+                    "type": section_record["stream_number"],
+                }
+            )
+
+        return phase_stage_demand_dependency
 
 
 if __name__ == "__main__":

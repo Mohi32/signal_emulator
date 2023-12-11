@@ -80,7 +80,7 @@ def test_stage_sequence(
         ("J01/000125", "J01/125"),
         ("J01/000125/U", "J01/125"),
         ("01/000007/U", "J01/007"),
-        ("P01/000007/U", "P01/007"),
+        ("P01/000007/U", "J01/007"),
     ],
 )
 def test_clean_site_number(site_number_input, expected_output):

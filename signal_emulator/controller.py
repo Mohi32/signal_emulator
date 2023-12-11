@@ -2,16 +2,14 @@ import csv
 import os
 from collections import defaultdict
 from dataclasses import dataclass, fields
-from itertools import permutations
+from pathlib import Path
 from typing import Optional, List, Union
+
 import pandas as pd
 import sqlalchemy
 
 from signal_emulator.enums import PhaseType, PhaseTermType, PhaseTypeAndTermTypeToLinsigPhaseType
-from signal_emulator.utilities.utility_functions import (
-    load_json_to_dict,
-    dict_to_json_file,
-)
+from signal_emulator.utilities.utility_functions import load_json_to_dict
 
 
 class BaseCollection:
@@ -114,11 +112,16 @@ class BaseCollection:
         df = pd.DataFrame(item_data)
         return df
 
-    def write_to_database(self):
+    def write_to_csv(self, output_path):
+        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+        df = self.to_dataframe()
+        df.to_csv(output_path, index=False)
+
+    def write_to_database(self, schema=None):
         df = self.to_dataframe()
         dtypes = self.get_dtypes_from_fields()
         self.signal_emulator.postgres_connection.write_df_to_table(
-            df, self.TABLE_NAME, dtypes=dtypes
+            df, self.TABLE_NAME, schema, dtypes=dtypes
         )
         self.signal_emulator.logger.info(f"Collection: {self.TABLE_NAME} written to postgres")
 
@@ -166,6 +169,10 @@ class Controller(BaseItem):
 
     def get_key(self):
         return self.controller_key
+
+    @property
+    def borough_number(self):
+        return int(self.controller_key[:2])
 
     @property
     def streams(self):
@@ -226,16 +233,6 @@ class Controller(BaseItem):
         return f"j{site_number_parts[0][1:]}{site_number_parts[1][-3:]}.pln"
 
     @classmethod
-    def init_from_timing_sheet_csv(
-        cls, timing_sheet_csv_path, output_timing_sheet_json=False, signal_emulator=None
-    ):
-        data_dict = cls.timing_sheet_csv_to_dict(timing_sheet_csv_path)
-        if output_timing_sheet_json:
-            output_timing_sheet_path = timing_sheet_csv_path.replace(".csv", ".json")
-            dict_to_json_file(data_dict, output_timing_sheet_path)
-        return cls(data_dict, signal_emulator)
-
-    @classmethod
     def timing_sheet_csv_to_dict(cls, timing_sheet_csv_path):
         column_dict = load_json_to_dict(cls.TIMING_SHEET_COLUMN_LOOKUP_PATH)
         with open(timing_sheet_csv_path, newline="") as csv_file:
@@ -294,15 +291,10 @@ class Controller(BaseItem):
 
     def validate(self):
         return (
-            self.stages.num_items > 0
-            and self.phases.num_items > 0
+            len(self.stages) > 0
+            and len(self.phases) > 0
             and self.controller_type != "Parallel Stage Stream Site"
         )
-
-    def process_phase_type_and_conditions(self, phase_type_and_conditions):
-        for phase_type_info in phase_type_and_conditions:
-            phase = self.phases.get_by_key(phase_type_info["phase_ref"])
-            phase.text = phase_type_info["phase_name"][:80]
 
 
 class Controllers(BaseCollection):
@@ -325,6 +317,7 @@ class Stage(BaseItem):
     signal_emulator: object
 
     def __post_init__(self):
+        self.phase_stage_demand_dependencies = []
         self.stream.stage_keys_in_stream.append(self.stage_number)
 
     def __repr__(self):
@@ -378,7 +371,7 @@ class Stage(BaseItem):
         m37 = self.signal_emulator.m37s.get_by_key(
             (
                 site_id,
-                self.m37_stage_id,
+                self.stream_stage_number,
                 self.signal_emulator.time_periods.active_period_id,
             )
         )
@@ -386,7 +379,7 @@ class Stage(BaseItem):
             m37 = self.signal_emulator.m37s.get_by_key(
                 (
                     site_id,
-                    self.m37_stage_id_ped,
+                    self.stream_stage_number,
                     self.signal_emulator.time_periods.active_period_id,
                 )
             )
@@ -398,7 +391,7 @@ class Stage(BaseItem):
         m37 = self.signal_emulator.m37s.get_by_key(
             (
                 site_id,
-                self.m37_stage_id,
+                self.stream_stage_number,
                 self.signal_emulator.time_periods.active_period_id,
             )
         )
@@ -446,12 +439,6 @@ class Stages(BaseCollection):
         return self.data_by_stream_number_and_stage_number[
             (controller_key, stream_number, stage_number)
         ]
-
-    def add_stage(self, stream_number, stage_number, stream_stage_number, stage_name):
-        stage = Stage(stream_number, stage_number, stream_stage_number, stage_name, self.controller)
-        self.data[stage.get_key()] = stage
-        self.data_by_stream_number_and_stage_number[stage.get_number_key()] = stage
-        self.data_by_stage_name[stage.get_name_key()] = stage
 
     def add_item(self, data, signal_emulator=None):
         stage = self.ITEM_CLASS(signal_emulator=signal_emulator, **data)
@@ -527,7 +514,9 @@ class Phase(BaseItem):
 
     @property
     def associated_phase(self):
-        return self.signal_emulator.phases.get_by_key((self.controller_key, self.associated_phase_ref))
+        return self.signal_emulator.phases.get_by_key(
+            (self.controller_key, self.associated_phase_ref)
+        )
 
     @property
     def associated_phase_number(self):
@@ -591,11 +580,21 @@ class Stream(BaseItem):
     signal_emulator: object
     stage_keys_in_stream: Optional[List[int]] = None
 
+    def __init__(self, controller_key, stream_number, site_number, signal_emulator, stage_keys_in_stream=None):
+        super().__init__(signal_emulator=signal_emulator)
+        if stage_keys_in_stream is None:
+            stage_keys_in_stream = []
+        self.controller_key = controller_key
+        self.stream_number = stream_number
+        self.site_number = site_number
+        self.stage_keys_in_stream = stage_keys_in_stream
+        self._active_stage_key = None
+        self.__post_init__()
+
     def __post_init__(self):
         self.plans = []
         self.stage_keys_in_stream = []
         self.controller.stream_keys.append(self.stream_number)
-        self._active_stage_key = None
 
     def __repr__(self):
         return f"Stream: {self.stream_number=} {self.site_number=}"
@@ -680,7 +679,7 @@ class Stream(BaseItem):
         ]
 
     @property
-    def num_phases_in_stream_linisg(self):
+    def num_phases_in_stream_linsig(self):
         return len(self.phase_keys_in_stream)
 
     @property
@@ -704,8 +703,11 @@ class Streams(BaseCollection):
         self.data[stream.get_key()] = stream
         self.data_by_site_id[stream.get_site_key()] = stream
 
-    def get_by_site_id(self, site_number):
-        return self.data_by_site_id[site_number]
+    def get_by_site_id(self, site_number, strict=True):
+        if strict:
+            return self.data_by_site_id[site_number]
+        else:
+            return self.data.get(site_number, None)
 
     def site_id_exists(self, site_number):
         return site_number in self.data_by_site_id
@@ -746,12 +748,16 @@ class Intergreen(BaseIntergreen):
     @property
     def modified_intergreen(self):
         return self.signal_emulator.modified_intergreens.get_by_key(
-            self.get_key() + (self.signal_emulator.time_periods.active_period_id, )
+            self.get_key() + (self.signal_emulator.time_periods.active_period_id,)
         )
 
     @property
     def modified_intergreen_time(self):
-        return self.modified_intergreen.intergreen_time if self.modified_intergreen else self.intergreen_time
+        return (
+            self.modified_intergreen.intergreen_time
+            if self.modified_intergreen
+            else self.intergreen_time
+        )
 
 
 class Intergreens(BaseCollection):
@@ -770,22 +776,17 @@ class Intergreens(BaseCollection):
                 key + (self.signal_emulator.time_periods.active_period_id,)
             )
         else:
-            return self.data.get(key, BaseIntergreen(*key, 0, signal_emulator=self.signal_emulator))
-
-    def get_by_controller_key(self, controller_key):
-        return self.data_by_controller_key[controller_key]
-
-    def create_missing_intergreens(self, controller):
-        # todo remove?
-        for end_phase, start_phase in permutations(self.controller.phases, 2):
-            if not self.key_exists((end_phase.phase_ref, start_phase.phase_ref)):
-                intergreen = Intergreen(
-                    end_phase_key=end_phase.phase_ref,
-                    start_phase_key=start_phase.phase_ref,
-                    intergreen_time=0,
-                    controller=controller,
-                )
-                self.data[intergreen.get_key()] = intergreen
+            controller_key, end_phase_key, start_phase_key = key
+            return self.data.get(
+                key,
+                BaseIntergreen(
+                    controller_key,
+                    end_phase_key,
+                    start_phase_key,
+                    0,
+                    signal_emulator=self.signal_emulator,
+                ),
+            )
 
     def exists_by_phase_keys(self, controller_key, end_phase_key, start_phase_key, modified=False):
         if modified:
@@ -924,12 +925,14 @@ class PhaseDelay(BasePhaseDelay):
     @property
     def modified_phase_delay(self):
         return self.signal_emulator.modified_phase_delays.get_by_key(
-            self.get_key() + (self.signal_emulator.time_periods.active_period_id, )
+            self.get_key() + (self.signal_emulator.time_periods.active_period_id,)
         )
 
     @property
     def modified_delay_time(self):
-        return self.modified_phase_delay.delay_time if self.modified_phase_delay else self.delay_time
+        return (
+            self.modified_phase_delay.delay_time if self.modified_phase_delay else self.delay_time
+        )
 
 
 class PhaseDelays(BaseCollection):
@@ -971,24 +974,6 @@ class PhaseDelays(BaseCollection):
                 phase_delay.controller.phase_delay_keys.remove(
                     (phase_delay.end_stage_key, phase_delay.start_stage_key, phase_delay.phase_ref)
                 )
-
-    def create_missing_phase_delays(self, controller):
-        for end_stage, start_stage in permutations(self.controller.stages, 2):
-            end_phases = self.controller.stages.get_end_phases(end_stage, start_stage)
-            start_phases = self.controller.stages.get_start_phases(end_stage, start_stage)
-            for end_phase in end_phases + start_phases:
-                if not self.key_exists(
-                    (end_stage.stage_number, start_stage.stage_number, end_phase.phase_ref)
-                ):
-                    phase_delay = PhaseDelay(
-                        end_stage_key=end_stage.stage_number,
-                        start_stage_key=start_stage.stage_number,
-                        phase_ref=end_phase.phase_ref,
-                        delay_time=0,
-                        controller=controller,
-                        is_absolute=True,
-                    )
-                    self.data[phase_delay.get_key()] = phase_delay
 
     def get_delay_time_by_stage_and_phase_keys(
         self, controller_key, end_stage_key, start_stage_key, phase_key, modified=False
@@ -1188,3 +1173,38 @@ class PhaseTimings(BaseCollection):
         return self.data_by_controller_key_phase_ref_time_period_id[
             (controller_key, phase_ref, time_period_id)
         ]
+
+
+@dataclass(eq=False)
+class PhaseStageDemandDependency(BaseItem):
+    controller_key: str
+    stage_number: int
+    phase_ref: str
+    type: str
+    signal_emulator: object
+
+    def __post_init__(self):
+        self.stage.phase_stage_demand_dependencies.append(self)
+
+    @property
+    def stage(self):
+        return self.signal_emulator.stages.get_by_key(self.get_stage_key())
+
+    def get_stage_key(self):
+        return self.controller_key, self.stage_number
+
+    @property
+    def phase(self):
+        return self.signal_emulator.phases.get_by_key(self.get_phase_key())
+
+    def get_phase_key(self):
+        return self.controller_key, self.phase_ref
+
+
+class PhaseStageDemandDependencies(BaseCollection):
+    ITEM_CLASS = PhaseStageDemandDependency
+    TABLE_NAME = "phase_stage_demand_dependencies"
+    WRITE_TO_DATABASE = True
+
+    def __init__(self, item_data, signal_emulator):
+        super().__init__(item_data=item_data, signal_emulator=signal_emulator)
