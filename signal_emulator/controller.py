@@ -166,6 +166,7 @@ class Controller(BaseItem):
         self.intergreen_keys = []
         self.phase_delay_keys = []
         self.signal_plans = []
+        self.phase_to_saturn_turns = []
 
     def get_key(self):
         return self.controller_key

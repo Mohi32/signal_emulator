@@ -8,5 +8,6 @@
     },
     "load_from_postgres": true,
     "output_directory_visum": "signal_emulator/output/VISUM",
-    "output_directory_linsig": "signal_emulator/output/LINSIG"
+    "output_directory_linsig": "signal_emulator/output/LINSIG",
+    "output_directory_saturn": "signal_emulator/output/SATURN"
 }

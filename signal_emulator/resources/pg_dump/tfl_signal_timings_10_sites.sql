@@ -141,6 +141,12 @@ ALTER TABLE v1.phase_timings OWNER TO postgres;
 --
 
 CREATE TABLE v1.phase_to_saturn_turns (
+    controller_key text,
+    phase_ref text,
+    turn text,
+    saturn_a_node text,
+    saturn_b_node text,
+    saturn_c_node text
 );
 
 
