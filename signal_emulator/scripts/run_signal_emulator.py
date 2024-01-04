@@ -8,7 +8,7 @@ def run_all(config_path):
     signal_emulator.generate_signal_plans()
     signal_emulator.generate_phase_timings()
     signal_emulator.generate_visum_signal_groups()
-    signal_emulator.generate_saturn_signal_groups()    
+    signal_emulator.generate_saturn_signal_groups()
     signal_emulator.saturn_signal_groups.export_to_rgs_files()
     signal_emulator.visum_signal_controllers.export_to_net_files()
     signal_emulator.visum_signal_groups.export_to_net_files()
@@ -26,4 +26,4 @@ def run_from_postgres():
 
 if __name__ == "__main__":
     run_from_files()
-    #run_from_postgres()
+    # run_from_postgres()

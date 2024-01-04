@@ -47,7 +47,7 @@ class Plan:
         m37_check = len(m37_stages) > 0
         if m37_check:
             cycle_time = self.signal_emulator.m37s.get_cycle_time_by_site_id_and_period_id(
-                self.site_number, self.signal_emulator.periods.active_period_id
+                self.site_id, self.signal_emulator.periods.active_period_id
             )
             self.signal_emulator.logger.info("M37s used for stage lengths")
         else:
@@ -68,7 +68,7 @@ class Plan:
             current_stage = self.signal_emulator.controller.stages.active_stage
             m37 = self.signal_emulator.m37s.get_by_key(
                 (
-                    self.site_number,
+                    self.site_id,
                     stage_sequence_item.stage.m37_stage_id,
                     self.signal_emulator.periods.active_period_id,
                 )
@@ -76,13 +76,11 @@ class Plan:
             if not m37:
                 m37 = self.signal_emulator.m37s.get_by_key(
                     (
-                        self.site_number,
+                        self.site_id,
                         stage_sequence_item.stage.m37_stage_id_ped,
                         self.signal_emulator.periods.active_period_id,
                     )
                 )
-            if not m37:
-                aa = 55
             end_phases = self.signal_emulator.controller.stages.get_end_phases(
                 current_stage, stage_sequence_item.stage
             )
@@ -257,7 +255,8 @@ class Plan:
             )
         elif m37_check and m37_stages == set([a.stage.stage_number for a in stage_sequence]):
             self.signal_emulator.logger.info(
-                f"Plan stage sequence: {[a.stage.stage_number for a in stage_sequence]} matches m37 stages: {m37_stages}"
+                f"Plan stage sequence: "
+                f"{[a.stage.stage_number for a in stage_sequence]} matches m37 stages: {m37_stages}"
             )
         if (
             len(stage_sequence) > 1
@@ -300,9 +299,11 @@ class Plan:
     def process_plan_sequence_item(
         self, plan_sequence_item, stream, previous_stage_sequence_item=None, m37_check=False
     ):
-        if not stream.active_stage_key:
+        if stream.active_stage_key[1] is None:
             # should not get here now
-            raise ValueError("active stage id should be set before calling this function")
+            raise ValueError(
+                f"Stream: {stream.controller_key} active stage id should be set before calling this function"
+            )
 
         new_stage = stream.active_stage
         if stream.active_stage.stage_number in plan_sequence_item.stage_numbers:
@@ -325,9 +326,15 @@ class Plan:
                 pulse_time = plan_sequence_item.pulse_time
         else:
             pulse_time = plan_sequence_item.pulse_time
+        if not plan_sequence_item.f_bits and not plan_sequence_item.p_bits:
+            pulse_time += 2
+        elif plan_sequence_item.p_bits == ["PV"]:
+            pass
+            # pulse_time += 3 # stream.active_stage.
         return StageSequenceItem(stage=new_stage, pulse_time=pulse_time)
 
-    def get_stage_length_from_pulse_times(self, previous_pulse_time, this_pulse_time, cycle_time):
+    @staticmethod
+    def get_stage_length_from_pulse_times(previous_pulse_time, this_pulse_time, cycle_time):
         if this_pulse_time > previous_pulse_time:
             return this_pulse_time - previous_pulse_time
         else:
@@ -389,7 +396,6 @@ class Plan:
         )
         for start_phase in start_phases:
             for end_phase in end_phases:
-                # todo get phase delay and intergeeen objects so we can edit times
                 end_phase_delay = self.signal_emulator.controller.phase_delays.get_by_key(
                     (end_stage_key, start_stage_key, end_phase.phase_ref)
                 )
@@ -581,7 +587,8 @@ class PlanSequenceItem:
     def plan(self):
         return self.signal_emulator.plans.get_by_key(self.get_plan_key())
 
-    def get_commands_from_str(self, plan_sequence_str):
+    @staticmethod
+    def get_commands_from_str(plan_sequence_str):
         delimiter_pattern = r"[.,]"  # Using a regex pattern to match .,
         commands = re.split(delimiter_pattern, plan_sequence_str)
         final_commands = []
@@ -629,8 +636,21 @@ class PlanSequenceItem:
         )
 
     @property
+    def stream(self):
+        return self.signal_emulator.streams.get_by_site_id(self.site_id)
+
+    @property
     def stages(self):
-        return [self.signal_emulator.stages.get_by_key(stage) for stage in self.stage_numbers]
+        # return [self.signal_emulator.stages.get_by_key(stage) for stage in self.stage_numbers]
+        return [
+            self.signal_emulator.stages.get_by_stream_number_and_stage_number(
+                self.stream.controller_key, self.stream.stream_number, stage_number
+            )
+            for stage_number in self.stage_numbers
+            if self.signal_emulator.stages.key_exists_by_stream_number_and_stage_number(
+                self.stream.controller_key, self.stream.stream_number, stage_number
+            )
+        ]
 
     # def stages_existing_in_stream(self, stream_number):
     #     return [
@@ -644,15 +664,19 @@ class PlanSequenceItem:
     #     ]
 
     def stages_existing_in_stream(self, stream):
-        return [
-            self.signal_emulator.stages.get_by_stream_number_and_stage_number(
-                stream.controller_key, stream.stream_number, stage_number
-            )
-            for stage_number in self.stage_numbers
+        existing_stages = [
+            stage
+            for stage in self.stages
             if self.signal_emulator.stages.key_exists_by_stream_number_and_stage_number(
-                stream.controller_key, stream.stream_number, stage_number
+                stream.controller_key, stream.stream_number, stage.stream_stage_number
             )
         ]
+        # sort the stages so that demand dependent stages get the option to be called first
+        existing_stages_sorted = sorted(
+            existing_stages,
+            key=lambda x: (not bool(x.phase_stage_demand_dependencies), x.stage_number),
+        )
+        return existing_stages_sorted
 
 
 class PlanSequenceItems(BaseCollection):
@@ -661,9 +685,7 @@ class PlanSequenceItems(BaseCollection):
     WRITE_TO_DATABASE = True
 
     def __init__(self, item_data, signal_emulator):
-        super().__init__(
-            item_data=item_data, signal_emulator=signal_emulator
-        )
+        super().__init__(item_data=item_data, signal_emulator=signal_emulator)
         self.active_index = 0
 
     def __iter__(self):
@@ -718,6 +740,7 @@ class StageSequenceItem:
 
 class DefaultList(list):
     def __init__(self, default_value):
+        super().__init__()
         self.default_value = default_value
 
     def __getitem__(self, index):
@@ -746,7 +769,7 @@ class DefaultList(list):
 
     def iter_pairwise(self):
         """
-        Iterator to yield each sequence pair
+        Iterator to yield pairs of values from the sequence
         :return: pair of List items
         """
         for ssi1, ssi2 in zip(self, self[1:] + [self[0]]):
@@ -754,31 +777,13 @@ class DefaultList(list):
 
     def iter_previous_current_next(self):
         """
-        Iterator to yield each sequence pair
-        :return: pair of List items
+        Iterator to yield previous current and next values from the sequence
+        :return: previous current and next values
         """
-        for previos_ssi, this_ssi, next_ssi in zip([self[-1]] + self[:-1], self, self[1:] + [self[0]]):
-            yield previos_ssi, this_ssi, next_ssi
-
-    # @property
-    # def next_index(self):
-    #     if self.index == len(self.parent.items) - 1:
-    #         return 0
-    #     else:
-    #         return self.index + 1
-    #
-    # @property
-    # def previous_index(self):
-    #     if self.index == 0:
-    #         return len(self.parent.items) - 1
-    #     else:
-    #         return self.index - 1
-    #
-    # def get_next_item(self):
-    #     return self.parent.items[self.next_index]
-    #
-    # def get_previous_item(self):
-    #     return self.parent.items[self.previous_index]
+        for previous_ssi, this_ssi, next_ssi in zip(
+            [self[-1]] + self[:-1], self, self[1:] + [self[0]]
+        ):
+            yield previous_ssi, this_ssi, next_ssi
 
 
 if __name__ == "__main__":

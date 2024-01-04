@@ -1,0 +1,8385 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 16.0
+-- Dumped by pg_dump version 16.0
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: v1; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA v1;
+
+
+ALTER SCHEMA v1 OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: controllers; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.controllers (
+    controller_key text,
+    controller_type text,
+    x_coord bigint,
+    y_coord bigint,
+    address text,
+    spec_issue_no text
+);
+
+
+ALTER TABLE v1.controllers OWNER TO postgres;
+
+--
+-- Name: intergreens; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.intergreens (
+    controller_key text,
+    end_phase_key text,
+    start_phase_key text,
+    intergreen_time bigint
+);
+
+
+ALTER TABLE v1.intergreens OWNER TO postgres;
+
+--
+-- Name: m37_averages; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.m37_averages (
+);
+
+
+ALTER TABLE v1.m37_averages OWNER TO postgres;
+
+--
+-- Name: modified_intergreens; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.modified_intergreens (
+    controller_key text,
+    end_phase_key text,
+    start_phase_key text,
+    intergreen_time bigint,
+    time_period_id text,
+    original_time bigint
+);
+
+
+ALTER TABLE v1.modified_intergreens OWNER TO postgres;
+
+--
+-- Name: modified_phase_delays; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.modified_phase_delays (
+    controller_key text,
+    end_stage_key bigint,
+    start_stage_key bigint,
+    phase_ref text,
+    delay_time bigint,
+    is_absolute boolean,
+    original_delay_time bigint,
+    time_period_id text
+);
+
+
+ALTER TABLE v1.modified_phase_delays OWNER TO postgres;
+
+--
+-- Name: phase_delays; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.phase_delays (
+    controller_key text,
+    end_stage_key bigint,
+    start_stage_key bigint,
+    phase_ref text,
+    delay_time bigint,
+    is_absolute boolean
+);
+
+
+ALTER TABLE v1.phase_delays OWNER TO postgres;
+
+--
+-- Name: phase_timings; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.phase_timings (
+    controller_key text,
+    site_id text,
+    phase_ref text,
+    index bigint,
+    time_period_id text,
+    start_time bigint,
+    end_time bigint
+);
+
+
+ALTER TABLE v1.phase_timings OWNER TO postgres;
+
+--
+-- Name: phase_to_saturn_turns; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.phase_to_saturn_turns (
+    controller_key text,
+    phase_ref text,
+    turn text,
+    saturn_a_node text,
+    saturn_b_node text,
+    saturn_c_node text
+);
+
+
+ALTER TABLE v1.phase_to_saturn_turns OWNER TO postgres;
+
+--
+-- Name: phases; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.phases (
+    controller_key text,
+    phase_ref text,
+    min_time text,
+    phase_type_str text,
+    appearance_type_int bigint,
+    termination_type_int bigint,
+    text text,
+    associated_phase_ref text
+);
+
+
+ALTER TABLE v1.phases OWNER TO postgres;
+
+--
+-- Name: plan_sequence_items; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.plan_sequence_items (
+    site_id text,
+    plan_number bigint,
+    index bigint,
+    pulse_time bigint,
+    f_bits character varying[],
+    d_bits character varying[],
+    p_bits character varying[],
+    nto boolean,
+    scoot_stage text
+);
+
+
+ALTER TABLE v1.plan_sequence_items OWNER TO postgres;
+
+--
+-- Name: plan_timetables; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.plan_timetables (
+    site_number text,
+    subgroup text,
+    region text,
+    wat text,
+    control text,
+    ctv text,
+    sco text,
+    status text,
+    period text,
+    cell text
+);
+
+
+ALTER TABLE v1.plan_timetables OWNER TO postgres;
+
+--
+-- Name: plans; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.plans (
+    site_id text,
+    plan_number bigint,
+    name text,
+    cycle_time bigint,
+    timeout bigint
+);
+
+
+ALTER TABLE v1.plans OWNER TO postgres;
+
+--
+-- Name: prohibited_stage_moves; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.prohibited_stage_moves (
+    controller_key text,
+    end_stage_key bigint,
+    start_stage_key bigint,
+    via_stage_key bigint,
+    prohibited boolean,
+    ignore boolean
+);
+
+
+ALTER TABLE v1.prohibited_stage_moves OWNER TO postgres;
+
+--
+-- Name: signal_plan_stages; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.signal_plan_stages (
+    controller_key text,
+    signal_plan_number bigint,
+    stream_number bigint,
+    site_id text,
+    signal_plan_sequence_number bigint,
+    stage_number bigint,
+    total_length bigint,
+    interstage_length bigint,
+    green_length bigint,
+    pulse_point bigint,
+    either_or boolean,
+    fixed_length boolean
+);
+
+
+ALTER TABLE v1.signal_plan_stages OWNER TO postgres;
+
+--
+-- Name: signal_plan_streams; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.signal_plan_streams (
+    controller_key text,
+    site_id text,
+    signal_plan_number bigint,
+    stream_number bigint,
+    first_stage_time bigint,
+    cycle_time bigint,
+    single_double_triple bigint,
+    is_va boolean
+);
+
+
+ALTER TABLE v1.signal_plan_streams OWNER TO postgres;
+
+--
+-- Name: signal_plans; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.signal_plans (
+    controller_key text,
+    signal_plan_number bigint,
+    cycle_time bigint,
+    name text,
+    time_period_id text
+);
+
+
+ALTER TABLE v1.signal_plans OWNER TO postgres;
+
+--
+-- Name: stages; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.stages (
+    controller_key text,
+    stage_number bigint,
+    stage_name text,
+    stream_number bigint,
+    stream_stage_number bigint,
+    phase_keys_in_stage character varying[]
+);
+
+
+ALTER TABLE v1.stages OWNER TO postgres;
+
+--
+-- Name: streams; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.streams (
+    controller_key text,
+    stream_number bigint,
+    site_number text,
+    stage_keys_in_stream text
+);
+
+
+ALTER TABLE v1.streams OWNER TO postgres;
+
+--
+-- Name: time_periods; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.time_periods (
+    name text,
+    index bigint,
+    start_time_str text,
+    end_time_str text
+);
+
+
+ALTER TABLE v1.time_periods OWNER TO postgres;
+
+--
+-- Name: visum_signal_controllers; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.visum_signal_controllers (
+    signal_controller_number bigint,
+    cycle_time bigint,
+    time_period_id text,
+    signalisation_type text
+);
+
+
+ALTER TABLE v1.visum_signal_controllers OWNER TO postgres;
+
+--
+-- Name: visum_signal_groups; Type: TABLE; Schema: v1; Owner: postgres
+--
+
+CREATE TABLE v1.visum_signal_groups (
+    signal_controller_number bigint,
+    phase_number bigint,
+    phase_name text,
+    green_time_start bigint,
+    green_time_end bigint,
+    time_period_id text
+);
+
+
+ALTER TABLE v1.visum_signal_groups OWNER TO postgres;
+
+--
+-- Data for Name: controllers; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.controllers (controller_key, controller_type, x_coord, y_coord, address, spec_issue_no) FROM stdin;
+J00/002	STCL ELV T950 MK 1 UTC Semi VA Controller	531633	181174	NEW BRIDGE STREET - FLEET STREET - LUDGATE HILL - FARRINGDON STREET - LUDGATE CIRCUS	48
+J00/003	STCL ELV T900 MK 1 UTC Semi VA Controller	533656	180944	A1211 MINORIES - CROSSWALL - PORTSOKEN STREET	30
+J00/004	STCL ELV T900 MK 1 UTC Semi VA Controller	531400	181550	HIGH HOLBORN - ST ANDREWS ST - CHARTERHOUSE ST - NEW FETTER LA - HATTON GARDEN	38
+J00/005	STCL ELV T950 MK 1 UTC Semi VA Controller	531390	180818	VICTORIA EMBANKMENT - TEMPLE AVENUE	39
+J00/006	STCL ELV T950 MK 1 UTC Semi VA Controller	531649	180896	A3211 VICTORIA EMBANKMENT - BLACKFRIARS BRIDGE - NEW BRIDGE STREET - QUEEN VICTORIA STREET	33
+J00/007	STCL T800 MK 1 UTC Cntr  Integral Facilities	531798	180950	QUEEN VICTORIA STREET - PUDDLE DOCK	32
+J00/008	STCL T800 MK 1 UTC Cntr  Integral Facilities	531791	181407	A40 HOLBORN VIADUCT - A40 NEWGATE ST - OLD BAILEY - GILTSPUR ST	26
+J00/009	STCL T800 MK 1 UTC Cntr  Integral Facilities	532710	181554	A1211 LONDON WALL - MOORGATE	34
+J00/010	STCL LV T900 MK 1 UTC Semi VA Controller	532650	181268	MOORGATE - LOTHBURY - PRINCES STREET - GRESHAM STREET	26
+J00/011	STCL ELV T900 MK 1 UTC Semi VA Controller	532707	181112	O.O.S FROM 25/02/2023 -BANK JUNCTION - THREADNEEDLE ST - CORNHILL - PRINCES ST - KING WILLIAM STREET	50
+\.
+
+
+--
+-- Data for Name: intergreens; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.intergreens (controller_key, end_phase_key, start_phase_key, intergreen_time) FROM stdin;
+J00/002	A	D	5
+J00/002	A	E	6
+J00/002	A	F	7
+J00/002	A	G	6
+J00/002	A	H	7
+J00/002	A	K	7
+J00/002	A	L	8
+J00/002	A	M	5
+J00/002	A	N	7
+J00/002	A	O	7
+J00/002	A	S	3
+J00/002	B	D	5
+J00/002	B	E	6
+J00/002	B	F	6
+J00/002	B	G	6
+J00/002	B	H	6
+J00/002	B	I	5
+J00/002	B	J	5
+J00/002	B	K	7
+J00/002	B	L	9
+J00/002	B	M	5
+J00/002	B	N	7
+J00/002	B	O	7
+J00/002	B	P	5
+J00/002	B	R	5
+J00/002	B	S	3
+J00/002	C	E	5
+J00/002	C	F	5
+J00/002	C	G	5
+J00/002	C	H	5
+J00/002	C	K	5
+J00/002	C	L	5
+J00/002	C	M	8
+J00/002	C	N	8
+J00/002	C	O	5
+J00/002	C	S	3
+J00/002	D	A	5
+J00/002	D	B	5
+J00/002	D	E	5
+J00/002	D	F	5
+J00/002	D	G	5
+J00/002	D	H	5
+J00/002	D	I	5
+J00/002	D	J	5
+J00/002	D	K	5
+J00/002	D	L	9
+J00/002	D	M	8
+J00/002	D	N	8
+J00/002	D	O	5
+J00/002	D	P	5
+J00/002	D	Q	5
+J00/002	D	R	5
+J00/002	D	S	3
+J00/002	E	A	7
+J00/002	E	B	7
+J00/002	E	C	7
+J00/002	E	D	7
+J00/002	E	I	5
+J00/002	E	J	6
+J00/002	E	L	10
+J00/002	E	P	7
+J00/002	E	Q	7
+J00/002	E	R	6
+J00/002	E	S	3
+J00/002	F	A	6
+J00/002	F	B	7
+J00/002	F	C	7
+J00/002	F	D	7
+J00/002	F	I	5
+J00/002	F	J	6
+J00/002	F	L	10
+J00/002	F	P	6
+J00/002	F	Q	7
+J00/002	F	R	6
+J00/002	F	S	3
+J00/002	G	A	6
+J00/002	G	B	6
+J00/002	G	C	6
+J00/002	G	D	7
+J00/002	G	I	7
+J00/002	G	J	6
+J00/002	G	L	11
+J00/002	G	P	7
+J00/002	G	Q	6
+J00/002	G	R	6
+J00/002	G	S	3
+J00/002	H	A	5
+J00/002	H	B	6
+J00/002	H	C	5
+J00/002	H	D	6
+J00/002	H	I	7
+J00/002	H	J	6
+J00/002	H	L	11
+J00/002	H	P	7
+J00/002	H	Q	6
+J00/002	H	R	6
+J00/002	H	S	3
+J00/002	I	B	5
+J00/002	I	D	5
+J00/002	I	E	6
+J00/002	I	F	7
+J00/002	I	G	6
+J00/002	I	H	7
+J00/002	I	K	7
+J00/002	I	L	8
+J00/002	I	M	5
+J00/002	I	N	7
+J00/002	I	O	7
+J00/002	I	Q	5
+J00/002	I	S	3
+J00/002	J	B	5
+J00/002	J	D	5
+J00/002	J	E	5
+J00/002	J	F	5
+J00/002	J	G	5
+J00/002	J	H	5
+J00/002	J	K	5
+J00/002	J	L	8
+J00/002	J	M	8
+J00/002	J	N	8
+J00/002	J	O	5
+J00/002	J	Q	5
+J00/002	J	S	3
+J00/002	K	A	5
+J00/002	K	B	5
+J00/002	K	C	5
+J00/002	K	D	5
+J00/002	K	I	5
+J00/002	K	J	5
+J00/002	K	L	8
+J00/002	K	P	5
+J00/002	K	Q	5
+J00/002	K	R	5
+J00/002	K	S	3
+J00/002	L	A	18
+J00/002	L	B	18
+J00/002	L	C	18
+J00/002	L	D	18
+J00/002	L	E	18
+J00/002	L	F	18
+J00/002	L	G	18
+J00/002	L	H	18
+J00/002	L	I	18
+J00/002	L	J	18
+J00/002	L	K	18
+J00/002	L	N	18
+J00/002	L	O	18
+J00/002	L	P	18
+J00/002	L	Q	18
+J00/002	L	R	18
+J00/002	L	S	13
+J00/002	M	A	17
+J00/002	M	B	17
+J00/002	M	C	17
+J00/002	M	D	17
+J00/002	M	I	17
+J00/002	M	J	17
+J00/002	M	O	17
+J00/002	M	P	17
+J00/002	M	Q	17
+J00/002	M	R	17
+J00/002	M	S	12
+J00/002	N	A	17
+J00/002	N	B	17
+J00/002	N	C	17
+J00/002	N	D	17
+J00/002	N	I	17
+J00/002	N	J	17
+J00/002	N	L	11
+J00/002	N	O	17
+J00/002	N	P	17
+J00/002	N	Q	17
+J00/002	N	R	17
+J00/002	N	S	12
+J00/002	O	A	6
+J00/002	O	B	7
+J00/002	O	C	7
+J00/002	O	D	7
+J00/002	O	I	7
+J00/002	O	J	6
+J00/002	O	L	11
+J00/002	O	M	11
+J00/002	O	N	12
+J00/002	O	P	7
+J00/002	O	Q	7
+J00/002	O	R	6
+J00/002	O	S	3
+J00/002	P	B	5
+J00/002	P	C	2
+J00/002	P	D	5
+J00/002	P	E	6
+J00/002	P	F	6
+J00/002	P	G	6
+J00/002	P	H	6
+J00/002	P	K	7
+J00/002	P	L	8
+J00/002	P	M	8
+J00/002	P	N	8
+J00/002	P	O	7
+J00/002	P	Q	5
+J00/002	P	S	3
+J00/002	Q	D	5
+J00/002	Q	E	6
+J00/002	Q	F	7
+J00/002	Q	G	6
+J00/002	Q	H	7
+J00/002	Q	I	5
+J00/002	Q	J	5
+J00/002	Q	K	7
+J00/002	Q	L	8
+J00/002	Q	M	5
+J00/002	Q	N	7
+J00/002	Q	O	7
+J00/002	Q	P	5
+J00/002	Q	R	5
+J00/002	Q	S	3
+J00/002	R	B	5
+J00/002	R	D	5
+J00/002	R	E	6
+J00/002	R	F	7
+J00/002	R	G	6
+J00/002	R	H	7
+J00/002	R	K	7
+J00/002	R	L	8
+J00/002	R	M	8
+J00/002	R	N	8
+J00/002	R	O	7
+J00/002	R	Q	5
+J00/002	R	S	3
+J00/002	S	A	2
+J00/002	S	B	2
+J00/002	S	C	2
+J00/002	S	D	2
+J00/002	S	E	2
+J00/002	S	F	2
+J00/002	S	G	2
+J00/002	S	H	2
+J00/002	S	I	2
+J00/002	S	J	2
+J00/002	S	K	2
+J00/002	S	L	2
+J00/002	S	M	2
+J00/002	S	N	2
+J00/002	S	O	2
+J00/002	S	P	2
+J00/002	S	Q	2
+J00/002	S	R	2
+J00/003	A	B	6
+J00/003	A	C	6
+J00/003	A	E	8
+J00/003	A	F	3
+J00/003	A	H	5
+J00/003	B	A	6
+J00/003	B	C	6
+J00/003	B	D	6
+J00/003	B	E	8
+J00/003	B	F	3
+J00/003	B	G	6
+J00/003	B	H	6
+J00/003	C	A	6
+J00/003	C	B	6
+J00/003	C	D	6
+J00/003	C	E	9
+J00/003	C	F	3
+J00/003	C	G	6
+J00/003	C	H	6
+J00/003	D	B	6
+J00/003	D	C	6
+J00/003	D	E	8
+J00/003	D	F	3
+J00/003	D	G	3
+J00/003	E	A	10
+J00/003	E	B	10
+J00/003	E	C	10
+J00/003	E	D	10
+J00/003	E	F	10
+J00/003	E	G	10
+J00/003	E	H	10
+J00/003	F	A	2
+J00/003	F	B	2
+J00/003	F	C	2
+J00/003	F	D	2
+J00/003	F	E	2
+J00/003	F	G	2
+J00/003	F	H	2
+J00/003	G	B	6
+J00/003	G	C	6
+J00/003	G	D	5
+J00/003	G	E	8
+J00/003	G	F	3
+J00/003	G	H	5
+J00/003	H	A	3
+J00/003	H	B	6
+J00/003	H	C	6
+J00/003	H	E	8
+J00/003	H	F	3
+J00/003	H	G	3
+J00/004	A	D	8
+J00/004	A	E	5
+J00/004	A	F	6
+J00/004	A	Q	3
+J00/004	A	U	7
+J00/004	A	V	8
+J00/004	A	W	6
+J00/004	B	C	6
+J00/004	B	D	5
+J00/004	B	E	8
+J00/004	B	H	6
+J00/004	B	J	10
+J00/004	B	Q	3
+J00/004	B	V	6
+J00/004	B	W	8
+J00/004	C	B	7
+J00/004	C	D	5
+J00/004	C	E	5
+J00/004	C	F	6
+J00/004	C	Q	3
+J00/004	C	U	7
+J00/004	C	V	8
+J00/004	C	W	6
+J00/004	D	A	7
+J00/004	D	B	6
+J00/004	D	C	7
+J00/004	D	G	6
+J00/004	D	J	13
+J00/004	D	Q	3
+J00/004	D	U	6
+J00/004	D	W	6
+J00/004	E	A	7
+J00/004	E	B	6
+J00/004	E	C	7
+J00/004	E	I	7
+J00/004	E	J	8
+J00/004	E	Q	3
+J00/004	E	U	6
+J00/004	E	V	7
+J00/004	F	A	9
+J00/004	F	C	9
+J00/004	F	Q	4
+J00/004	G	D	10
+J00/004	G	Q	4
+J00/004	G	V	10
+J00/004	H	B	9
+J00/004	H	Q	4
+J00/004	H	U	9
+J00/004	I	E	8
+J00/004	I	Q	3
+J00/004	I	W	8
+J00/004	J	B	9
+J00/004	J	D	9
+J00/004	J	E	9
+J00/004	J	Q	4
+J00/004	J	U	9
+J00/004	J	V	9
+J00/004	J	W	9
+J00/004	K	L	5
+J00/004	K	S	3
+J00/004	L	K	8
+J00/004	L	S	3
+J00/004	M	N	5
+J00/004	M	R	3
+J00/004	N	M	8
+J00/004	N	R	3
+J00/004	O	P	5
+J00/004	O	T	3
+J00/004	P	O	8
+J00/004	P	T	3
+J00/004	Q	A	2
+J00/004	Q	B	2
+J00/004	Q	C	2
+J00/004	Q	D	2
+J00/004	Q	E	2
+J00/004	Q	F	2
+J00/004	Q	G	2
+J00/004	Q	H	2
+J00/004	Q	I	2
+J00/004	Q	J	2
+J00/004	Q	U	2
+J00/004	Q	V	2
+J00/004	Q	W	2
+J00/004	R	M	2
+J00/004	R	N	2
+J00/004	S	K	2
+J00/004	S	L	2
+J00/004	T	O	2
+J00/004	T	P	2
+J00/004	U	A	9
+J00/004	U	C	9
+J00/004	U	D	10
+J00/004	U	E	8
+J00/004	U	H	6
+J00/004	U	J	13
+J00/004	U	Q	3
+J00/004	U	V	10
+J00/004	U	W	8
+J00/004	V	A	9
+J00/004	V	B	9
+J00/004	V	C	9
+J00/004	V	E	8
+J00/004	V	G	6
+J00/004	V	J	15
+J00/004	V	Q	3
+J00/004	V	U	9
+J00/004	V	W	8
+J00/004	W	A	9
+J00/004	W	B	9
+J00/004	W	C	9
+J00/004	W	D	10
+J00/004	W	I	7
+J00/004	W	J	8
+J00/004	W	Q	3
+J00/004	W	U	9
+J00/004	W	V	10
+J00/005	A	D	7
+J00/005	A	E	7
+J00/005	A	I	7
+J00/005	A	N	3
+J00/005	A	R	3
+J00/005	A	S	3
+J00/005	A	T	6
+J00/005	A	U	6
+J00/005	A	V	6
+J00/005	B	D	7
+J00/005	B	E	7
+J00/005	B	I	7
+J00/005	B	N	3
+J00/005	B	T	5
+J00/005	B	U	5
+J00/005	B	V	5
+J00/005	C	G	5
+J00/005	C	N	3
+J00/005	C	Q	5
+J00/005	C	R	5
+J00/005	C	S	5
+J00/005	D	A	5
+J00/005	D	B	5
+J00/005	D	N	3
+J00/005	D	Q	5
+J00/005	D	R	5
+J00/005	D	S	5
+J00/005	D	T	3
+J00/005	D	V	3
+J00/005	E	A	13
+J00/005	E	B	13
+J00/005	E	N	8
+J00/005	E	Q	13
+J00/005	E	R	13
+J00/005	E	S	13
+J00/005	E	T	3
+J00/005	E	U	3
+J00/005	E	V	3
+J00/005	G	C	5
+J00/005	G	J	5
+J00/005	G	N	3
+J00/005	G	T	5
+J00/005	G	U	5
+J00/005	G	V	5
+J00/005	H	N	3
+J00/005	H	P	3
+J00/005	H	Q	3
+J00/005	H	S	3
+J00/005	H	T	3
+J00/005	H	U	3
+J00/005	H	V	3
+J00/005	I	A	5
+J00/005	I	B	5
+J00/005	I	N	3
+J00/005	I	Q	5
+J00/005	I	R	5
+J00/005	I	S	5
+J00/005	J	G	5
+J00/005	J	N	3
+J00/005	J	Q	5
+J00/005	J	R	5
+J00/005	J	S	5
+J00/005	J	T	3
+J00/005	J	U	3
+J00/005	K	M	5
+J00/005	K	O	3
+J00/005	K	W	3
+J00/005	L	M	5
+J00/005	L	O	3
+J00/005	L	X	3
+J00/005	M	K	8
+J00/005	M	L	8
+J00/005	M	O	3
+J00/005	M	W	8
+J00/005	M	X	8
+J00/005	N	A	2
+J00/005	N	B	2
+J00/005	N	C	2
+J00/005	N	D	2
+J00/005	N	E	2
+J00/005	N	G	2
+J00/005	N	H	2
+J00/005	N	I	2
+J00/005	N	J	2
+J00/005	N	P	2
+J00/005	N	Q	2
+J00/005	N	R	2
+J00/005	N	S	2
+J00/005	N	T	2
+J00/005	N	U	2
+J00/005	N	V	2
+J00/005	O	K	2
+J00/005	O	L	2
+J00/005	O	M	2
+J00/005	O	W	2
+J00/005	O	X	2
+J00/005	P	H	2
+J00/005	P	N	2
+J00/005	P	Q	2
+J00/005	P	R	2
+J00/005	P	S	2
+J00/005	P	T	3
+J00/005	P	U	3
+J00/005	P	V	3
+J00/005	Q	C	5
+J00/005	Q	D	5
+J00/005	Q	E	6
+J00/005	Q	H	2
+J00/005	Q	I	6
+J00/005	Q	J	5
+J00/005	Q	N	2
+J00/005	Q	P	6
+J00/005	Q	R	2
+J00/005	Q	S	2
+J00/005	Q	T	2
+J00/005	Q	U	2
+J00/005	Q	V	2
+J00/005	R	A	2
+J00/005	R	C	5
+J00/005	R	D	5
+J00/005	R	E	6
+J00/005	R	I	5
+J00/005	R	J	5
+J00/005	R	N	2
+J00/005	R	P	2
+J00/005	R	Q	2
+J00/005	R	S	2
+J00/005	R	T	2
+J00/005	R	U	2
+J00/005	R	V	2
+J00/005	S	A	2
+J00/005	S	C	5
+J00/005	S	D	5
+J00/005	S	E	6
+J00/005	S	H	2
+J00/005	S	I	5
+J00/005	S	J	5
+J00/005	S	N	2
+J00/005	S	P	5
+J00/005	S	Q	2
+J00/005	S	R	2
+J00/005	S	T	2
+J00/005	S	U	2
+J00/005	S	V	2
+J00/005	T	A	5
+J00/005	T	B	5
+J00/005	T	D	2
+J00/005	T	E	2
+J00/005	T	G	5
+J00/005	T	H	2
+J00/005	T	J	2
+J00/005	T	N	2
+J00/005	T	P	2
+J00/005	T	Q	2
+J00/005	T	R	2
+J00/005	T	S	2
+J00/005	T	U	2
+J00/005	T	V	2
+J00/005	U	A	5
+J00/005	U	B	5
+J00/005	U	E	2
+J00/005	U	G	5
+J00/005	U	H	2
+J00/005	U	J	2
+J00/005	U	N	2
+J00/005	U	P	2
+J00/005	U	Q	2
+J00/005	U	R	2
+J00/005	U	S	2
+J00/005	U	T	2
+J00/005	U	V	2
+J00/005	V	A	5
+J00/005	V	B	5
+J00/005	V	D	2
+J00/005	V	E	2
+J00/005	V	G	5
+J00/005	V	H	2
+J00/005	V	N	2
+J00/005	V	P	2
+J00/005	V	Q	2
+J00/005	V	R	2
+J00/005	V	S	2
+J00/005	V	T	2
+J00/005	V	U	2
+J00/005	W	K	2
+J00/005	W	M	5
+J00/005	W	O	2
+J00/005	W	X	2
+J00/005	X	L	2
+J00/005	X	M	5
+J00/005	X	O	2
+J00/005	X	W	2
+J00/006	A	C	7
+J00/006	A	E	7
+J00/006	A	F	6
+J00/006	A	G	5
+J00/006	A	P	3
+J00/006	A	S	5
+J00/006	B	C	5
+J00/006	B	P	3
+J00/006	B	S	3
+J00/006	B	V	3
+J00/006	C	A	5
+J00/006	C	B	7
+J00/006	C	E	5
+J00/006	C	F	5
+J00/006	C	G	5
+J00/006	C	P	3
+J00/006	C	S	5
+J00/006	C	V	3
+J00/006	D	G	5
+J00/006	D	P	3
+J00/006	E	A	5
+J00/006	E	C	5
+J00/006	E	P	3
+J00/006	E	V	5
+J00/006	F	A	6
+J00/006	F	C	5
+J00/006	F	P	3
+J00/006	F	V	3
+J00/006	G	A	9
+J00/006	G	C	9
+J00/006	G	D	9
+J00/006	G	P	4
+J00/006	G	S	9
+J00/006	G	V	9
+J00/006	H	I	7
+J00/006	H	L	5
+J00/006	H	Q	3
+J00/006	H	U	3
+J00/006	H	W	3
+J00/006	I	H	6
+J00/006	I	J	5
+J00/006	I	Q	3
+J00/006	I	T	6
+J00/006	I	U	3
+J00/006	I	W	3
+J00/006	I	X	2
+J00/006	J	I	6
+J00/006	J	L	5
+J00/006	J	Q	3
+J00/006	J	T	3
+J00/006	J	U	3
+J00/006	J	X	3
+J00/006	K	L	5
+J00/006	K	Q	3
+J00/006	K	X	3
+J00/006	L	H	13
+J00/006	L	J	13
+J00/006	L	K	13
+J00/006	L	Q	8
+J00/006	L	T	13
+J00/006	L	U	13
+J00/006	L	W	3
+J00/006	M	N	6
+J00/006	M	O	7
+J00/006	M	R	3
+J00/006	N	M	6
+J00/006	N	R	3
+J00/006	O	M	9
+J00/006	O	R	4
+J00/006	P	A	2
+J00/006	P	B	2
+J00/006	P	C	2
+J00/006	P	D	2
+J00/006	P	E	2
+J00/006	P	F	2
+J00/006	P	G	2
+J00/006	P	S	2
+J00/006	P	V	2
+J00/006	Q	H	2
+J00/006	Q	I	2
+J00/006	Q	J	2
+J00/006	Q	K	2
+J00/006	Q	L	2
+J00/006	Q	T	2
+J00/006	Q	U	2
+J00/006	Q	W	2
+J00/006	Q	X	2
+J00/006	R	M	2
+J00/006	R	N	2
+J00/006	R	O	2
+J00/006	S	A	5
+J00/006	S	B	2
+J00/006	S	C	5
+J00/006	S	G	5
+J00/006	S	P	3
+J00/006	S	V	2
+J00/006	T	I	7
+J00/006	T	J	2
+J00/006	T	L	5
+J00/006	T	Q	3
+J00/006	T	U	3
+J00/006	T	X	3
+J00/006	U	H	2
+J00/006	U	I	2
+J00/006	U	J	2
+J00/006	U	L	5
+J00/006	U	Q	3
+J00/006	U	T	2
+J00/006	U	W	2
+J00/006	V	B	2
+J00/006	V	C	2
+J00/006	V	E	5
+J00/006	V	F	2
+J00/006	V	G	5
+J00/006	V	P	2
+J00/006	V	S	2
+J00/006	W	H	2
+J00/006	W	I	2
+J00/006	W	L	2
+J00/006	W	Q	2
+J00/006	W	U	2
+J00/006	X	I	2
+J00/006	X	J	2
+J00/006	X	K	2
+J00/006	X	Q	2
+J00/006	X	T	2
+J00/007	A	C	6
+J00/007	A	D	9
+J00/007	A	E	7
+J00/007	A	G	9
+J00/007	A	H	6
+J00/007	A	I	8
+J00/007	A	J	3
+J00/007	B	E	5
+J00/007	B	G	6
+J00/007	B	H	9
+J00/007	B	I	10
+J00/007	B	J	3
+J00/007	B	K	3
+J00/007	C	A	7
+J00/007	C	E	6
+J00/007	C	G	6
+J00/007	C	I	10
+J00/007	C	J	3
+J00/007	C	K	5
+J00/007	D	A	5
+J00/007	D	F	6
+J00/007	D	J	3
+J00/007	D	K	5
+J00/007	E	A	5
+J00/007	E	B	6
+J00/007	E	C	6
+J00/007	E	H	10
+J00/007	E	I	7
+J00/007	E	J	3
+J00/007	E	K	5
+J00/007	F	D	9
+J00/007	F	J	4
+J00/007	F	K	4
+J00/007	G	A	14
+J00/007	G	B	14
+J00/007	G	C	14
+J00/007	G	J	6
+J00/007	G	K	14
+J00/007	H	A	15
+J00/007	H	B	15
+J00/007	H	E	15
+J00/007	H	J	7
+J00/007	H	K	15
+J00/007	I	A	16
+J00/007	I	B	16
+J00/007	I	C	16
+J00/007	I	E	16
+J00/007	I	J	7
+J00/007	I	K	16
+J00/007	J	A	2
+J00/007	J	B	2
+J00/007	J	C	2
+J00/007	J	D	2
+J00/007	J	E	2
+J00/007	J	F	2
+J00/007	J	G	2
+J00/007	J	H	2
+J00/007	J	I	2
+J00/007	J	K	2
+J00/007	K	B	2
+J00/007	K	C	6
+J00/007	K	D	8
+J00/007	K	E	7
+J00/007	K	F	2
+J00/007	K	G	9
+J00/007	K	H	6
+J00/007	K	I	8
+J00/007	K	J	3
+J00/008	A	C	6
+J00/008	A	D	5
+J00/008	A	E	9
+J00/008	A	F	10
+J00/008	A	G	3
+J00/008	A	H	6
+J00/008	A	I	5
+J00/008	B	C	7
+J00/008	B	D	7
+J00/008	B	E	9
+J00/008	B	F	10
+J00/008	B	G	3
+J00/008	B	H	7
+J00/008	B	I	7
+J00/008	C	A	7
+J00/008	C	B	7
+J00/008	C	E	10
+J00/008	C	F	11
+J00/008	C	G	3
+J00/008	C	I	3
+J00/008	D	A	7
+J00/008	D	B	7
+J00/008	D	E	11
+J00/008	D	F	11
+J00/008	D	G	3
+J00/008	D	H	3
+J00/008	E	A	14
+J00/008	E	B	14
+J00/008	E	C	14
+J00/008	E	D	14
+J00/008	E	G	9
+J00/008	E	H	14
+J00/008	E	I	14
+J00/008	F	A	14
+J00/008	F	B	14
+J00/008	F	C	14
+J00/008	F	D	14
+J00/008	F	G	9
+J00/008	F	H	14
+J00/008	F	I	14
+J00/008	G	A	2
+J00/008	G	B	2
+J00/008	G	C	2
+J00/008	G	D	2
+J00/008	G	E	2
+J00/008	G	F	2
+J00/008	G	H	2
+J00/008	G	I	2
+J00/008	H	A	7
+J00/008	H	B	7
+J00/008	H	D	2
+J00/008	H	E	10
+J00/008	H	F	11
+J00/008	H	G	3
+J00/008	H	I	2
+J00/008	I	A	7
+J00/008	I	B	7
+J00/008	I	C	2
+J00/008	I	E	11
+J00/008	I	F	11
+J00/008	I	G	3
+J00/008	I	H	3
+J00/009	A	C	7
+J00/009	A	D	7
+J00/009	A	E	7
+J00/009	A	F	6
+J00/009	A	H	8
+J00/009	A	I	10
+J00/009	A	R	3
+J00/009	A	T	3
+J00/009	B	C	5
+J00/009	B	D	6
+J00/009	B	E	5
+J00/009	B	F	8
+J00/009	B	H	5
+J00/009	B	I	8
+J00/009	B	P	3
+J00/009	B	R	3
+J00/009	C	A	5
+J00/009	C	B	6
+J00/009	C	F	10
+J00/009	C	G	6
+J00/009	C	I	8
+J00/009	C	P	5
+J00/009	C	R	3
+J00/009	C	T	6
+J00/009	D	A	6
+J00/009	D	B	5
+J00/009	D	E	5
+J00/009	D	F	8
+J00/009	D	G	8
+J00/009	D	I	6
+J00/009	D	P	6
+J00/009	D	R	3
+J00/009	D	T	8
+J00/009	E	A	5
+J00/009	E	B	6
+J00/009	E	D	6
+J00/009	E	F	10
+J00/009	E	G	6
+J00/009	E	P	5
+J00/009	E	R	3
+J00/009	E	T	6
+J00/009	F	A	15
+J00/009	F	B	15
+J00/009	F	C	15
+J00/009	F	D	15
+J00/009	F	E	15
+J00/009	F	P	15
+J00/009	F	R	7
+J00/009	F	T	15
+J00/009	G	C	12
+J00/009	G	D	12
+J00/009	G	E	12
+J00/009	G	P	5
+J00/009	G	R	5
+J00/009	H	A	12
+J00/009	H	B	12
+J00/009	H	P	12
+J00/009	H	R	5
+J00/009	H	T	12
+J00/009	I	A	17
+J00/009	I	B	17
+J00/009	I	C	17
+J00/009	I	D	17
+J00/009	I	P	17
+J00/009	I	R	8
+J00/009	I	T	17
+J00/009	L	M	6
+J00/009	L	S	3
+J00/009	M	L	16
+J00/009	M	S	7
+J00/009	N	O	6
+J00/009	N	S	3
+J00/009	O	N	16
+J00/009	O	S	7
+J00/009	P	B	5
+J00/009	P	C	7
+J00/009	P	D	7
+J00/009	P	E	7
+J00/009	P	F	6
+J00/009	P	G	3
+J00/009	P	H	8
+J00/009	P	I	10
+J00/009	P	R	3
+J00/009	P	T	5
+J00/009	R	A	2
+J00/009	R	B	2
+J00/009	R	C	2
+J00/009	R	D	2
+J00/009	R	E	2
+J00/009	R	F	2
+J00/009	R	G	2
+J00/009	R	H	2
+J00/009	R	I	2
+J00/009	R	P	2
+J00/009	R	T	2
+J00/009	S	L	2
+J00/009	S	M	2
+J00/009	S	N	2
+J00/009	S	O	2
+J00/009	T	A	5
+J00/009	T	C	12
+J00/009	T	D	12
+J00/009	T	E	12
+J00/009	T	F	8
+J00/009	T	H	5
+J00/009	T	I	8
+J00/009	T	P	5
+J00/009	T	R	5
+J00/010	A	C	6
+J00/010	A	D	6
+J00/010	A	E	10
+J00/010	A	F	10
+J00/010	A	G	10
+J00/010	A	H	10
+J00/010	A	I	3
+J00/010	A	K	8
+J00/010	B	C	6
+J00/010	B	D	6
+J00/010	B	E	10
+J00/010	B	F	10
+J00/010	B	G	10
+J00/010	B	H	10
+J00/010	B	I	3
+J00/010	B	J	7
+J00/010	C	A	7
+J00/010	C	B	7
+J00/010	C	E	10
+J00/010	C	F	10
+J00/010	C	G	10
+J00/010	C	H	10
+J00/010	C	I	3
+J00/010	C	J	7
+J00/010	C	K	7
+J00/010	D	A	7
+J00/010	D	B	7
+J00/010	D	E	10
+J00/010	D	F	10
+J00/010	D	G	10
+J00/010	D	H	10
+J00/010	D	I	3
+J00/010	D	J	7
+J00/010	D	K	7
+J00/010	E	A	20
+J00/010	E	B	20
+J00/010	E	C	20
+J00/010	E	D	20
+J00/010	E	I	9
+J00/010	E	J	20
+J00/010	E	K	20
+J00/010	F	A	20
+J00/010	F	B	20
+J00/010	F	C	20
+J00/010	F	D	20
+J00/010	F	I	9
+J00/010	F	J	20
+J00/010	F	K	20
+J00/010	G	A	20
+J00/010	G	B	20
+J00/010	G	C	20
+J00/010	G	D	20
+J00/010	G	I	9
+J00/010	G	J	20
+J00/010	G	K	20
+J00/010	H	A	20
+J00/010	H	B	20
+J00/010	H	C	20
+J00/010	H	D	20
+J00/010	H	I	9
+J00/010	H	J	20
+J00/010	H	K	20
+J00/010	I	A	2
+J00/010	I	B	2
+J00/010	I	C	2
+J00/010	I	D	2
+J00/010	I	E	2
+J00/010	I	F	2
+J00/010	I	G	2
+J00/010	I	H	2
+J00/010	I	J	2
+J00/010	I	K	2
+J00/010	J	B	8
+J00/010	J	C	6
+J00/010	J	D	6
+J00/010	J	E	10
+J00/010	J	F	10
+J00/010	J	G	10
+J00/010	J	H	10
+J00/010	J	I	3
+J00/010	J	K	8
+J00/010	K	A	7
+J00/010	K	C	6
+J00/010	K	D	6
+J00/010	K	E	10
+J00/010	K	F	10
+J00/010	K	G	10
+J00/010	K	H	10
+J00/010	K	I	3
+J00/010	K	J	7
+J00/011	A	D	7
+J00/011	A	E	8
+J00/011	A	F	7
+J00/011	A	H	14
+J00/011	A	I	11
+J00/011	A	J	12
+J00/011	A	K	5
+J00/011	A	L	11
+J00/011	A	M	3
+J00/011	A	N	7
+J00/011	A	P	8
+J00/011	C	D	8
+J00/011	C	E	7
+J00/011	C	F	5
+J00/011	C	I	7
+J00/011	C	J	12
+J00/011	C	L	15
+J00/011	C	M	3
+J00/011	C	N	8
+J00/011	C	O	3
+J00/011	C	P	7
+J00/011	D	A	6
+J00/011	D	C	6
+J00/011	D	F	6
+J00/011	D	H	14
+J00/011	D	I	14
+J00/011	D	J	7
+J00/011	D	L	12
+J00/011	D	M	3
+J00/011	D	O	6
+J00/011	D	P	3
+J00/011	E	A	6
+J00/011	E	C	6
+J00/011	E	F	6
+J00/011	E	H	12
+J00/011	E	I	13
+J00/011	E	J	10
+J00/011	E	L	7
+J00/011	E	M	3
+J00/011	E	N	3
+J00/011	E	O	6
+J00/011	F	A	7
+J00/011	F	C	6
+J00/011	F	D	10
+J00/011	F	E	8
+J00/011	F	H	7
+J00/011	F	I	12
+J00/011	F	J	13
+J00/011	F	M	3
+J00/011	F	N	10
+J00/011	F	O	7
+J00/011	F	P	8
+J00/011	G	K	5
+J00/011	G	M	3
+J00/011	H	A	13
+J00/011	H	D	13
+J00/011	H	E	13
+J00/011	H	F	13
+J00/011	H	M	8
+J00/011	H	N	13
+J00/011	H	O	13
+J00/011	H	P	13
+J00/011	I	A	11
+J00/011	I	C	11
+J00/011	I	D	11
+J00/011	I	E	11
+J00/011	I	F	11
+J00/011	I	M	6
+J00/011	I	N	11
+J00/011	I	O	11
+J00/011	I	P	11
+J00/011	J	A	12
+J00/011	J	C	12
+J00/011	J	D	12
+J00/011	J	E	12
+J00/011	J	F	12
+J00/011	J	M	7
+J00/011	J	N	12
+J00/011	J	O	12
+J00/011	J	P	12
+J00/011	K	A	12
+J00/011	K	G	12
+J00/011	K	M	7
+J00/011	K	N	12
+J00/011	K	O	12
+J00/011	K	P	12
+J00/011	L	A	10
+J00/011	L	C	10
+J00/011	L	D	10
+J00/011	L	E	10
+J00/011	L	M	5
+J00/011	L	N	10
+J00/011	L	O	10
+J00/011	L	P	10
+J00/011	M	A	2
+J00/011	M	C	2
+J00/011	M	D	2
+J00/011	M	E	2
+J00/011	M	F	2
+J00/011	M	G	2
+J00/011	M	H	2
+J00/011	M	I	2
+J00/011	M	J	2
+J00/011	M	K	2
+J00/011	M	L	2
+J00/011	M	N	2
+J00/011	M	O	2
+J00/011	M	P	2
+J00/011	N	A	6
+J00/011	N	C	6
+J00/011	N	E	8
+J00/011	N	F	6
+J00/011	N	H	14
+J00/011	N	I	14
+J00/011	N	J	7
+J00/011	N	K	5
+J00/011	N	L	12
+J00/011	N	M	3
+J00/011	N	O	6
+J00/011	N	P	8
+J00/011	O	C	2
+J00/011	O	D	7
+J00/011	O	E	8
+J00/011	O	F	7
+J00/011	O	H	14
+J00/011	O	I	11
+J00/011	O	J	12
+J00/011	O	K	5
+J00/011	O	L	9
+J00/011	O	M	3
+J00/011	O	N	7
+J00/011	O	P	8
+J00/011	P	A	6
+J00/011	P	C	6
+J00/011	P	D	8
+J00/011	P	F	6
+J00/011	P	H	12
+J00/011	P	I	13
+J00/011	P	J	10
+J00/011	P	K	5
+J00/011	P	L	7
+J00/011	P	M	3
+J00/011	P	N	8
+J00/011	P	O	6
+\.
+
+
+--
+-- Data for Name: m37_averages; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.m37_averages  FROM stdin;
+\.
+
+
+--
+-- Data for Name: modified_intergreens; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.modified_intergreens (controller_key, end_phase_key, start_phase_key, intergreen_time, time_period_id, original_time) FROM stdin;
+J00/002	L	P	17	AM	18
+J00/002	M	P	16	AM	17
+J00/002	L	A	17	AM	18
+J00/002	M	A	16	AM	17
+J00/002	L	I	17	AM	18
+J00/002	M	I	16	AM	17
+J00/002	L	J	17	AM	18
+J00/002	M	J	16	AM	17
+J00/003	C	E	7	AM	9
+J00/005	K	M	3	AM	5
+J00/005	L	M	3	AM	5
+J00/005	M	K	4	AM	8
+J00/005	M	L	4	AM	8
+J00/006	G	D	8	AM	9
+J00/006	W	H	1	AM	2
+J00/006	K	L	3	AM	5
+J00/006	J	L	3	AM	5
+J00/006	J	I	3	AM	6
+J00/006	L	K	8	AM	13
+J00/006	L	J	8	AM	13
+J00/006	I	J	0	AM	5
+J00/006	I	W	0	AM	3
+J00/007	H	A	14	AM	15
+J00/007	I	A	15	AM	16
+J00/007	G	A	13	AM	14
+J00/007	H	B	14	AM	15
+J00/007	I	B	15	AM	16
+J00/007	G	B	13	AM	14
+J00/007	E	H	6	AM	10
+J00/007	E	I	6	AM	7
+J00/007	D	F	2	AM	6
+J00/009	D	E	4	AM	5
+J00/009	I	A	16	AM	17
+J00/009	H	A	11	AM	12
+J00/009	F	A	14	AM	15
+J00/009	I	B	16	AM	17
+J00/009	H	B	11	AM	12
+J00/009	F	B	14	AM	15
+J00/010	C	E	9	AM	10
+J00/010	D	E	9	AM	10
+J00/010	C	F	9	AM	10
+J00/010	D	F	9	AM	10
+J00/010	C	H	9	AM	10
+J00/010	D	H	9	AM	10
+J00/010	C	G	9	AM	10
+J00/010	D	G	9	AM	10
+J00/010	E	A	17	AM	20
+J00/010	F	A	17	AM	20
+J00/010	H	A	17	AM	20
+J00/010	G	A	17	AM	20
+J00/010	E	B	17	AM	20
+J00/010	F	B	17	AM	20
+J00/010	H	B	17	AM	20
+J00/010	G	B	17	AM	20
+\.
+
+
+--
+-- Data for Name: modified_phase_delays; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.modified_phase_delays (controller_key, end_stage_key, start_stage_key, phase_ref, delay_time, is_absolute, original_delay_time, time_period_id) FROM stdin;
+J00/006	4	1	E	8	t	9	AM
+J00/006	4	1	F	8	t	9	AM
+\.
+
+
+--
+-- Data for Name: phase_delays; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.phase_delays (controller_key, end_stage_key, start_stage_key, phase_ref, delay_time, is_absolute) FROM stdin;
+J00/002	0	3	E	6	t
+J00/002	0	9	G	6	t
+J00/002	0	9	E	6	t
+J00/002	0	3	G	6	t
+J00/002	4	3	G	9	t
+J00/002	4	9	G	9	t
+J00/002	4	9	E	9	t
+J00/002	4	3	E	9	t
+J00/002	5	3	E	22	t
+J00/002	5	7	M	1	t
+J00/002	5	9	G	22	t
+J00/002	5	9	E	22	t
+J00/002	5	8	M	1	t
+J00/002	5	1	M	1	t
+J00/002	5	2	M	1	t
+J00/002	5	3	M	1	t
+J00/002	5	4	M	1	t
+J00/002	5	3	G	22	t
+J00/002	5	6	M	1	t
+J00/002	7	3	G	11	t
+J00/002	7	9	G	11	t
+J00/002	7	9	E	11	t
+J00/002	7	3	E	11	t
+J00/002	8	3	E	11	t
+J00/002	8	9	G	11	t
+J00/002	8	9	E	11	t
+J00/002	8	3	G	11	t
+J00/002	9	1	E	10	t
+J00/002	9	8	K	10	t
+J00/002	9	8	H	10	t
+J00/002	9	8	G	10	t
+J00/002	9	8	F	10	t
+J00/002	9	8	E	10	t
+J00/002	9	7	K	10	t
+J00/002	9	7	H	10	t
+J00/002	9	7	G	10	t
+J00/002	9	7	F	10	t
+J00/002	9	7	E	10	t
+J00/002	9	6	K	10	t
+J00/002	9	6	H	10	t
+J00/002	9	6	G	10	t
+J00/002	9	6	F	10	t
+J00/002	9	6	E	10	t
+J00/002	9	4	K	10	t
+J00/002	9	4	H	10	t
+J00/002	9	4	G	10	t
+J00/002	9	4	F	10	t
+J00/002	9	4	E	10	t
+J00/002	9	2	K	10	t
+J00/002	9	2	H	10	t
+J00/002	9	2	G	10	t
+J00/002	9	2	F	10	t
+J00/002	9	2	E	10	t
+J00/002	9	1	K	10	t
+J00/002	9	1	H	10	t
+J00/002	9	1	G	10	t
+J00/002	9	1	F	10	t
+J00/004	1	3	B	2	t
+J00/004	1	5	A	2	t
+J00/004	1	5	B	2	t
+J00/004	1	6	A	2	t
+J00/004	1	3	I	2	t
+J00/004	1	3	A	2	t
+J00/004	2	3	I	2	t
+J00/004	2	6	I	1	t
+J00/004	2	4	A	2	t
+J00/004	2	6	A	3	t
+J00/004	2	5	A	2	t
+J00/004	2	5	J	1	t
+J00/004	2	3	A	2	t
+J00/004	2	3	J	1	t
+J00/004	3	1	D	2	t
+J00/004	3	2	D	2	t
+J00/004	3	2	E	2	t
+J00/004	3	4	D	3	t
+J00/004	3	4	E	3	t
+J00/004	3	1	E	2	t
+J00/004	4	2	B	3	t
+J00/004	4	3	I	2	t
+J00/004	4	3	B	2	t
+J00/004	4	5	B	5	t
+J00/004	5	4	D	3	t
+J00/004	5	1	D	2	t
+J00/004	5	2	D	2	t
+J00/004	6	1	E	2	t
+J00/004	6	4	E	3	t
+J00/004	6	2	E	2	t
+J00/005	1	0	B	8	t
+J00/005	1	7	A	4	t
+J00/005	1	6	G	10	t
+J00/005	1	7	G	10	t
+J00/005	1	6	A	4	t
+J00/005	1	6	B	8	t
+J00/005	1	7	B	8	t
+J00/005	1	8	G	10	t
+J00/005	1	8	B	8	t
+J00/005	1	8	A	4	t
+J00/005	1	2	A	4	t
+J00/005	1	2	B	8	t
+J00/005	1	2	P	12	t
+J00/005	1	2	G	10	t
+J00/005	1	0	G	10	t
+J00/005	1	0	A	4	t
+J00/005	2	1	D	8	t
+J00/005	2	4	C	8	t
+J00/005	2	4	D	8	t
+J00/005	2	4	H	13	t
+J00/005	2	5	C	8	t
+J00/005	2	5	D	8	t
+J00/005	2	4	J	8	t
+J00/005	2	4	I	8	t
+J00/005	2	5	J	8	t
+J00/005	2	5	I	8	t
+J00/005	2	3	C	8	t
+J00/005	2	3	D	8	t
+J00/005	2	3	J	8	t
+J00/005	2	3	I	8	t
+J00/005	2	1	C	8	t
+J00/005	2	1	J	8	t
+J00/005	2	1	I	8	t
+J00/005	2	1	H	13	t
+J00/005	3	0	G	6	t
+J00/005	3	8	G	6	t
+J00/005	3	7	G	6	t
+J00/005	3	6	G	6	t
+J00/005	3	2	P	11	t
+J00/005	3	2	G	6	t
+J00/005	3	0	B	6	t
+J00/005	4	0	B	8	t
+J00/005	4	8	B	8	t
+J00/005	4	6	B	8	t
+J00/005	4	7	B	8	t
+J00/005	4	2	B	8	t
+J00/005	4	0	G	6	t
+J00/005	6	4	H	5	t
+J00/005	6	1	H	5	t
+J00/005	7	1	H	5	t
+J00/005	7	4	H	5	t
+J00/005	8	4	H	5	t
+J00/005	8	1	H	5	t
+J00/006	2	1	F	5	t
+J00/006	2	5	F	5	t
+J00/006	4	1	E	9	t
+J00/006	4	5	F	9	t
+J00/006	4	5	E	9	t
+J00/006	4	1	F	9	t
+J00/006	6	5	F	5	t
+J00/006	6	1	F	5	t
+J00/006	10	8	I	7	t
+J00/006	10	13	I	7	t
+J00/006	10	12	I	8	t
+J00/006	10	11	I	10	t
+J00/006	10	9	I	7	t
+J00/006	16	15	N	3	t
+J00/007	1	3	B	3	t
+J00/007	1	4	A	1	t
+J00/007	2	3	B	3	t
+J00/007	2	5	F	3	t
+J00/007	3	1	E	8	t
+J00/007	3	5	D	9	t
+J00/007	3	5	E	9	t
+J00/007	3	2	D	8	t
+J00/007	3	2	E	8	t
+J00/007	3	4	D	4	t
+J00/007	3	1	D	9	t
+J00/007	4	2	G	1	t
+J00/007	4	3	H	1	t
+J00/007	4	5	G	2	t
+J00/007	4	5	F	12	t
+J00/007	4	5	H	1	t
+J00/007	4	1	F	12	t
+J00/007	4	1	G	2	t
+J00/007	4	1	H	1	t
+J00/007	4	2	H	1	t
+J00/009	1	3	B	4	t
+J00/009	1	3	A	4	t
+J00/009	3	1	C	4	t
+J00/009	3	6	C	4	t
+J00/009	3	6	D	4	t
+J00/009	3	2	D	6	t
+J00/009	3	1	D	4	t
+J00/009	3	2	C	6	t
+J00/009	4	1	C	6	t
+J00/009	4	6	C	6	t
+J00/009	4	2	C	7	t
+J00/009	5	6	F	2	t
+J00/009	5	2	H	5	t
+J00/009	5	2	G	12	t
+J00/009	5	2	F	2	t
+J00/009	5	1	H	5	t
+J00/009	5	1	F	2	t
+J00/009	5	3	G	5	t
+J00/009	5	6	H	5	t
+J00/009	5	3	F	2	t
+J00/009	6	3	B	6	t
+J00/009	6	2	B	2	t
+J00/011	1	0	G	8	t
+J00/011	1	3	E	10	t
+J00/011	1	2	C	7	t
+J00/011	2	0	G	7	t
+J00/011	2	7	C	1	t
+J00/011	2	4	G	7	t
+J00/011	2	1	C	2	t
+J00/011	3	0	G	7	t
+J00/011	3	4	G	7	t
+J00/011	4	0	I	2	t
+J00/011	4	7	L	3	t
+J00/011	4	3	J	1	t
+J00/011	4	3	I	2	t
+J00/011	4	3	L	3	t
+J00/011	4	3	K	1	t
+J00/011	4	6	L	3	t
+J00/011	4	6	K	1	t
+J00/011	4	6	J	1	t
+J00/011	4	6	I	2	t
+J00/011	4	5	L	3	t
+J00/011	4	5	K	1	t
+J00/011	4	7	J	1	t
+J00/011	4	7	I	2	t
+J00/011	4	5	J	1	t
+J00/011	4	7	K	1	t
+J00/011	4	5	I	2	t
+J00/011	4	1	L	3	t
+J00/011	4	1	K	1	t
+J00/011	4	1	J	1	t
+J00/011	4	1	I	2	t
+J00/011	4	2	L	3	t
+J00/011	4	2	K	1	t
+J00/011	4	2	J	1	t
+J00/011	4	2	I	2	t
+J00/011	4	0	L	3	t
+J00/011	4	0	K	1	t
+J00/011	4	0	J	1	t
+J00/011	5	4	G	5	t
+J00/011	5	0	G	5	t
+J00/011	6	4	G	7	t
+J00/011	6	0	G	7	t
+J00/011	6	3	D	8	t
+J00/011	7	0	G	7	t
+J00/011	7	4	G	7	t
+\.
+
+
+--
+-- Data for Name: phase_timings; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.phase_timings (controller_key, site_id, phase_ref, index, time_period_id, start_time, end_time) FROM stdin;
+J00/002	J00/002	L	0	AM	32	38
+J00/002	J00/002	M	0	AM	32	39
+J00/002	J00/002	I	0	AM	55	83
+J00/002	J00/002	A	0	AM	55	88
+J00/002	J00/002	J	0	AM	55	83
+J00/002	J00/002	P	0	AM	55	61
+J00/002	J00/002	C	0	AM	63	103
+J00/002	J00/002	B	0	AM	88	98
+J00/002	J00/002	D	0	AM	103	110
+J00/002	J00/002	G	0	AM	119	21
+J00/002	J00/002	E	0	AM	119	21
+J00/002	J00/002	O	0	AM	115	21
+J00/002	J00/002	F	0	AM	115	21
+J00/002	J00/002	H	0	AM	115	21
+J00/002	J00/002	K	0	AM	115	21
+J00/002	J00/002	L	0	OP	32	38
+J00/002	J00/002	M	0	OP	32	39
+J00/002	J00/002	I	0	OP	56	73
+J00/002	J00/002	A	0	OP	56	78
+J00/002	J00/002	J	0	OP	56	73
+J00/002	J00/002	P	0	OP	56	60
+J00/002	J00/002	C	0	OP	62	99
+J00/002	J00/002	B	0	OP	78	94
+J00/002	J00/002	D	0	OP	99	106
+J00/002	J00/002	G	0	OP	115	21
+J00/002	J00/002	E	0	OP	115	21
+J00/002	J00/002	O	0	OP	111	21
+J00/002	J00/002	F	0	OP	111	21
+J00/002	J00/002	H	0	OP	111	21
+J00/002	J00/002	K	0	OP	111	21
+J00/002	J00/002	L	0	PM	31	38
+J00/002	J00/002	M	0	PM	31	39
+J00/002	J00/002	I	0	PM	56	83
+J00/002	J00/002	A	0	PM	56	88
+J00/002	J00/002	J	0	PM	56	83
+J00/002	J00/002	P	0	PM	56	61
+J00/002	J00/002	C	0	PM	63	103
+J00/002	J00/002	B	0	PM	88	98
+J00/002	J00/002	D	0	PM	103	110
+J00/002	J00/002	G	0	PM	119	20
+J00/002	J00/002	E	0	PM	119	20
+J00/002	J00/002	O	0	PM	115	20
+J00/002	J00/002	F	0	PM	115	20
+J00/002	J00/002	H	0	PM	115	20
+J00/002	J00/002	K	0	PM	115	20
+J00/003	J00/003	E	0	AM	10	18
+J00/003	J00/003	D	0	AM	28	57
+J00/003	J00/003	A	0	AM	28	57
+J00/003	J00/003	B	0	AM	63	79
+J00/003	J00/003	C	0	AM	85	3
+J00/003	J00/003	E	0	OP	12	18
+J00/003	J00/003	D	0	OP	28	57
+J00/003	J00/003	A	0	OP	28	57
+J00/003	J00/003	B	0	OP	63	79
+J00/003	J00/003	C	0	OP	85	3
+J00/003	J00/003	E	0	PM	18	24
+J00/003	J00/003	D	0	PM	34	63
+J00/003	J00/003	A	0	PM	34	63
+J00/003	J00/003	B	0	PM	69	83
+J00/003	J00/003	C	0	PM	89	9
+J00/004	J00/004	B	0	AM	11	22
+J00/004	J00/004	A	0	AM	11	41
+J00/004	J00/004	G	0	AM	10	39
+J00/004	J00/004	J	0	AM	32	40
+J00/004	J00/004	H	0	AM	28	2
+J00/004	J00/004	C	0	AM	28	41
+J00/004	J00/004	I	0	AM	0	41
+J00/004	J00/004	E	0	AM	49	73
+J00/004	J00/004	D	0	AM	49	4
+J00/004	J00/004	F	0	AM	47	2
+J00/004	J00/004	V	0	AM	0	2
+J00/004	J00/135	N	0	AM	51	47
+J00/004	J00/135	M	0	AM	55	46
+J00/004	J00/136	L	0	AM	14	10
+J00/004	J00/136	K	0	AM	18	9
+J00/004	J00/137	P	0	AM	14	10
+J00/004	J00/137	O	0	AM	18	9
+J00/004	J00/004	B	0	OP	11	22
+J00/004	J00/004	A	0	OP	11	42
+J00/004	J00/004	G	0	OP	10	40
+J00/004	J00/004	J	0	OP	32	41
+J00/004	J00/004	H	0	OP	28	2
+J00/004	J00/004	C	0	OP	28	42
+J00/004	J00/004	I	0	OP	0	42
+J00/004	J00/004	E	0	OP	50	73
+J00/004	J00/004	D	0	OP	50	4
+J00/004	J00/004	F	0	OP	48	2
+J00/004	J00/004	V	0	OP	0	2
+J00/004	J00/135	N	0	OP	51	47
+J00/004	J00/135	M	0	OP	55	46
+J00/004	J00/136	L	0	OP	14	10
+J00/004	J00/136	K	0	OP	18	9
+J00/004	J00/137	P	0	OP	14	10
+J00/004	J00/137	O	0	OP	18	9
+J00/004	J00/004	B	0	PM	11	24
+J00/004	J00/004	A	0	PM	11	42
+J00/004	J00/004	G	0	PM	10	40
+J00/004	J00/004	J	0	PM	34	41
+J00/004	J00/004	H	0	PM	30	2
+J00/004	J00/004	C	0	PM	30	42
+J00/004	J00/004	I	0	PM	0	42
+J00/004	J00/004	E	0	PM	50	73
+J00/004	J00/004	D	0	PM	50	4
+J00/004	J00/004	F	0	PM	48	2
+J00/004	J00/004	V	0	PM	0	2
+J00/004	J00/135	N	0	PM	52	48
+J00/004	J00/135	M	0	PM	56	47
+J00/004	J00/136	L	0	PM	14	10
+J00/004	J00/136	K	0	PM	18	9
+J00/004	J00/137	P	0	PM	14	10
+J00/004	J00/137	O	0	PM	18	9
+J00/005	J00/005	J	0	AM	48	69
+J00/005	J00/005	D	0	AM	48	69
+J00/005	J00/005	P	0	AM	45	69
+J00/005	J00/005	I	0	AM	48	84
+J00/005	J00/005	C	0	AM	48	84
+J00/005	J00/005	E	0	AM	48	69
+J00/005	J00/005	T	0	AM	72	84
+J00/005	J00/005	B	0	AM	89	41
+J00/005	J00/005	A	0	AM	89	37
+J00/005	J00/005	G	0	AM	89	43
+J00/005	J00/005	H	0	AM	89	33
+J00/005	J00/138	M	0	AM	28	26
+J00/005	J00/138	L	0	AM	30	93
+J00/005	J00/138	K	0	AM	30	93
+J00/005	J00/138	M	1	AM	96	95
+J00/005	J00/138	L	1	AM	99	25
+J00/005	J00/138	K	1	AM	99	25
+J00/005	J00/005	J	0	OP	48	69
+J00/005	J00/005	D	0	OP	48	69
+J00/005	J00/005	P	0	OP	45	69
+J00/005	J00/005	I	0	OP	48	84
+J00/005	J00/005	C	0	OP	48	84
+J00/005	J00/005	E	0	OP	48	69
+J00/005	J00/005	T	0	OP	72	84
+J00/005	J00/005	B	0	OP	89	41
+J00/005	J00/005	A	0	OP	89	37
+J00/005	J00/005	G	0	OP	89	43
+J00/005	J00/005	H	0	OP	89	33
+J00/005	J00/138	M	0	OP	30	26
+J00/005	J00/138	L	0	OP	34	93
+J00/005	J00/138	K	0	OP	34	93
+J00/005	J00/138	M	1	OP	98	95
+J00/005	J00/138	L	1	OP	103	25
+J00/005	J00/138	K	1	OP	103	25
+J00/005	J00/005	J	0	PM	48	69
+J00/005	J00/005	D	0	PM	48	69
+J00/005	J00/005	P	0	PM	45	69
+J00/005	J00/005	I	0	PM	48	84
+J00/005	J00/005	C	0	PM	48	84
+J00/005	J00/005	E	0	PM	48	69
+J00/005	J00/005	T	0	PM	72	84
+J00/005	J00/005	B	0	PM	89	41
+J00/005	J00/005	A	0	PM	89	37
+J00/005	J00/005	G	0	PM	89	43
+J00/005	J00/005	H	0	PM	89	33
+J00/005	J00/138	M	0	PM	30	26
+J00/005	J00/138	L	0	PM	34	93
+J00/005	J00/138	K	0	PM	34	93
+J00/005	J00/138	M	1	PM	98	95
+J00/005	J00/138	L	1	PM	103	25
+J00/005	J00/138	K	1	PM	103	25
+J00/006	J00/006	B	0	AM	2	58
+J00/006	J00/006	D	0	AM	10	76
+J00/006	J00/006	E	0	AM	10	43
+J00/006	J00/006	F	0	AM	10	43
+J00/006	J00/006	A	0	AM	49	58
+J00/006	J00/006	C	0	AM	65	76
+J00/006	J00/006	G	0	AM	81	2
+J00/006	J00/134	H	0	AM	10	32
+J00/006	J00/134	W	0	AM	35	62
+J00/006	J00/134	K	0	AM	119	62
+J00/006	J00/134	J	0	AM	119	62
+J00/006	J00/134	I	0	AM	65	119
+J00/006	J00/134	L	0	AM	65	111
+J00/006	J00/134	W	1	AM	119	9
+J00/006	J00/006	B	0	OP	2	58
+J00/006	J00/006	D	0	OP	11	76
+J00/006	J00/006	E	0	OP	11	45
+J00/006	J00/006	F	0	OP	11	45
+J00/006	J00/006	A	0	OP	51	58
+J00/006	J00/006	C	0	OP	65	76
+J00/006	J00/006	G	0	OP	81	2
+J00/006	J00/134	H	0	OP	15	34
+J00/006	J00/134	W	0	OP	37	62
+J00/006	J00/134	K	0	OP	4	62
+J00/006	J00/134	J	0	OP	4	62
+J00/006	J00/134	I	0	OP	68	119
+J00/006	J00/134	L	0	OP	67	111
+J00/006	J00/134	W	1	OP	2	13
+J00/006	J00/006	B	0	PM	2	58
+J00/006	J00/006	D	0	PM	11	76
+J00/006	J00/006	E	0	PM	11	45
+J00/006	J00/006	F	0	PM	11	45
+J00/006	J00/006	A	0	PM	51	58
+J00/006	J00/006	C	0	PM	65	76
+J00/006	J00/006	G	0	PM	81	2
+J00/006	J00/134	H	0	PM	13	34
+J00/006	J00/134	W	0	PM	37	62
+J00/006	J00/134	K	0	PM	4	62
+J00/006	J00/134	J	0	PM	4	62
+J00/006	J00/134	I	0	PM	68	119
+J00/006	J00/134	L	0	PM	67	111
+J00/006	J00/134	W	1	PM	2	11
+J00/007	J00/007	A	0	AM	16	29
+J00/007	J00/007	B	0	AM	16	42
+J00/007	J00/007	C	0	AM	35	42
+J00/007	J00/007	F	0	AM	63	39
+J00/007	J00/007	D	0	AM	48	61
+J00/007	J00/007	G	0	AM	48	3
+J00/007	J00/007	E	0	AM	47	57
+J00/007	J00/007	I	0	AM	63	1
+J00/007	J00/007	H	0	AM	63	2
+J00/007	J00/007	C	0	OP	31	38
+J00/007	J00/007	B	0	OP	14	38
+J00/007	J00/007	F	0	OP	64	35
+J00/007	J00/007	D	0	OP	44	58
+J00/007	J00/007	G	0	OP	44	0
+J00/007	J00/007	E	0	OP	43	54
+J00/007	J00/007	I	0	OP	61	70
+J00/007	J00/007	H	0	OP	64	71
+J00/007	J00/007	A	0	OP	14	25
+J00/007	J00/007	C	0	PM	29	36
+J00/007	J00/007	B	0	PM	15	36
+J00/007	J00/007	F	0	PM	65	33
+J00/007	J00/007	D	0	PM	42	59
+J00/007	J00/007	G	0	PM	42	1
+J00/007	J00/007	E	0	PM	41	55
+J00/007	J00/007	I	0	PM	62	71
+J00/007	J00/007	H	0	PM	65	0
+J00/007	J00/007	A	0	PM	15	23
+J00/008	J00/008	A	0	AM	23	30
+J00/008	J00/008	B	0	AM	23	30
+J00/008	J00/008	C	0	AM	37	72
+J00/008	J00/008	D	0	AM	37	72
+J00/008	J00/008	E	0	AM	3	9
+J00/008	J00/008	F	0	AM	3	9
+J00/008	J00/008	A	0	OP	23	30
+J00/008	J00/008	B	0	OP	23	30
+J00/008	J00/008	C	0	OP	37	72
+J00/008	J00/008	D	0	OP	37	72
+J00/008	J00/008	E	0	OP	3	9
+J00/008	J00/008	F	0	OP	3	9
+J00/008	J00/008	A	0	PM	23	30
+J00/008	J00/008	B	0	PM	23	30
+J00/008	J00/008	C	0	PM	37	72
+J00/008	J00/008	D	0	PM	37	72
+J00/008	J00/008	E	0	PM	3	9
+J00/008	J00/008	F	0	PM	3	9
+J00/009	J00/009	P	0	AM	32	38
+J00/009	J00/009	A	0	AM	12	38
+J00/009	J00/009	D	0	AM	45	63
+J00/009	J00/009	H	0	AM	46	1
+J00/009	J00/009	C	0	AM	45	76
+J00/009	J00/009	E	0	AM	67	76
+J00/009	J00/009	G	0	AM	82	27
+J00/009	J00/009	I	0	AM	84	92
+J00/009	J00/009	F	0	AM	86	94
+J00/009	J00/009	B	0	AM	12	27
+J00/009	J00/070	M	0	AM	89	84
+J00/009	J00/070	O	0	AM	89	84
+J00/009	J00/070	L	0	AM	4	83
+J00/009	J00/070	N	0	AM	4	83
+J00/009	J00/009	A	0	OP	28	45
+J00/009	J00/009	B	0	OP	28	38
+J00/009	J00/009	G	0	OP	1	38
+J00/009	J00/009	P	0	OP	43	45
+J00/009	J00/009	D	0	OP	52	74
+J00/009	J00/009	H	0	OP	53	16
+J00/009	J00/009	C	0	OP	52	83
+J00/009	J00/009	E	0	OP	79	83
+J00/009	J00/009	I	0	OP	3	11
+J00/009	J00/009	F	0	OP	5	13
+J00/009	J00/070	M	0	OP	8	3
+J00/009	J00/070	O	0	OP	8	3
+J00/009	J00/070	L	0	OP	19	2
+J00/009	J00/070	N	0	OP	19	2
+J00/009	J00/009	P	0	PM	23	26
+J00/009	J00/009	A	0	PM	4	26
+J00/009	J00/009	D	0	PM	33	58
+J00/009	J00/009	H	0	PM	34	88
+J00/009	J00/009	C	0	PM	33	67
+J00/009	J00/009	E	0	PM	63	67
+J00/009	J00/009	G	0	PM	73	18
+J00/009	J00/009	I	0	PM	75	83
+J00/009	J00/009	F	0	PM	77	85
+J00/009	J00/009	B	0	PM	4	18
+J00/009	J00/070	M	0	PM	80	75
+J00/009	J00/070	O	0	PM	80	75
+J00/009	J00/070	L	0	PM	91	74
+J00/009	J00/070	N	0	PM	91	74
+J00/010	J00/010	C	0	AM	21	51
+J00/010	J00/010	D	0	AM	21	51
+J00/010	J00/010	F	0	AM	60	67
+J00/010	J00/010	E	0	AM	60	67
+J00/010	J00/010	H	0	AM	60	67
+J00/010	J00/010	G	0	AM	60	67
+J00/010	J00/010	B	0	AM	84	15
+J00/010	J00/010	A	0	AM	84	15
+J00/010	J00/010	C	0	OP	21	51
+J00/010	J00/010	D	0	OP	21	51
+J00/010	J00/010	F	0	OP	61	67
+J00/010	J00/010	E	0	OP	61	67
+J00/010	J00/010	H	0	OP	61	67
+J00/010	J00/010	G	0	OP	61	67
+J00/010	J00/010	B	0	OP	87	15
+J00/010	J00/010	A	0	OP	87	15
+J00/010	J00/010	C	0	PM	21	51
+J00/010	J00/010	D	0	PM	21	51
+J00/010	J00/010	F	0	PM	61	67
+J00/010	J00/010	E	0	PM	61	67
+J00/010	J00/010	H	0	PM	61	67
+J00/010	J00/010	G	0	PM	61	67
+J00/010	J00/010	B	0	PM	87	15
+J00/010	J00/010	A	0	PM	87	15
+J00/011	J00/011	F	0	AM	24	32
+J00/011	J00/011	G	0	AM	24	86
+J00/011	J00/011	C	0	AM	39	60
+J00/011	J00/011	A	0	AM	39	60
+J00/011	J00/011	D	0	AM	68	79
+J00/011	J00/011	E	0	AM	68	79
+J00/011	J00/011	I	0	AM	5	13
+J00/011	J00/011	J	0	AM	1	12
+J00/011	J00/011	K	0	AM	3	12
+J00/011	J00/011	H	0	AM	5	11
+J00/011	J00/011	L	0	AM	3	14
+J00/011	J00/011	F	0	OP	24	32
+J00/011	J00/011	G	0	OP	24	86
+J00/011	J00/011	C	0	OP	39	60
+J00/011	J00/011	A	0	OP	39	60
+J00/011	J00/011	D	0	OP	68	79
+J00/011	J00/011	E	0	OP	68	79
+J00/011	J00/011	I	0	OP	5	13
+J00/011	J00/011	J	0	OP	1	12
+J00/011	J00/011	K	0	OP	3	12
+J00/011	J00/011	H	0	OP	5	11
+J00/011	J00/011	L	0	OP	3	14
+J00/011	J00/011	F	0	PM	24	32
+J00/011	J00/011	G	0	PM	24	86
+J00/011	J00/011	C	0	PM	39	60
+J00/011	J00/011	A	0	PM	39	60
+J00/011	J00/011	D	0	PM	68	79
+J00/011	J00/011	E	0	PM	68	79
+J00/011	J00/011	I	0	PM	5	13
+J00/011	J00/011	J	0	PM	1	12
+J00/011	J00/011	K	0	PM	3	12
+J00/011	J00/011	H	0	PM	5	11
+J00/011	J00/011	L	0	PM	3	14
+\.
+
+
+--
+-- Data for Name: phase_to_saturn_turns; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.phase_to_saturn_turns  FROM stdin;
+\.
+
+
+--
+-- Data for Name: phases; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.phases (controller_key, phase_ref, min_time, phase_type_str, appearance_type_int, termination_type_int, text, associated_phase_ref) FROM stdin;
+J00/002	A	4	F	0	1	NEW BRIDGE ST AHEAD FILTER	B
+J00/002	B	7	T	0	0	NEW BRIDGE ST	
+J00/002	C	4	F	0	1	FARRINGDON ST AHEAD / LEFT FILTER	D
+J00/002	D	7	T	0	0	FARRINGDON ST	
+J00/002	E	7	T	0	0	FLEET ST	
+J00/002	F	5	T	0	0	FLEET ST CYCLE	
+J00/002	G	7	T	0	0	LUDGATE HILL	
+J00/002	H	5	T	0	0	LUDGATE HILL CYCLE	
+J00/002	I	5	T	0	0	NEW BRIDGE ST CYCLE NB	
+J00/002	J	5	T	0	0	NEW BRIDGE ST CYCLE SB	
+J00/002	K	4	F	0	1	2SRT CYCLE FILTER	E
+J00/002	L	6	P	0	0	PED X N  E  W ARMS	
+J00/002	M	6	P	0	0	PED X NEW BRIDGE ST (S ARM)	
+J00/002	N	1	D	0	0	UTC DUMMY STAGE 9	
+J00/002	O	1	D	0	0	UTC DUMMY STAGE 3	
+J00/002	P	1	D	0	0	UTC DUMMY STAGE 6	
+J00/002	Q	1	D	0	0	UTC DUMMY STAGE 7	
+J00/002	R	1	D	0	0	UTC DUMMY STAGE 8	
+J00/002	S	3	D	0	0	ALL RED DUMMY	
+J00/003	A	7	T	0	0	MINORIES SB	
+J00/003	B	7	T	0	0	CROSSWALL	
+J00/003	C	7	T	0	0	PORTSOKEN STREET	
+J00/003	D	7	T	0	0	MINORIES NB	
+J00/003	E	6	P	0	0	ALL ROUND PEDS	
+J00/003	F	3	D	0	0	DUMMY ALL RED	
+J00/003	G	1	D	0	0	DUMMY STAGE 5	
+J00/003	H	1	D	0	0	DUMMY STAGE 6	
+J00/004	A	7	T	0	0	HIGH HOLBORN	
+J00/004	B	7	T	0	0	HOLBORN VIADUCT	
+J00/004	C	4	F	0	2	HOLBORN RT FILTER	A
+J00/004	D	7	T	0	0	CHARTERHOUSE STREET	
+J00/004	E	7	T	0	0	NEW FETTER LANE	
+J00/004	F	6	P	0	0	PED X HIGH HOLBORN NORTH SIDE	
+J00/004	G	6	P	0	0	PED X CHARTERHOUSE STREET	
+J00/004	H	6	P	0	0	PED X HOLBORN VIADUCT	
+J00/004	I	6	P	0	0	PED X NEW FETTER LANE	
+J00/004	J	6	P	0	0	PED X HOLBORN SOUTHSIDE	
+J00/004	K	7	T	0	0	CHARTERHOUSE STREET NB	
+J00/004	L	6	P	0	0	PED X CHARTERHOUSE STREET NB	
+J00/004	M	7	T	0	0	HOLBORN VIADUCT EAST SIDE	
+J00/004	N	6	P	0	0	PED X HOLBORN VIADUCT EAST SIDE	
+J00/004	O	7	T	0	0	NEW FETTER LANE SB	
+J00/004	P	6	P	0	0	PED X NEW FETTER LANE SB	
+J00/004	Q	3	D	0	0	DUMMY ALL RED STR 0	
+J00/004	R	3	D	0	0	DUMMY ALL RED STR 1	
+J00/004	S	3	D	0	0	DUMMY ALL RED STR 2	
+J00/004	T	3	D	0	0	DUMMY ALL RED STR 3	
+J00/004	U	1	D	0	0	DUMMY STAGE 4	
+J00/004	V	1	D	0	0	DUMMY STAGE 5	
+J00/004	W	1	D	0	0	DUMMY STAGE 6	
+J00/005	A	7	T	0	0	VICTORIA EMBANKMENT E/B	
+J00/005	B	7	T	0	0	VICTORIA EMBANKMENT W/B	
+J00/005	C	5	T	0	0	CYCLES TOWARDS VICTORIA EMBANKMENT TUNNEL	
+J00/005	D	5	T	0	0	CYCLES INTO TEMPLE AVENUE	
+J00/005	E	6	P	0	0	PEDS X VICTORIA EMBANKMENT	
+J00/005	F		F	0	0	NOT USED	
+J00/005	G	7	T	0	0	VICTORIA EMBANKMENT E/B @ SLIP RD	
+J00/005	H	7	T	0	0	VICTORIA EMBANKMENT W/B @ SLIP RD	
+J00/005	I	5	T	0	0	CYCLES TEMPLE AVENUE 	
+J00/005	J	5	T	0	0	CYCLES FROM BFRS UNDERPASS	
+J00/005	K	5	T	0	0	CYCLES E/B @ 00/138	
+J00/005	L	5	T	0	0	CYCLES W/B @ 00/138	
+J00/005	M	6	P	0	0	PEDS X CYCLE TRACK @ 00/138	
+J00/005	N	3	D	0	0	ALL RED DUMMY STREAM 0 00/005	
+J00/005	O	3	D	0	0	ALL RED DUMMY STREAM 1 00/138	
+J00/005	P	3	D	0	0	DUMMY PHASE FOR SITE EXIT IN STAGE 2	
+J00/005	Q	1	D	0	0	UTC DUMMY STAGE 3	
+J00/005	R	1	D	0	0	UTC DUMMY STAGE 4	
+J00/005	S	1	D	0	0	UTC DUMMY STAGE 5	
+J00/005	T	1	D	0	0	UTC DUMMY STAGE 6	
+J00/005	U	1	D	0	0	UTC DUMMY STAGE 7	
+J00/005	V	1	D	0	0	UTC DUMMY STAGE 8	
+J00/005	W	1	D	0	0	UTC DUMMY STAGE 12  IN STREAM 1	
+J00/005	X	1	D	0	0	UTC DUMMY STAGE 13  IN STREAM 1	
+J00/006	A	5	T	0	0	Cycle  Victoria Embankment N/B	
+J00/006	B	7	T	0	0	New Bridge Street N/B Ahead	
+J00/006	C	7	T	0	0	Victoria Embankment Slip N/B	
+J00/006	D	5	T	0	0	Cycle  Victoria Embankment SW/B	
+J00/006	E	5	T	0	0	Cycles N/B	
+J00/006	F	5	T	0	0	Cycles S/B	
+J00/006	G	6	P	0	0	Peds X Victoria Embankment Slip	
+J00/006	H	7	T	0	0	Blackfriars Bridge N/B Str 1	
+J00/006	I	5	T	0	0	Cycles W/B Onto Victoria Embmnt Slip Str 1	
+J00/006	J	5	T	0	0	BFR Bridge Cycles N/B Str 1	
+J00/006	K	5	T	0	0	BFR Bridge Cycles S/B Str 1	
+J00/006	L	6	P	0	0	Peds X Blackfriars Bridge West Side Str 1	
+J00/006	M	7	T	0	0	Traffic S/B Onto BFR Bridge Str 2	
+J00/006	N	5	T	0	0	Cycles W/B HLCS Str 2	
+J00/006	O	6	P	0	0	Peds X BFR Bridge East Side Str 2	
+J00/006	P	3	D	0	0	All Red Dummy Stream 0	
+J00/006	Q	3	D	0	0	All Red Dummy Stream 1	
+J00/006	R	3	D	0	0	All Red Dummy Stream 2	
+J00/006	S	1	D	0	0	UTC Dummy Stage 5	
+J00/006	T	1	D	0	0	UTC Dummy Stage 9	
+J00/006	U	1	D	0	0	UTC Dummy Stage 11	
+J00/006	V	1	D	0	0	UTC Dummy Stage 6	
+J00/006	W	1	D	0	0	UTC DUMMY Stage 12	
+J00/006	X	1	D	0	0	UTC DUMMY Stage 13	
+J00/007	A	7	T	0	0	QUEEN VICTORIA STREET W/B	
+J00/007	B	7	T	0	0	QUEEN VICTORIA STREET E/B	
+J00/007	C	4	F	0	2	QUEEN VICTORIA ST E/B RT	B
+J00/007	D	7	T	0	0	PUDDLE DOCK W/BND	
+J00/007	E	7	T	0	0	PUDDLE DOCK E/BND	
+J00/007	F	6	P	0	0	PEDS X PUDDLE DOCK W/SIDE	
+J00/007	G	6	P	0	0	PED X QUEEN VICTORIA ST W/S	
+J00/007	H	6	P	0	0	PED X Q.V.S EAST P.DOCK EAST	
+J00/007	I	6	P	0	0	PED X PUDDLE DOCK E/SIDE	
+J00/007	J	3	D	0	0	ALL RED DUMMY PHASE J	
+J00/007	K	1	D	0	0	UTC DUMMY PHASE K	
+J00/008	A	7	T	0	0	OLD BAILEY	
+J00/008	B	7	T	0	0	GILTSPUR STREET	
+J00/008	C	7	T	0	0	HOLBORN VIADUCT	
+J00/008	D	7	T	0	0	NEWGATE STREET	
+J00/008	E	6	P	0	0	PEDS GILTSPUR ST & OLD BAILEY	
+J00/008	F	6	P	0	0	PEDS HOLBORN VDUCT & NEWGATE ST	
+J00/008	G	3	D	0	0	ALL RED DUMMY	
+J00/008	H	1	D	0	0	UTC DUMMY STAGE 4	
+J00/008	I	1	D	0	0	UTC DUMMY STAGE 5	
+J00/009	A	7	T	0	0	MOORGATE SB	
+J00/009	B	7	T	0	0	MOORGATE NB	
+J00/009	C	7	T	0	0	LONDON WALL WB	
+J00/009	D	7	T	0	0	LONDON WALL EB	
+J00/009	E	4	F	0	2	LONDON WALL WB R/T	C
+J00/009	F	6	P	0	0	PEDS X MOORGATE NORTH	
+J00/009	G	6	P	0	0	PEDS X LONDON WALL EAST	
+J00/009	H	6	P	0	0	PEDS X MOORGATE SOUTH	
+J00/009	I	6	P	0	0	PEDS X LONDON WALL WEST	
+J00/009	J		F	0	0	not used	
+J00/009	K		F	0	0	not used	
+J00/009	L	7	T	0	0	LONDON WALL WEST SIDE EB	
+J00/009	M	6	P	0	0	PEDS X LONDON WALL WEST SIDE EB	
+J00/009	N	7	T	0	0	LONDON WALL WEST SIDE WB	
+J00/009	O	6	P	0	0	PEDS X LONDON WALL WEST SIDE WB	
+J00/009	P	1	D	0	0	UTC DUMMY STAGE 2	
+J00/009	Q		D	0	0	not used	
+J00/009	R	3	D	0	0	ALL RED DUMMY STREAM 0	
+J00/009	S	3	D	0	0	ALL RED DUMMY STREAM 1	
+J00/009	T	1	D	0	0	UTC DUMMY STAGE 6	
+J00/010	A	7	T	0	0	MOORGATE S/B	
+J00/010	B	7	T	0	0	PRINCES STREET N/B	
+J00/010	C	7	T	0	0	GRESHAM STREET E/B	
+J00/010	D	7	T	0	0	LOTHBURY W/B	
+J00/010	E	6	P	0	0	PED X GRESHAM STREET	
+J00/010	F	6	P	0	0	PED X MOORGATE	
+J00/010	G	6	P	0	0	PED X LOTHBURY	
+J00/010	H	6	P	0	0	PED X PRINCES STREET	
+J00/010	I	3	D	0	0	ALL RED DUMMY	
+J00/010	J	1	D	0	0	UTC DUMMY - MOORGATE S/B	
+J00/010	K	1	D	0	0	UTC DUMMY - PRINCES STREET N/B	
+J00/011	A	7	T	0	0	MANSION HOUSE E/BND	
+J00/011	B		D	0	0	REMOVED FOR INTERIM LAYOUT	
+J00/011	C	7	T	0	0	CORNHILL	
+J00/011	D	7	T	0	0	KING WILLIAM STREET	
+J00/011	E	7	T	0	0	PRINCES STREET	
+J00/011	F	7	T	0	0	THREADNEEDLE STREET	
+J00/011	G	7	T	0	0	MANSION HOUSE WEST BND	
+J00/011	H	6	P	0	0	PEDS X THREADNEEDLE STREET	
+J00/011	I	6	P	0	0	PEDS X CORNHILL	
+J00/011	J	6	P	0	0	PEDS X KING WILLIAM STREET	
+J00/011	K	6	P	0	0	PEDS X MANSION HOUSE STREET	
+J00/011	L	6	P	0	0	PEDS X PRINCES STREET	
+J00/011	M	3	D	0	0	ALL RED	
+J00/011	N	1	D	0	0	DUMMY PHASE N STAGE 5	
+J00/011	O	1	D	0	0	DUMMY PHASE O STAGE 6	
+J00/011	P	1	D	0	0	DUMMY PHASE P STAGE 7	
+\.
+
+
+--
+-- Data for Name: plan_sequence_items; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.plan_sequence_items (site_id, plan_number, index, pulse_time, f_bits, d_bits, p_bits, nto, scoot_stage) FROM stdin;
+J00/002	1	0	21	{F5}	{}	{}	f	5F
+J00/002	1	1	22	{F5,F6}	{}	{}	t	5F+
+J00/002	1	2	38	{F6}	{}	{}	f	6
+J00/002	1	3	61	{F1}	{}	{}	f	1
+J00/002	1	4	83	{F2}	{}	{}	f	2
+J00/002	1	5	98	{F4}	{}	{}	f	4
+J00/002	1	6	110	{F3}	{D1,DX}	{}	f	3
+J00/002	2	0	21	{F5}	{}	{}	f	5F
+J00/002	2	1	22	{F5,F6}	{}	{}	t	5F+
+J00/002	2	2	38	{F6}	{}	{}	f	6
+J00/002	2	3	60	{F1}	{}	{}	f	1
+J00/002	2	4	73	{F2}	{}	{}	f	2
+J00/002	2	5	94	{F4}	{}	{}	f	4
+J00/002	2	6	106	{F3}	{D1,DX}	{}	f	3
+J00/002	3	0	20	{F5}	{}	{}	f	5F
+J00/002	3	1	21	{F5,F6}	{}	{}	t	5F+
+J00/002	3	2	38	{F6}	{}	{}	f	6
+J00/002	3	3	61	{F1}	{}	{}	f	1
+J00/002	3	4	83	{F2}	{}	{}	f	2
+J00/002	3	5	98	{F4}	{}	{}	f	4
+J00/002	3	6	110	{F3}	{D1,DX}	{}	f	3
+J00/002	5	0	6	{F3}	{D2,DX}	{}	f	3
+J00/002	5	1	30	{F5}	{D2}	{}	f	5F
+J00/002	5	2	31	{F5,F6}	{D2}	{}	t	5F+
+J00/002	5	3	48	{F6}	{D2}	{}	f	6
+J00/002	5	4	68	{F1}	{D2}	{}	f	1
+J00/002	5	5	77	{F2}	{D2}	{}	f	2
+J00/002	5	6	98	{F4}	{D2}	{}	f	4
+J00/002	6	0	21	{F5}	{}	{}	f	5F
+J00/002	6	1	22	{F5,F6}	{}	{}	t	5F+
+J00/002	6	2	38	{F6}	{}	{}	f	6
+J00/002	6	3	60	{F1}	{}	{}	f	1
+J00/002	6	4	73	{F2}	{}	{}	f	2
+J00/002	6	5	94	{F4}	{}	{}	f	4
+J00/002	6	6	106	{F3}	{D1,DX}	{}	f	3
+J00/002	8	0	6	{F3}	{D1,DX}	{}	f	3
+J00/002	8	1	31	{F5}	{}	{}	f	5F
+J00/002	8	2	32	{F5,F6}	{}	{}	t	5F+
+J00/002	8	3	48	{F6}	{}	{}	f	6
+J00/002	8	4	68	{F1}	{}	{}	f	1
+J00/002	8	5	77	{F2}	{}	{}	f	2
+J00/002	8	6	98	{F4}	{}	{}	f	4
+J00/002	21	0	12	{F5}	{}	{}	f	
+J00/002	21	1	13	{F5,F6}	{}	{}	t	
+J00/002	21	2	30	{F6}	{}	{}	f	
+J00/002	21	3	49	{F1}	{}	{}	f	
+J00/002	21	4	76	{F2}	{}	{}	f	
+J00/002	21	5	102	{F4}	{}	{}	f	
+J00/002	21	6	114	{F3}	{D1,DX}	{}	f	
+J00/002	22	0	20	{F5}	{}	{}	f	
+J00/002	22	1	21	{F5,F6}	{}	{}	t	
+J00/002	22	2	38	{F6}	{}	{}	f	
+J00/002	22	3	57	{F1}	{}	{}	f	
+J00/002	22	4	76	{F2}	{}	{}	f	
+J00/002	22	5	104	{F4}	{}	{}	f	
+J00/002	22	6	116	{F3}	{D1,DX}	{}	f	
+J00/002	32	0	6	{F3}	{D2,DX}	{}	f	
+J00/002	32	1	30	{F5}	{D2,DX}	{}	f	
+J00/002	32	2	48	{F6}	{D2}	{}	f	
+J00/002	32	3	68	{F1}	{D2}	{}	f	
+J00/002	32	4	77	{F2}	{D2}	{}	f	
+J00/002	32	5	98	{F4}	{D2}	{}	f	
+J00/002	61	0	4	{F3}	{D1,DX}	{}	f	
+J00/002	61	1	37	{F5}	{}	{}	f	
+J00/002	61	2	38	{F5,F6}	{}	{}	t	
+J00/002	61	3	55	{F6}	{}	{}	f	
+J00/002	61	4	74	{F1}	{}	{}	f	
+J00/002	61	5	95	{F2}	{}	{}	f	
+J00/002	61	6	112	{F4}	{}	{}	f	
+J00/002	62	0	37	{F5}	{}	{}	f	
+J00/002	62	1	38	{F5,F6}	{}	{}	t	
+J00/002	62	2	55	{F6}	{}	{}	f	
+J00/002	62	3	74	{F1}	{}	{}	f	
+J00/002	62	4	91	{F2}	{}	{}	f	
+J00/002	62	5	107	{F4}	{}	{}	f	
+J00/002	62	6	119	{F3}	{D1,DX}	{}	f	
+J00/002	63	0	8	{F3}	{D1,DX}	{}	f	
+J00/002	63	1	37	{F5}	{}	{}	f	
+J00/002	63	2	38	{F5,F6}	{}	{}	t	
+J00/002	63	3	55	{F6}	{}	{}	f	
+J00/002	63	4	74	{F1}	{}	{}	f	
+J00/002	63	5	96	{F2}	{}	{}	f	
+J00/002	63	6	109	{F4}	{}	{}	f	
+J00/002	64	0	20	{F5}	{}	{}	f	
+J00/002	64	1	21	{F5,F6}	{}	{}	t	
+J00/002	64	2	38	{F6}	{}	{}	f	
+J00/002	64	3	57	{F1}	{}	{}	f	
+J00/002	64	4	66	{F2}	{}	{}	f	
+J00/002	64	5	100	{F4}	{}	{}	f	
+J00/002	64	6	112	{F3}	{D1,DX}	{}	f	
+J00/002	65	0	4	{F3}	{DX}	{}	f	
+J00/002	65	1	29	{F5}	{}	{}	f	
+J00/002	65	2	30	{F5,F6}	{}	{}	t	
+J00/002	65	3	47	{F6}	{}	{}	f	
+J00/002	65	4	75	{F7}	{}	{}	f	
+J00/002	65	5	92	{F4}	{}	{}	f	
+J00/002	66	0	20	{F5}	{}	{}	f	
+J00/002	66	1	21	{F4,F5}	{}	{}	t	
+J00/002	66	2	38	{F8}	{}	{}	f	
+J00/002	66	3	64	{F2}	{}	{}	f	
+J00/002	66	4	100	{F4}	{}	{}	f	
+J00/002	66	5	112	{F3}	{DX}	{}	f	
+J00/002	68	0	20	{F5}	{}	{}	f	
+J00/002	68	1	21	{F4,F5}	{}	{}	t	
+J00/002	68	2	38	{F8}	{}	{}	f	
+J00/002	68	3	63	{F2}	{}	{}	f	
+J00/002	68	4	94	{F4}	{}	{}	f	
+J00/002	68	5	106	{F3}	{DX}	{}	f	
+J00/002	69	0	20	{F5}	{}	{}	f	
+J00/002	69	1	21	{F4,F5}	{}	{}	t	
+J00/002	69	2	38	{F8}	{}	{}	f	
+J00/002	69	3	68	{F2}	{}	{}	f	
+J00/002	69	4	100	{F4}	{}	{}	f	
+J00/002	69	5	112	{F3}	{DX}	{}	f	
+J00/002	70	0	20	{F5}	{}	{}	f	
+J00/002	70	1	21	{F4,F5}	{}	{}	t	
+J00/002	70	2	38	{F8}	{}	{}	f	
+J00/002	70	3	64	{F2}	{}	{}	f	
+J00/002	70	4	94	{F4}	{}	{}	f	
+J00/002	70	5	106	{F3}	{DX}	{}	f	
+J00/003	1	0	3	{F4}	{}	{}	f	4F
+J00/003	1	1	5	{F1,F4}	{DX}	{}	t	4F+
+J00/003	1	2	18	{F1}	{}	{}	f	1
+J00/003	1	3	57	{F2}	{DX}	{}	f	2
+J00/003	1	4	79	{F3}	{DX}	{}	f	3
+J00/003	2	0	3	{F4}	{}	{}	f	4F
+J00/003	2	1	5	{F1,F4}	{DX}	{}	t	4F+
+J00/003	2	2	18	{F1}	{}	{}	f	1
+J00/003	2	3	57	{F2}	{DX}	{}	f	2
+J00/003	2	4	79	{F3}	{DX}	{}	f	3
+J00/003	3	0	9	{F4}	{}	{}	f	4F
+J00/003	3	1	11	{F1,F4}	{DX}	{}	t	4F+
+J00/003	3	2	24	{F1}	{}	{}	f	1
+J00/003	3	3	63	{F2}	{DX}	{}	f	2
+J00/003	3	4	83	{F3}	{DX}	{}	f	3
+J00/003	5	0	4	{F4}	{}	{}	f	4F
+J00/003	5	1	6	{F1,F4}	{}	{}	t	4F+
+J00/003	5	2	19	{F1}	{}	{}	f	1
+J00/003	5	3	55	{F2}	{DX}	{}	f	2
+J00/003	5	4	70	{F3}	{DX}	{}	f	3
+J00/003	8	0	9	{F4}	{}	{}	f	4F
+J00/003	8	1	11	{F1,F4}	{}	{}	t	4F+
+J00/003	8	2	24	{F1}	{}	{}	f	1
+J00/003	8	3	67	{F2}	{DX}	{}	f	2
+J00/003	8	4	83	{F3}	{DX}	{}	f	3
+J00/003	11	0	3	{F4}	{}	{}	f	4F
+J00/003	11	1	5	{F3,F6}	{DX}	{}	t	4F+
+J00/003	11	2	18	{F6}	{}	{}	f	5F
+J00/003	11	3	33	{F1}	{}	{}	f	1
+J00/003	11	4	57	{F2}	{DX}	{}	f	2
+J00/003	11	5	79	{F3}	{DX}	{}	f	3
+J00/003	12	0	3	{F4}	{}	{}	f	4F
+J00/003	12	1	5	{F3,F6}	{DX}	{}	t	4F+
+J00/003	12	2	18	{F6}	{}	{}	f	5F
+J00/003	12	3	35	{F1}	{}	{}	f	1
+J00/003	12	4	57	{F2}	{DX}	{}	f	2
+J00/003	12	5	79	{F3}	{DX}	{}	f	3
+J00/003	13	0	3	{F4}	{}	{}	f	4F
+J00/003	13	1	5	{F3,F6}	{DX}	{}	t	4F+
+J00/003	13	2	18	{F6}	{}	{}	f	5F
+J00/003	13	3	37	{F1}	{}	{}	f	1
+J00/003	13	4	57	{F2}	{DX}	{}	f	2
+J00/003	13	5	79	{F3}	{DX}	{}	f	3
+J00/003	19	0	3	{F4}	{}	{}	f	4F
+J00/003	19	1	5	{F3,F1}	{DX}	{}	t	4F+
+J00/003	19	2	18	{F1}	{}	{}	f	1
+J00/003	19	3	57	{F2}	{DX}	{}	f	2
+J00/003	19	4	79	{F3}	{DX}	{}	f	3
+J00/003	22	0	3	{F4}	{}	{}	f	
+J00/003	22	1	5	{F3,F1}	{DX}	{}	t	
+J00/003	22	2	18	{F1}	{}	{}	f	
+J00/003	22	3	57	{F2}	{DX}	{}	f	
+J00/003	22	4	79	{F3}	{DX}	{}	f	
+J00/003	23	0	3	{F4}	{}	{}	f	
+J00/003	23	1	5	{F3,F1}	{DX}	{}	t	
+J00/003	23	2	18	{F1}	{}	{}	f	
+J00/003	23	3	57	{F2}	{DX}	{}	f	
+J00/003	23	4	79	{F3}	{DX}	{}	f	
+J00/003	32	0	1	{F1}	{}	{}	f	
+J00/003	32	1	20	{F2}	{DX}	{}	f	
+J00/003	32	2	40	{F3}	{DX}	{}	f	
+J00/003	32	3	60	{F4}	{DX}	{}	f	
+J00/004	1	0	2	{F1}	{}	{}	f	1
+J00/004	1	1	9	{F1}	{DUM}	{}	f	1+
+J00/004	1	2	22	{F2}	{DX}	{}	f	2
+J00/004	1	3	39	{F3}	{DX}	{}	f	3
+J00/004	1	4	46	{F3}	{DX,DUM}	{}	f	3+
+J00/004	1	5	73	{F5}	{}	{}	f	5F
+J00/004	2	0	2	{F1}	{}	{}	f	1
+J00/004	2	1	9	{F1}	{DUM}	{}	f	1+
+J00/004	2	2	22	{F2}	{DX}	{}	f	2
+J00/004	2	3	40	{F3}	{DX}	{}	f	3
+J00/004	2	4	47	{F3}	{DX,DUM}	{}	f	3+
+J00/004	2	5	73	{F5}	{}	{}	f	5F
+J00/004	3	0	2	{F1}	{}	{}	f	1
+J00/004	3	1	9	{F1}	{DUM}	{}	f	1+
+J00/004	3	2	24	{F2}	{DX}	{}	f	2
+J00/004	3	3	40	{F3}	{DX}	{}	f	3
+J00/004	3	4	47	{F3}	{DX,DUM}	{}	f	3+
+J00/004	3	5	73	{F5}	{}	{}	f	5F
+J00/004	5	0	2	{F1}	{}	{}	f	1
+J00/004	5	1	9	{F1}	{DUM}	{}	f	1+
+J00/004	5	2	18	{F2}	{DX}	{}	f	2
+J00/004	5	3	34	{F3}	{DX}	{}	f	3
+J00/004	5	4	41	{F3}	{DX,DUM}	{}	f	3+
+J00/004	5	5	57	{F5}	{}	{}	f	5F
+J00/004	8	0	2	{F1}	{}	{}	f	1
+J00/004	8	1	9	{F1}	{DUM}	{}	f	1+
+J00/004	8	2	20	{F2}	{DX}	{}	f	2
+J00/004	8	3	37	{F3}	{DX}	{}	f	3
+J00/004	8	4	44	{F3}	{DX,DUM}	{}	f	3+
+J00/004	8	5	65	{F5}	{}	{}	f	5F
+J00/004	32	0	1	{F1}	{}	{}	f	
+J00/004	32	1	20	{F2}	{DX}	{}	f	
+J00/004	32	2	40	{F3}	{DX}	{}	f	
+J00/004	32	3	60	{F5}	{}	{}	f	
+J00/005	1	0	25	{F1}	{DUM}	{}	f	2f
+J00/005	1	1	33	{F2}	{DX}	{}	f	2f+
+J00/005	1	2	69	{F6}	{}	{}	f	6f
+J00/005	1	3	84	{F1}	{}	{}	f	1
+J00/005	2	0	31	{F1}	{DUM}	{}	f	2f
+J00/005	2	1	39	{F2}	{DX}	{}	f	2f+
+J00/005	2	2	70	{F1}	{}	{}	f	1
+J00/005	3	0	25	{F1}	{DUM}	{}	f	2f
+J00/005	3	1	33	{F2}	{DX}	{}	f	2f+
+J00/005	3	2	69	{F6}	{}	{}	f	6f
+J00/005	3	3	84	{F1}	{}	{}	f	1
+J00/005	5	0	40	{F1}	{DUM}	{}	f	2f
+J00/005	5	1	48	{F2}	{}	{}	f	2f+
+J00/005	5	2	49	{F1,F2}	{}	{}	t	2f+
+J00/005	5	3	70	{F1}	{}	{}	f	1
+J00/005	8	0	34	{F1}	{DUM}	{}	f	2f
+J00/005	8	1	42	{F2}	{}	{}	f	2f+
+J00/005	8	2	47	{F1,F2}	{}	{}	t	2f+
+J00/005	8	3	70	{F1}	{}	{}	f	1
+J00/005	32	0	1	{F1}	{}	{}	f	
+J00/005	32	1	20	{F2}	{DX}	{}	f	
+J00/006	1	0	2	{F1}	{}	{}	f	7F+
+J00/006	1	1	9	{F1}	{DUM}	{}	f	1
+J00/006	1	2	32	{F1}	{DUM}	{}	f	3
+J00/006	1	3	43	{F2}	{}	{}	f	3+
+J00/006	1	4	58	{F3}	{}	{}	f	4
+J00/006	1	5	76	{F4}	{}	{}	f	5F
+J00/006	1	6	99	{F4}	{DUM}	{}	f	6
+J00/006	1	7	111	{F4}	{DUM}	{}	f	7F
+J00/006	2	0	2	{F1}	{}	{}	f	7F+
+J00/006	2	1	13	{F1}	{DUM}	{}	f	1
+J00/006	2	2	34	{F1}	{DUM}	{}	f	3
+J00/006	2	3	45	{F2}	{}	{}	f	3+
+J00/006	2	4	58	{F3}	{}	{}	f	4
+J00/006	2	5	76	{F4}	{}	{}	f	5F
+J00/006	2	6	99	{F4}	{DUM}	{}	f	6
+J00/006	2	7	111	{F4}	{DUM}	{}	f	7F
+J00/006	3	0	2	{F1}	{}	{}	f	7F+
+J00/006	3	1	11	{F1}	{DUM}	{}	f	1
+J00/006	3	2	34	{F1}	{DUM}	{}	f	3
+J00/006	3	3	45	{F2}	{}	{}	f	3+
+J00/006	3	4	58	{F3}	{}	{}	f	4
+J00/006	3	5	76	{F4}	{}	{}	f	5F
+J00/006	3	6	99	{F4}	{DUM}	{}	f	6
+J00/006	3	7	111	{F4}	{DUM}	{}	f	7F
+J00/006	4	0	2	{F1}	{}	{}	f	7F+
+J00/006	4	1	9	{F1}	{DUM}	{}	f	1
+J00/006	4	2	28	{F1}	{DUM}	{}	f	2F
+J00/006	4	3	32	{F1}	{DUM}	{}	f	3
+J00/006	4	4	43	{F2}	{}	{}	f	3+
+J00/006	4	5	58	{F3}	{}	{}	f	4
+J00/006	4	6	76	{F4}	{}	{}	f	5F
+J00/006	4	7	99	{F4}	{DUM}	{}	f	6
+J00/006	4	8	111	{F4}	{DUM}	{}	f	7F
+J00/006	5	0	2	{F1}	{}	{}	f	7F+
+J00/006	5	1	6	{F1}	{DUM}	{}	f	1
+J00/006	5	2	30	{F1}	{DUM}	{}	f	3
+J00/006	5	3	39	{F2}	{}	{}	f	3+
+J00/006	5	4	52	{F3}	{}	{}	f	4
+J00/006	5	5	68	{F4}	{}	{}	f	5F
+J00/006	5	6	91	{F4}	{DUM}	{}	f	6
+J00/006	5	7	103	{F4}	{DUM}	{}	f	7F
+J00/006	6	0	2	{F1}	{}	{}	f	7F+
+J00/006	6	1	9	{F1}	{DUM}	{}	f	1
+J00/006	6	2	28	{F1}	{DUM}	{}	f	3
+J00/006	6	3	39	{F2}	{}	{}	f	3+
+J00/006	6	4	52	{F3}	{}	{}	f	4
+J00/006	6	5	68	{F4}	{}	{}	f	5F
+J00/006	6	6	91	{F4}	{DUM}	{}	f	6
+J00/006	6	7	103	{F4}	{DUM}	{}	f	7F
+J00/006	8	0	2	{F1}	{}	{}	f	7F+
+J00/006	8	1	6	{F1}	{DUM}	{}	f	1
+J00/006	8	2	30	{F1}	{DUM}	{}	f	3
+J00/006	8	3	39	{F2}	{}	{}	f	3+
+J00/006	8	4	52	{F3}	{}	{}	f	4
+J00/006	8	5	68	{F4}	{}	{}	f	5F
+J00/006	8	6	91	{F4}	{DUM}	{}	f	6
+J00/006	8	7	103	{F4}	{DUM}	{}	f	7F
+J00/006	21	0	2	{F1}	{}	{}	f	
+J00/006	21	1	45	{F2}	{}	{}	f	
+J00/006	21	2	58	{F3}	{}	{}	f	
+J00/006	21	3	76	{F4}	{}	{}	f	
+J00/006	22	0	45	{F2}	{}	{}	f	
+J00/006	22	1	58	{F3}	{}	{}	f	
+J00/006	22	2	76	{F4}	{}	{}	f	
+J00/006	22	3	105	{F1}	{}	{}	f	
+J00/006	23	0	7	{F1}	{}	{}	f	
+J00/006	23	1	45	{F2}	{}	{}	f	
+J00/006	23	2	58	{F3}	{}	{}	f	
+J00/006	23	3	76	{F4}	{}	{}	f	
+J00/006	24	0	7	{F1}	{}	{}	f	
+J00/006	24	1	45	{F2}	{}	{}	f	
+J00/006	24	2	58	{F3}	{}	{}	f	
+J00/006	24	3	76	{F4}	{}	{}	f	
+J00/006	25	0	2	{F1}	{}	{}	f	
+J00/006	25	1	45	{F2}	{}	{}	f	
+J00/006	25	2	58	{F3}	{}	{}	f	
+J00/006	25	3	76	{F4}	{}	{}	f	
+J00/006	26	0	10	{F1}	{}	{}	f	
+J00/006	26	1	45	{F2}	{}	{}	f	
+J00/006	26	2	58	{F3}	{}	{}	f	
+J00/006	26	3	76	{F4}	{}	{}	f	
+J00/006	27	0	5	{F1}	{}	{}	f	
+J00/006	27	1	41	{F2}	{}	{}	f	
+J00/006	27	2	54	{F3}	{}	{}	f	
+J00/006	27	3	76	{F4}	{}	{}	f	
+J00/006	28	0	50	{F2}	{}	{}	f	
+J00/006	28	1	62	{F3}	{}	{}	f	
+J00/006	28	2	76	{F4}	{}	{}	f	
+J00/006	28	3	116	{F1}	{}	{}	f	
+J00/006	29	0	3	{F1}	{}	{}	f	
+J00/006	29	1	37	{F2}	{}	{}	f	
+J00/006	29	2	50	{F3}	{}	{}	f	
+J00/006	29	3	76	{F4}	{}	{}	f	
+J00/006	30	0	45	{F2}	{}	{}	f	
+J00/006	30	1	58	{F3}	{}	{}	f	
+J00/006	30	2	76	{F4}	{}	{}	f	
+J00/006	30	3	90	{F1}	{}	{}	f	
+J00/006	32	0	1	{F1}	{}	{}	f	
+J00/006	32	1	20	{F2}	{}	{}	f	
+J00/006	32	2	40	{F3}	{}	{}	f	
+J00/006	32	3	60	{F4}	{}	{}	f	
+J00/006	60	0	5	{F1}	{}	{}	f	
+J00/006	60	1	37	{F2}	{}	{}	f	
+J00/006	60	2	51	{F3}	{}	{}	f	
+J00/006	60	3	68	{F4}	{}	{}	f	
+J00/006	61	0	5	{F1}	{}	{}	f	
+J00/006	61	1	37	{F2}	{}	{}	f	
+J00/006	61	2	51	{F3}	{}	{}	f	
+J00/006	61	3	68	{F4}	{}	{}	f	
+J00/006	62	0	11	{F1}	{}	{}	f	
+J00/006	62	1	20	{F2}	{}	{}	f	
+J00/006	62	2	40	{F3}	{}	{}	f	
+J00/006	62	3	62	{F4}	{}	{}	f	
+J00/006	62	4	90	{F5}	{}	{}	f	
+J00/006	68	0	30	{F2}	{}	{}	f	
+J00/006	68	1	41	{F3}	{}	{}	f	
+J00/006	68	2	76	{F4}	{}	{}	f	
+J00/006	68	3	120	{F1}	{}	{}	f	
+J00/007	1	0	1	{F1}	{}	{}	f	1
+J00/007	1	1	29	{F2}	{}	{}	f	2
+J00/007	1	2	30	{F1,F2}	{}	{}	t	2+
+J00/007	1	3	39	{F3}	{}	{}	f	3F
+J00/007	1	4	41	{F1,F2,F3}	{}	{}	t	3F+
+J00/007	1	5	57	{F4}	{}	{}	f	4F
+J00/007	1	6	60	{F1,F4}	{}	{}	t	4F+
+J00/007	2	0	25	{F2}	{}	{}	f	2
+J00/007	2	1	26	{F1,F2}	{}	{}	t	2+
+J00/007	2	2	35	{F3}	{}	{}	f	3F
+J00/007	2	3	37	{F1,F2,F3}	{}	{}	t	3F+
+J00/007	2	4	54	{F4}	{}	{}	f	4F
+J00/007	2	5	57	{F1,F4}	{}	{}	t	4F+
+J00/007	2	6	70	{F1}	{}	{}	f	1
+J00/007	3	0	23	{F2}	{}	{}	f	2
+J00/007	3	1	24	{F1,F2}	{}	{}	t	2+
+J00/007	3	2	33	{F3}	{}	{}	f	3F
+J00/007	3	3	35	{F1,F2,F3}	{}	{}	t	3F+
+J00/007	3	4	55	{F4}	{}	{}	f	4F
+J00/007	3	5	58	{F1,F4}	{}	{}	t	4F+
+J00/007	3	6	71	{F1}	{}	{}	f	1
+J00/007	5	0	4	{F1}	{}	{}	f	1
+J00/007	5	1	33	{F3}	{}	{}	f	3F
+J00/007	5	2	34	{F1,F3}	{}	{}	t	3F+
+J00/007	5	3	52	{F4}	{}	{}	f	4F
+J00/007	5	4	54	{F1,F4}	{}	{}	t	4F+
+J00/007	6	0	25	{F2}	{}	{}	f	2
+J00/007	6	1	26	{F1,F2}	{}	{}	t	2+
+J00/007	6	2	35	{F3}	{DX}	{}	f	3F
+J00/007	6	3	62	{F4}	{}	{}	f	4F
+J00/007	6	4	64	{F1,F4}	{}	{}	t	4F+
+J00/007	6	5	70	{F1}	{}	{}	f	1
+J00/007	8	0	25	{F2}	{}	{}	f	2
+J00/007	8	1	26	{F1,F2}	{}	{}	t	2+
+J00/007	8	2	35	{F3}	{}	{}	f	3F
+J00/007	8	3	37	{F1,F2,F3}	{}	{}	t	3F+
+J00/007	8	4	54	{F4}	{}	{}	f	4F
+J00/007	8	5	57	{F1,F4}	{}	{}	t	4F+
+J00/007	8	6	70	{F1}	{}	{}	f	1
+J00/007	21	0	26	{F2}	{DX}	{}	f	
+J00/007	21	1	45	{F3}	{DX}	{}	f	
+J00/007	21	2	64	{F4}	{}	{}	f	
+J00/007	21	3	65	{F4,F1}	{}	{}	t	
+J00/007	21	4	80	{F1}	{}	{}	f	
+J00/007	22	0	26	{F2}	{DX}	{}	f	
+J00/007	22	1	53	{F3}	{}	{}	f	
+J00/007	22	2	54	{F2,F3}	{}	{}	t	
+J00/007	22	3	72	{F4}	{}	{}	f	
+J00/007	22	4	74	{F4,F1}	{}	{}	t	
+J00/007	22	5	88	{F1}	{}	{}	f	
+J00/007	24	0	20	{F2}	{}	{}	f	
+J00/007	24	1	21	{F1,F2}	{}	{}	t	
+J00/007	24	2	30	{F3}	{DX}	{}	f	
+J00/007	24	3	64	{F4}	{}	{}	f	
+J00/007	24	4	65	{F4,F3}	{}	{}	t	
+J00/007	24	5	80	{F1}	{}	{}	f	
+J00/007	25	0	20	{F2}	{}	{}	f	
+J00/007	25	1	21	{F2,F1}	{}	{}	t	
+J00/007	25	2	30	{F3}	{DX}	{}	f	
+J00/007	25	3	69	{F4}	{}	{}	f	
+J00/007	25	4	70	{F3,F4}	{}	{}	t	
+J00/007	25	5	85	{F1}	{}	{}	f	
+J00/007	26	0	20	{F2}	{}	{}	f	
+J00/007	26	1	21	{F2,F1}	{}	{}	t	
+J00/007	26	2	30	{F3}	{DX}	{}	f	
+J00/007	26	3	77	{F4}	{}	{}	f	
+J00/007	26	4	79	{F3,F4}	{}	{}	t	
+J00/007	26	5	93	{F1}	{}	{}	f	
+J00/007	32	0	1	{F1}	{}	{}	f	
+J00/007	32	1	20	{F2}	{DX}	{}	f	
+J00/007	32	2	40	{F3}	{DX}	{}	f	
+J00/007	32	3	60	{F4}	{DX}	{}	f	
+J00/008	1	0	9	{F3}	{}	{}	f	3
+J00/008	1	1	11	{F1,F3}	{}	{}	t	3+
+J00/008	1	2	30	{F1}	{}	{}	f	1
+J00/008	1	3	72	{F2}	{}	{}	f	2F
+J00/008	1	4	73	{F1,F2}	{}	{}	t	2F+
+J00/008	2	0	9	{F3}	{}	{}	f	3
+J00/008	2	1	11	{F1,F3}	{}	{}	t	3+
+J00/008	2	2	30	{F1}	{}	{}	f	1
+J00/008	2	3	72	{F2}	{}	{}	f	2F
+J00/008	2	4	73	{F1,F2}	{}	{}	t	2F+
+J00/008	3	0	9	{F3}	{}	{}	f	3
+J00/008	3	1	11	{F1,F3}	{}	{}	t	3+
+J00/008	3	2	30	{F1}	{}	{}	f	1
+J00/008	3	3	72	{F2}	{}	{}	f	2F
+J00/008	3	4	73	{F1,F2}	{}	{}	t	2F+
+J00/008	5	0	8	{F3}	{}	{}	f	3
+J00/008	5	1	10	{F1,F3}	{}	{}	t	3+
+J00/008	5	2	29	{F1}	{}	{}	f	1
+J00/008	5	3	64	{F2}	{}	{}	f	2F
+J00/008	5	4	65	{F1,F2}	{}	{}	t	2F+
+J00/008	8	0	8	{F3}	{}	{}	f	3
+J00/008	8	1	10	{F1,F3}	{}	{}	t	3+
+J00/008	8	2	29	{F1}	{}	{}	f	1
+J00/008	8	3	64	{F2}	{}	{}	f	2F
+J00/008	8	4	65	{F1,F2}	{}	{}	t	2F+
+J00/008	32	0	1	{F1}	{}	{}	f	
+J00/008	32	1	20	{F2}	{DX}	{}	f	
+J00/008	32	2	40	{F3}	{DX}	{}	f	
+J00/009	1	0	27	{F2}	{}	{}	f	2
+J00/009	1	1	38	{F3}	{DX}	{}	f	3
+J00/009	1	2	63	{F4}	{}	{}	f	4F
+J00/009	1	3	64	{F3,F4}	{DX}	{}	t	4F+
+J00/009	1	4	76	{F5}	{}	{}	f	5F
+J00/009	1	5	78	{F1,F5}	{}	{}	t	5F+
+J00/009	1	6	92	{F1}	{}	{}	f	1
+J00/009	2	0	11	{F1}	{}	{}	f	1
+J00/009	2	1	38	{F2}	{}	{}	f	2
+J00/009	2	2	45	{F3}	{DX}	{}	f	3
+J00/009	2	3	74	{F4}	{}	{}	f	4F
+J00/009	2	4	75	{F3,F4}	{DX}	{}	t	4F+
+J00/009	2	5	83	{F5}	{}	{}	f	5F
+J00/009	2	6	85	{F1,F5}	{}	{}	t	5F+
+J00/009	3	0	18	{F2}	{}	{}	f	2
+J00/009	3	1	26	{F3}	{DX}	{}	f	3
+J00/009	3	2	58	{F4}	{}	{}	f	4F
+J00/009	3	3	59	{F3,F4}	{DX}	{}	t	4F+
+J00/009	3	4	67	{F5}	{}	{}	f	5F
+J00/009	3	5	69	{F1,F5}	{}	{}	t	5F+
+J00/009	3	6	83	{F1}	{}	{}	f	1
+J00/009	5	0	27	{F2}	{}	{}	f	2
+J00/009	5	1	35	{F3}	{DX}	{}	f	3
+J00/009	5	2	55	{F4}	{}	{}	f	4F
+J00/009	5	3	56	{F3,F4}	{DX}	{}	t	4F+
+J00/009	5	4	64	{F5}	{}	{}	f	5F
+J00/009	5	5	66	{F1,F5}	{}	{}	t	5F+
+J00/009	5	6	80	{F1}	{}	{}	f	1
+J00/009	8	0	27	{F2}	{}	{}	f	2
+J00/009	8	1	35	{F3}	{DX}	{}	f	3
+J00/009	8	2	55	{F4}	{}	{}	f	4F
+J00/009	8	3	56	{F3,F4}	{DX}	{}	t	4F+
+J00/009	8	4	64	{F5}	{}	{}	f	5F
+J00/009	8	5	66	{F1,F5}	{}	{}	t	5F+
+J00/009	8	6	80	{F1}	{}	{}	f	1
+J00/009	21	0	40	{F2}	{}	{}	f	
+J00/009	21	1	47	{F3}	{DX}	{}	f	
+J00/009	21	2	64	{F4}	{}	{}	f	
+J00/009	21	3	65	{F3,F4}	{DX}	{}	t	
+J00/009	21	4	76	{F5}	{}	{}	f	
+J00/009	21	5	78	{F1,F5}	{}	{}	t	
+J00/009	21	6	92	{F1}	{}	{}	f	
+J00/009	22	0	32	{F2}	{}	{}	f	
+J00/009	22	1	47	{F3}	{DX}	{}	f	
+J00/009	22	2	64	{F4}	{}	{}	f	
+J00/009	22	3	65	{F3,F4}	{DX}	{}	t	
+J00/009	22	4	76	{F5}	{}	{}	f	
+J00/009	22	5	78	{F1,F5}	{}	{}	t	
+J00/009	22	6	92	{F1}	{}	{}	f	
+J00/009	23	0	25	{F2}	{}	{}	f	
+J00/009	23	1	32	{F3}	{DX}	{}	f	
+J00/009	23	2	64	{F4}	{}	{}	f	
+J00/009	23	3	65	{F3,F4}	{DX}	{}	t	
+J00/009	23	4	76	{F5}	{}	{}	f	
+J00/009	23	5	78	{F1,F5}	{}	{}	t	
+J00/009	23	6	92	{F1}	{}	{}	f	
+J00/009	24	0	25	{F2}	{}	{}	f	
+J00/009	24	1	32	{F3}	{DX}	{}	f	
+J00/009	24	2	59	{F4}	{DX}	{}	f	
+J00/009	24	3	76	{F5}	{}	{}	f	
+J00/009	24	4	78	{F1,F5}	{}	{}	t	
+J00/009	24	5	92	{F1}	{}	{}	f	
+J00/009	25	0	30	{F2}	{}	{}	f	
+J00/009	25	1	37	{F3}	{DX}	{}	f	
+J00/009	25	2	64	{F4}	{}	{}	f	
+J00/009	25	3	65	{F3,F4}	{DX}	{}	t	
+J00/009	25	4	76	{F5}	{}	{}	f	
+J00/009	25	5	78	{F1,F5}	{}	{}	t	
+J00/009	25	6	92	{F1}	{}	{}	f	
+J00/009	26	0	20	{F2}	{}	{}	f	
+J00/009	26	1	27	{F3}	{DX}	{}	f	
+J00/009	26	2	61	{F4}	{DX}	{}	f	
+J00/009	26	3	76	{F5}	{}	{}	f	
+J00/009	26	4	78	{F1,F5}	{}	{}	t	
+J00/009	26	5	92	{F1}	{}	{}	f	
+J00/009	27	0	20	{F2}	{}	{}	f	
+J00/009	27	1	27	{F3}	{DX}	{}	f	
+J00/009	27	2	64	{F4}	{}	{}	f	
+J00/009	27	3	65	{F3,F4}	{DX}	{}	t	
+J00/009	27	4	76	{F5}	{}	{}	f	
+J00/009	27	5	78	{F1,F5}	{}	{}	t	
+J00/009	27	6	92	{F1}	{}	{}	f	
+J00/009	28	0	20	{F2}	{}	{}	f	
+J00/009	28	1	27	{F3}	{DX}	{}	f	
+J00/009	28	2	50	{F4}	{DX}	{}	f	
+J00/009	28	3	76	{F5}	{}	{}	f	
+J00/009	28	4	78	{F1,F5}	{}	{}	t	
+J00/009	28	5	92	{F1}	{}	{}	f	
+J00/009	32	0	1	{F1}	{}	{}	f	
+J00/009	32	1	20	{F2}	{}	{}	f	
+J00/009	32	2	40	{F3}	{DX}	{}	f	
+J00/009	32	3	60	{F4}	{DX}	{}	f	
+J00/009	32	4	80	{F5}	{DX}	{}	f	
+J00/010	1	0	15	{F2}	{}	{}	f	2
+J00/010	1	1	51	{F3}	{}	{}	f	3F
+J00/010	1	2	52	{F2,F3}	{}	{}	t	3F+
+J00/010	1	3	67	{F1}	{}	{}	f	1
+J00/010	2	0	15	{F2}	{}	{}	f	2
+J00/010	2	1	51	{F3}	{}	{}	f	3F
+J00/010	2	2	52	{F2,F3}	{}	{}	t	3F+
+J00/010	2	3	67	{F1}	{}	{}	f	1
+J00/010	3	0	15	{F2}	{}	{}	f	2
+J00/010	3	1	51	{F3}	{}	{}	f	3F
+J00/010	3	2	52	{F2,F3}	{}	{}	t	3F+
+J00/010	3	3	67	{F1}	{}	{}	f	1
+J00/010	5	0	15	{F2}	{}	{}	f	2
+J00/010	5	1	51	{F3}	{}	{}	f	3F
+J00/010	5	2	52	{F2,F3}	{}	{}	t	3F+
+J00/010	5	3	67	{F1}	{}	{}	f	1
+J00/010	8	0	15	{F2}	{}	{}	f	2
+J00/010	8	1	51	{F3}	{}	{}	f	3F
+J00/010	8	2	52	{F2,F3}	{}	{}	t	3F+
+J00/010	8	3	67	{F1}	{}	{}	f	1
+J00/010	21	0	29	{F2}	{}	{}	f	
+J00/010	21	1	51	{F3}	{}	{}	f	
+J00/010	21	2	52	{F1,F3}	{}	{}	t	
+J00/010	21	3	67	{F1}	{}	{}	f	
+J00/010	22	0	9	{F2}	{}	{}	f	
+J00/010	22	1	51	{F3}	{}	{}	f	
+J00/010	22	2	52	{F1,F3}	{}	{}	t	
+J00/010	22	3	67	{F1}	{}	{}	f	
+J00/010	32	0	1	{F1}	{}	{}	f	
+J00/010	32	1	28	{F2}	{}	{}	f	
+J00/010	32	2	41	{F3}	{DX}	{}	f	
+J00/011	1	0	11	{F1}	{}	{}	f	1
+J00/011	1	1	32	{F2}	{}	{}	f	2
+J00/011	1	2	53	{F2}	{DUM}	{}	f	3
+J00/011	1	3	60	{F3}	{}	{}	f	3+
+J00/011	1	4	79	{F4}	{DX}	{}	f	4F
+J00/011	2	0	11	{F1}	{}	{}	f	1
+J00/011	2	1	32	{F2}	{}	{}	f	2
+J00/011	2	2	53	{F2}	{DUM}	{}	f	3
+J00/011	2	3	60	{F3}	{}	{}	f	3+
+J00/011	2	4	79	{F4}	{DX}	{}	f	4F
+J00/011	3	0	11	{F1}	{}	{}	f	1
+J00/011	3	1	32	{F2}	{}	{}	f	2
+J00/011	3	2	53	{F2}	{DUM}	{}	f	3
+J00/011	3	3	60	{F3}	{}	{}	f	3+
+J00/011	3	4	79	{F4}	{DX}	{}	f	4F
+J00/011	5	0	11	{F1}	{}	{}	f	1
+J00/011	5	1	32	{F2}	{}	{}	f	2
+J00/011	5	2	53	{F2}	{DUM}	{}	f	3
+J00/011	5	3	60	{F3}	{}	{}	f	3+
+J00/011	5	4	79	{F4}	{DX}	{}	f	4F
+J00/011	8	0	11	{F1}	{}	{}	f	1
+J00/011	8	1	32	{F2}	{}	{}	f	2
+J00/011	8	2	53	{F2}	{DUM}	{}	f	3
+J00/011	8	3	60	{F3}	{}	{}	f	3+
+J00/011	8	4	79	{F4}	{DX}	{}	f	4F
+J00/011	32	0	1	{F1}	{}	{}	f	
+J00/011	32	1	20	{F2}	{}	{}	f	
+J00/011	32	2	40	{F3}	{}	{}	f	
+J00/011	32	3	60	{F4}	{DX}	{}	f	
+J00/070	1	0	5	{F1}	{}	{}	f	1+
+J00/070	1	1	27	{F1}	{DUM}	{}	f	2
+J00/070	1	2	38	{F1}	{DUM}	{}	f	3
+J00/070	1	3	63	{F1}	{DUM}	{}	f	4
+J00/070	1	4	76	{F1}	{DUM}	{}	f	5F
+J00/070	1	5	83	{F2}	{}	{}	f	5F+
+J00/070	1	6	84	{F1,F2}	{}	{}	t	5F+
+J00/070	1	7	92	{F1,F2}	{DUM}	{}	f	1
+J00/070	2	0	2	{F2}	{}	{}	f	5F+
+J00/070	2	1	3	{F1,F2}	{}	{}	t	5F+
+J00/070	2	2	11	{F1,F2}	{DUM}	{}	f	1
+J00/070	2	3	20	{F1}	{}	{}	f	1+
+J00/070	2	4	38	{F1}	{DUM}	{}	f	2
+J00/070	2	5	45	{F1}	{DUM}	{}	f	3
+J00/070	2	6	74	{F1}	{DUM}	{}	f	4
+J00/070	2	7	83	{F1}	{DUM}	{}	f	5F
+J00/070	3	0	18	{F1}	{DUM}	{}	f	2
+J00/070	3	1	26	{F1}	{DUM}	{}	f	3
+J00/070	3	2	58	{F1}	{DUM}	{}	f	4
+J00/070	3	3	67	{F1}	{DUM}	{}	f	5F
+J00/070	3	4	74	{F2}	{}	{}	f	5F+
+J00/070	3	5	75	{F1,F2}	{}	{}	t	5F+
+J00/070	3	6	83	{F1,F2}	{DUM}	{}	f	1
+J00/070	3	7	92	{F1}	{}	{}	f	1+
+J00/070	5	0	9	{F1}	{}	{}	f	1+
+J00/070	5	1	27	{F1}	{DUM}	{}	f	2
+J00/070	5	2	35	{F1}	{DUM}	{}	f	3
+J00/070	5	3	55	{F1}	{DUM}	{}	f	4
+J00/070	5	4	64	{F1}	{DUM}	{}	f	5F
+J00/070	5	5	71	{F2}	{}	{}	f	5F+
+J00/070	5	6	72	{F1,F2}	{}	{}	t	5F+
+J00/070	5	7	80	{F1,F2}	{DUM}	{}	f	1
+J00/070	8	0	9	{F1}	{}	{}	f	1+
+J00/070	8	1	27	{F1}	{DUM}	{}	f	2
+J00/070	8	2	35	{F1}	{DUM}	{}	f	3
+J00/070	8	3	55	{F1}	{DUM}	{}	f	4
+J00/070	8	4	64	{F1}	{DUM}	{}	f	5F
+J00/070	8	5	71	{F2}	{}	{}	f	5F+
+J00/070	8	6	72	{F1,F2}	{}	{}	t	5F+
+J00/070	8	7	80	{F1,F2}	{DUM}	{}	f	1
+J00/070	21	0	83	{F2}	{}	{}	f	
+J00/070	21	1	84	{F1,F2}	{}	{}	t	
+J00/070	21	2	95	{F1}	{}	{}	f	
+J00/070	22	0	83	{F2}	{}	{}	f	
+J00/070	22	1	84	{F1,F2}	{}	{}	t	
+J00/070	22	2	95	{F1}	{}	{}	f	
+J00/070	23	0	83	{F2}	{}	{}	f	
+J00/070	23	1	84	{F1,F2}	{}	{}	t	
+J00/070	23	2	95	{F1}	{}	{}	f	
+J00/070	24	0	83	{F2}	{}	{}	f	
+J00/070	24	1	84	{F1,F2}	{}	{}	t	
+J00/070	24	2	95	{F1}	{}	{}	f	
+J00/070	25	0	83	{F2}	{}	{}	f	
+J00/070	25	1	84	{F1,F2}	{}	{}	t	
+J00/070	25	2	95	{F1}	{}	{}	f	
+J00/070	26	0	83	{F2}	{}	{}	f	
+J00/070	26	1	84	{F1,F2}	{}	{}	t	
+J00/070	26	2	95	{F1}	{}	{}	f	
+J00/070	27	0	83	{F2}	{}	{}	f	
+J00/070	27	1	84	{F1,F2}	{}	{}	t	
+J00/070	27	2	95	{F1}	{}	{}	f	
+J00/070	28	0	83	{F2}	{}	{}	f	
+J00/070	28	1	84	{F1,F2}	{}	{}	t	
+J00/070	28	2	95	{F1}	{}	{}	f	
+J00/070	32	0	1	{F1}	{}	{}	f	
+J00/070	32	1	20	{F2}	{DX}	{}	f	
+J00/122	1	0	9	{F1}	{DUM}	{}	f	1
+J00/122	1	1	32	{F2}	{}	{}	f	3
+J00/122	1	2	58	{F2}	{DUM}	{}	f	4
+J00/122	1	3	76	{F2}	{DUM}	{}	f	5F
+J00/122	1	4	82	{F3}	{}	{}	f	5F+
+J00/122	1	5	99	{F4}	{}	{}	f	6
+J00/122	1	6	111	{F4}	{DUM}	{}	f	7F
+J00/122	1	7	120	{F1}	{}	{}	f	7F+
+J00/122	2	0	13	{F1}	{DUM}	{}	f	1
+J00/122	2	1	34	{F2}	{}	{}	f	3
+J00/122	2	2	58	{F2}	{DUM}	{}	f	4
+J00/122	2	3	76	{F2}	{DUM}	{}	f	5F
+J00/122	2	4	82	{F3}	{}	{}	f	5F+
+J00/122	2	5	99	{F4}	{}	{}	f	6
+J00/122	2	6	111	{F4}	{DUM}	{}	f	7F
+J00/122	2	7	120	{F1}	{}	{}	f	7F+
+J00/122	3	0	11	{F1}	{DUM}	{}	f	1
+J00/122	3	1	34	{F2}	{}	{}	f	3
+J00/122	3	2	58	{F2}	{DUM}	{}	f	4
+J00/122	3	3	76	{F2}	{DUM}	{}	f	5F
+J00/122	3	4	82	{F3}	{}	{}	f	5F+
+J00/122	3	5	99	{F4}	{}	{}	f	6
+J00/122	3	6	111	{F4}	{DUM}	{}	f	7F
+J00/122	3	7	120	{F1}	{}	{}	f	7F+
+J00/122	4	0	9	{F1}	{DUM}	{}	f	1
+J00/122	4	1	28	{F2}	{}	{}	f	2F
+J00/122	4	2	32	{F2}	{DUM}	{}	f	3
+J00/122	4	3	58	{F2}	{DUM}	{}	f	4
+J00/122	4	4	76	{F2}	{DUM}	{}	f	5F
+J00/122	4	5	82	{F3}	{}	{}	f	5F+
+J00/122	4	6	99	{F4}	{}	{}	f	6
+J00/122	4	7	111	{F4}	{DUM}	{}	f	7F
+J00/122	4	8	120	{F1}	{}	{}	f	7F+
+J00/122	5	0	6	{F1}	{DUM}	{}	f	1
+J00/122	5	1	30	{F2}	{}	{}	f	3
+J00/122	5	2	52	{F2}	{DUM}	{}	f	4
+J00/122	5	3	68	{F2}	{DUM}	{}	f	5F
+J00/122	5	4	74	{F3}	{}	{}	f	5F+
+J00/122	5	5	91	{F4}	{}	{}	f	6
+J00/122	5	6	103	{F4}	{DUM}	{}	f	7F
+J00/122	5	7	112	{F1}	{}	{}	f	7F+
+J00/122	6	0	9	{F1}	{DUM}	{}	f	1
+J00/122	6	1	28	{F2}	{}	{}	f	3
+J00/122	6	2	52	{F2}	{DUM}	{}	f	4
+J00/122	6	3	68	{F2}	{DUM}	{}	f	5F
+J00/122	6	4	74	{F3}	{}	{}	f	5F+
+J00/122	6	5	91	{F4}	{}	{}	f	6
+J00/122	6	6	103	{F4}	{DUM}	{}	f	7F
+J00/122	6	7	112	{F1}	{}	{}	f	7F+
+J00/122	8	0	6	{F1}	{DUM}	{}	f	1
+J00/122	8	1	30	{F2}	{}	{}	f	3
+J00/122	8	2	52	{F2}	{DUM}	{}	f	4
+J00/122	8	3	68	{F2}	{DUM}	{}	f	5F
+J00/122	8	4	74	{F3}	{}	{}	f	5F+
+J00/122	8	5	91	{F4}	{}	{}	f	6
+J00/122	8	6	103	{F4}	{DUM}	{}	f	7F
+J00/122	8	7	112	{F1}	{}	{}	f	7F+
+J00/122	21	0	32	{F2}	{}	{}	f	
+J00/122	21	1	82	{F3}	{}	{}	f	
+J00/122	21	2	99	{F4}	{}	{}	f	
+J00/122	21	3	120	{F1}	{}	{}	f	
+J00/122	22	0	32	{F2}	{}	{}	f	
+J00/122	22	1	82	{F3}	{}	{}	f	
+J00/122	22	2	99	{F4}	{}	{}	f	
+J00/122	22	3	120	{F1}	{}	{}	f	
+J00/122	23	0	37	{F2}	{}	{}	f	
+J00/122	23	1	82	{F3}	{}	{}	f	
+J00/122	23	2	99	{F4}	{}	{}	f	
+J00/122	23	3	120	{F1}	{}	{}	f	
+J00/122	24	0	41	{F2}	{}	{}	f	
+J00/122	24	1	82	{F3}	{}	{}	f	
+J00/122	24	2	99	{F4}	{}	{}	f	
+J00/122	24	3	120	{F1}	{}	{}	f	
+J00/122	25	0	26	{F2}	{}	{}	f	
+J00/122	25	1	82	{F3}	{}	{}	f	
+J00/122	25	2	99	{F4}	{}	{}	f	
+J00/122	25	3	120	{F1}	{}	{}	f	
+J00/122	26	0	30	{F2}	{}	{}	f	
+J00/122	26	1	76	{F3}	{}	{}	f	
+J00/122	26	2	93	{F4}	{}	{}	f	
+J00/122	26	3	120	{F1}	{}	{}	f	
+J00/122	27	0	28	{F2}	{}	{}	f	
+J00/122	27	1	82	{F3}	{}	{}	f	
+J00/122	27	2	99	{F4}	{}	{}	f	
+J00/122	27	3	120	{F1}	{}	{}	f	
+J00/122	28	0	59	{F2}	{}	{}	f	
+J00/122	28	1	82	{F3}	{}	{}	f	
+J00/122	28	2	99	{F4}	{}	{}	f	
+J00/122	28	3	120	{F1}	{}	{}	f	
+J00/122	29	0	24	{F2}	{}	{}	f	
+J00/122	29	1	82	{F3}	{}	{}	f	
+J00/122	29	2	99	{F4}	{}	{}	f	
+J00/122	29	3	120	{F1}	{}	{}	f	
+J00/122	30	0	32	{F2}	{}	{}	f	
+J00/122	30	1	82	{F3}	{}	{}	f	
+J00/122	30	2	99	{F4}	{}	{}	f	
+J00/122	30	3	120	{F1}	{}	{}	f	
+J00/122	32	0	1	{F1}	{}	{}	f	
+J00/122	32	1	20	{F2}	{}	{}	f	
+J00/122	32	2	40	{F3}	{}	{}	f	
+J00/122	32	3	60	{F4}	{}	{}	f	
+J00/122	60	0	5	{F5}	{}	{}	f	
+J00/122	60	1	28	{F2}	{}	{}	f	
+J00/122	60	2	74	{F3}	{}	{}	f	
+J00/122	60	3	91	{F4}	{}	{}	f	
+J00/122	61	0	5	{F5}	{}	{}	f	
+J00/122	61	1	21	{F2}	{}	{}	f	
+J00/122	61	2	74	{F3}	{}	{}	f	
+J00/122	61	3	91	{F4}	{}	{}	f	
+J00/122	62	0	20	{F2}	{}	{}	f	
+J00/122	62	1	68	{F3}	{}	{}	f	
+J00/122	62	2	85	{F4}	{}	{}	f	
+J00/122	62	3	112	{F1}	{}	{}	f	
+J00/122	68	0	22	{F2}	{}	{}	f	
+J00/122	68	1	82	{F3}	{}	{}	f	
+J00/122	68	2	99	{F4}	{}	{}	f	
+J00/122	68	3	120	{F1}	{}	{}	f	
+J00/123	1	0	9	{F1}	{DUM}	{}	f	1
+J00/123	1	1	32	{F1}	{DUM}	{}	f	3
+J00/123	1	2	58	{F1}	{DUM}	{}	f	4
+J00/123	1	3	62	{F2}	{}	{}	f	4+
+J00/123	1	4	76	{F2}	{DUM}	{}	f	5F
+J00/123	1	5	85	{F1}	{}	{}	f	5F+
+J00/123	1	6	99	{F1}	{DUM}	{}	f	6
+J00/123	1	7	111	{F1}	{DUM}	{}	f	7F
+J00/123	2	0	13	{F1}	{DUM}	{}	f	1
+J00/123	2	1	34	{F1}	{DUM}	{}	f	3
+J00/123	2	2	58	{F1}	{DUM}	{}	f	4
+J00/123	2	3	62	{F2}	{}	{}	f	4+
+J00/123	2	4	76	{F2}	{DUM}	{}	f	5F
+J00/123	2	5	85	{F1}	{}	{}	f	5F+
+J00/123	2	6	99	{F1}	{DUM}	{}	f	6
+J00/123	2	7	111	{F1}	{DUM}	{}	f	7F
+J00/123	3	0	11	{F1}	{DUM}	{}	f	1
+J00/123	3	1	34	{F1}	{DUM}	{}	f	3
+J00/123	60	1	77	{F1}	{}	{}	f	
+J00/123	3	2	58	{F1}	{DUM}	{}	f	4
+J00/123	3	3	62	{F2}	{}	{}	f	4+
+J00/123	3	4	76	{F2}	{DUM}	{}	f	5F
+J00/123	3	5	85	{F1}	{}	{}	f	5F+
+J00/123	3	6	99	{F1}	{DUM}	{}	f	6
+J00/123	3	7	111	{F1}	{DUM}	{}	f	7F
+J00/123	4	0	9	{F1}	{DUM}	{}	f	1
+J00/123	4	1	28	{F1}	{DUM}	{}	f	2F
+J00/123	4	2	32	{F1}	{DUM}	{}	f	3
+J00/123	4	3	58	{F1}	{DUM}	{}	f	4
+J00/123	4	4	62	{F2}	{}	{}	f	4+
+J00/123	4	5	76	{F2}	{DUM}	{}	f	5F
+J00/123	4	6	85	{F1}	{}	{}	f	5F+
+J00/123	4	7	99	{F1}	{DUM}	{}	f	6
+J00/123	4	8	111	{F1}	{DUM}	{}	f	7F
+J00/123	5	0	6	{F1}	{DUM}	{}	f	1
+J00/123	5	1	30	{F1}	{DUM}	{}	f	3
+J00/123	5	2	52	{F1}	{DUM}	{}	f	4
+J00/123	5	3	56	{F2}	{}	{}	f	4+
+J00/123	5	4	68	{F2}	{DUM}	{}	f	5F
+J00/123	5	5	77	{F1}	{}	{}	f	5F+
+J00/123	5	6	91	{F1}	{DUM}	{}	f	6
+J00/123	5	7	103	{F1}	{DUM}	{}	f	7F
+J00/123	6	0	9	{F1}	{DUM}	{}	f	1
+J00/123	6	1	28	{F1}	{DUM}	{}	f	3
+J00/123	6	2	52	{F1}	{DUM}	{}	f	4
+J00/123	6	3	56	{F2}	{}	{}	f	4+
+J00/123	6	4	68	{F2}	{DUM}	{}	f	5F
+J00/123	6	5	77	{F1}	{}	{}	f	5F+
+J00/123	6	6	91	{F1}	{DUM}	{}	f	6
+J00/123	6	7	103	{F1}	{DUM}	{}	f	7F
+J00/123	8	0	6	{F1}	{DUM}	{}	f	1
+J00/123	8	1	30	{F1}	{DUM}	{}	f	3
+J00/123	8	2	52	{F1}	{DUM}	{}	f	4
+J00/123	8	3	56	{F2}	{}	{}	f	4+
+J00/123	8	4	68	{F2}	{DUM}	{}	f	5F
+J00/123	8	5	77	{F1}	{}	{}	f	5F+
+J00/123	8	6	91	{F1}	{DUM}	{}	f	6
+J00/123	8	7	103	{F1}	{DUM}	{}	f	7F
+J00/123	21	0	62	{F2}	{}	{}	f	
+J00/123	21	1	85	{F1}	{}	{}	f	
+J00/123	22	0	62	{F2}	{}	{}	f	
+J00/123	22	1	85	{F1}	{}	{}	f	
+J00/123	23	0	64	{F2}	{}	{}	f	
+J00/123	23	1	85	{F1}	{}	{}	f	
+J00/123	24	0	68	{F2}	{}	{}	f	
+J00/123	24	1	85	{F1}	{}	{}	f	
+J00/123	25	0	62	{F2}	{}	{}	f	
+J00/123	25	1	85	{F1}	{}	{}	f	
+J00/123	26	0	61	{F2}	{}	{}	f	
+J00/123	26	1	79	{F1}	{}	{}	f	
+J00/123	27	0	62	{F2}	{}	{}	f	
+J00/123	27	1	85	{F1}	{}	{}	f	
+J00/123	28	0	88	{F2}	{}	{}	f	
+J00/123	28	1	101	{F1}	{}	{}	f	
+J00/123	29	0	58	{F2}	{}	{}	f	
+J00/123	29	1	85	{F1}	{}	{}	f	
+J00/123	30	0	62	{F2}	{}	{}	f	
+J00/123	30	1	85	{F1}	{}	{}	f	
+J00/123	32	0	1	{F1}	{}	{}	f	
+J00/123	32	1	10	{F2}	{}	{}	f	
+J00/123	60	0	58	{F2}	{}	{}	f	
+J00/123	61	0	58	{F2}	{}	{}	f	
+J00/123	61	1	77	{F1}	{}	{}	f	
+J00/123	62	0	34	{F2}	{}	{}	f	
+J00/123	62	1	62	{F1}	{}	{}	f	
+J00/123	68	0	62	{F2}	{}	{}	f	
+J00/123	68	1	85	{F1}	{}	{}	f	
+J00/130	1	0	3	{F1}	{DUM}	{}	f	4f
+J00/130	1	1	18	{F1}	{DUM}	{}	f	1
+J00/130	1	2	33	{F2}	{DX}	{}	f	1+
+J00/130	1	3	57	{F2}	{DX,DUM}	{}	f	2
+J00/130	1	4	79	{F2}	{DX,DUM}	{}	f	3
+J00/130	1	5	80	{F1}	{}	{}	f	3+
+J00/130	2	0	3	{F1}	{DUM}	{}	f	4F
+J00/130	2	1	18	{F1}	{DUM}	{}	f	1
+J00/130	2	2	33	{F2}	{DX}	{}	f	1+
+J00/130	2	3	57	{F2}	{DX,DUM}	{}	f	2
+J00/130	2	4	79	{F2}	{DX,DUM}	{}	f	3
+J00/130	2	5	80	{F1}	{}	{}	f	3+
+J00/130	3	0	9	{F1}	{DUM}	{}	f	4f
+J00/130	3	1	24	{F1}	{DUM}	{}	f	1
+J00/130	3	2	39	{F2}	{DX}	{}	f	1+
+J00/130	3	3	63	{F2}	{DX,DUM}	{}	f	2
+J00/130	3	4	83	{F2}	{DX,DUM}	{}	f	3
+J00/130	3	5	84	{F1}	{}	{}	f	3+
+J00/130	5	0	4	{F1}	{DUM}	{}	f	4f
+J00/130	5	1	19	{F1}	{DUM}	{}	f	1
+J00/130	5	2	30	{F2}	{DX}	{}	f	1+
+J00/130	5	3	55	{F2}	{DX,DUM}	{}	f	2
+J00/130	5	4	70	{F2}	{DX,DUM}	{}	f	3
+J00/130	5	5	71	{F1}	{}	{}	f	3+
+J00/130	8	0	9	{F1}	{DUM}	{}	f	4f
+J00/130	8	1	24	{F1}	{DUM}	{}	f	1
+J00/130	8	2	35	{F2}	{DX}	{}	f	1+
+J00/130	8	3	67	{F2}	{DX,DUM}	{}	f	2
+J00/130	8	4	83	{F2}	{DX,DUM}	{}	f	3
+J00/130	8	5	84	{F1}	{}	{}	f	3+
+J00/130	11	0	3	{F1}	{DUM}	{}	f	4f
+J00/130	11	1	18	{F1}	{DUM}	{}	f	5F
+J00/130	11	2	33	{F2}	{DX}	{}	f	1
+J00/130	11	3	57	{F2}	{DX,DUM}	{}	f	2
+J00/130	11	4	79	{F2}	{DX,DUM}	{}	f	3
+J00/130	11	5	80	{F1}	{}	{}	f	3+
+J00/130	12	0	3	{F1}	{DUM}	{}	f	4f
+J00/130	12	1	18	{F1}	{DUM}	{}	f	5F
+J00/130	12	2	35	{F2}	{DX}	{}	f	1
+J00/130	12	3	57	{F2}	{DX,DUM}	{}	f	2
+J00/130	12	4	79	{F2}	{DX,DUM}	{}	f	3
+J00/130	12	5	80	{F1}	{}	{}	f	3+
+J00/130	13	0	3	{F1}	{DUM}	{}	f	4f
+J00/130	13	1	18	{F1}	{DUM}	{}	f	5F
+J00/130	13	2	37	{F2}	{DX}	{}	f	1
+J00/130	13	3	57	{F2}	{DX,DUM}	{}	f	2
+J00/130	13	4	79	{F2}	{DX,DUM}	{}	f	3
+J00/130	13	5	80	{F1}	{}	{}	f	3+
+J00/130	19	0	3	{F1}	{DUM}	{}	f	4f
+J00/130	19	1	18	{F1}	{DUM}	{}	f	1
+J00/130	19	2	33	{F2}	{DX}	{}	f	1+
+J00/130	19	3	57	{F2}	{DX,DUM}	{}	f	2
+J00/134	21	2	62	{F3}	{}	{}	f	
+J00/130	19	4	79	{F2}	{DX,DUM}	{}	f	3
+J00/130	19	5	80	{F1}	{}	{}	f	3+
+J00/130	22	0	33	{F2}	{DX}	{}	f	
+J00/130	22	1	80	{F1}	{}	{}	f	
+J00/130	23	0	33	{F2}	{DX}	{}	f	
+J00/130	23	1	80	{F1}	{}	{}	f	
+J00/130	32	0	1	{F1}	{}	{}	f	
+J00/130	32	1	20	{F2}	{DX}	{}	f	
+J00/134	1	0	9	{F1}	{}	{}	f	1
+J00/134	1	1	32	{F5}	{}	{}	f	3
+J00/134	1	2	58	{F5}	{DUM}	{}	f	4
+J00/134	1	3	62	{F3}	{}	{}	f	4+
+J00/134	1	4	76	{F3}	{DUM}	{}	f	5F
+J00/134	1	5	99	{F3}	{DUM}	{}	f	6
+J00/134	1	6	111	{F5}	{}	{}	f	7F
+J00/134	2	0	13	{F1}	{}	{}	f	1
+J00/134	2	1	34	{F5}	{}	{}	f	3
+J00/134	2	2	58	{F5}	{DUM}	{}	f	4
+J00/134	2	3	62	{F3}	{}	{}	f	4+
+J00/134	2	4	76	{F3}	{DUM}	{}	f	5F
+J00/134	2	5	99	{F3}	{DUM}	{}	f	6
+J00/134	2	6	111	{F5}	{}	{}	f	7F
+J00/134	3	0	11	{F1}	{}	{}	f	1
+J00/134	3	1	34	{F5}	{}	{}	f	3
+J00/134	3	2	58	{F5}	{DUM}	{}	f	4
+J00/134	3	3	62	{F3}	{}	{}	f	4+
+J00/134	3	4	76	{F3}	{DUM}	{}	f	5F
+J00/134	3	5	99	{F3}	{DUM}	{}	f	6
+J00/134	3	6	111	{F5}	{}	{}	f	7F
+J00/134	4	0	9	{F1}	{}	{}	f	1
+J00/134	4	1	28	{F1}	{DUM}	{}	f	2F
+J00/134	4	2	32	{F5}	{}	{}	f	3
+J00/134	4	3	58	{F5}	{DUM}	{}	f	4
+J00/134	4	4	62	{F3}	{}	{}	f	4+
+J00/134	4	5	76	{F3}	{DUM}	{}	f	5F
+J00/134	4	6	99	{F3}	{DUM}	{}	f	6
+J00/134	4	7	111	{F5}	{}	{}	f	7F
+J00/134	5	0	6	{F1}	{}	{}	f	1
+J00/134	5	1	30	{F1}	{DUM}	{}	f	3
+J00/134	5	2	38	{F5}	{}	{}	f	3+
+J00/134	5	3	52	{F5}	{DUM}	{}	f	4
+J00/134	5	4	56	{F3}	{}	{}	f	4+
+J00/134	5	5	68	{F3}	{DUM}	{}	f	5F
+J00/134	5	6	91	{F3}	{DUM}	{}	f	6
+J00/134	5	7	103	{F5}	{}	{}	f	7F
+J00/134	6	0	9	{F1}	{}	{}	f	1
+J00/134	6	1	28	{F5}	{}	{}	f	3
+J00/134	6	2	52	{F5}	{DUM}	{}	f	4
+J00/134	6	3	56	{F3}	{}	{}	f	4+
+J00/134	6	4	68	{F3}	{DUM}	{}	f	5F
+J00/134	6	5	91	{F3}	{DUM}	{}	f	6
+J00/134	6	6	103	{F5}	{}	{}	f	7F
+J00/134	8	0	6	{F1}	{}	{}	f	1
+J00/134	8	1	30	{F1}	{DUM}	{}	f	3
+J00/134	8	2	38	{F5}	{}	{}	f	3+
+J00/134	8	3	52	{F5}	{DUM}	{}	f	4
+J00/134	8	4	56	{F3}	{}	{}	f	4+
+J00/134	8	5	68	{F3}	{DUM}	{}	f	5F
+J00/134	8	6	91	{F3}	{DUM}	{}	f	6
+J00/134	8	7	103	{F5}	{}	{}	f	7F
+J00/134	21	0	9	{F1}	{}	{}	f	
+J00/134	21	1	34	{F5}	{}	{}	f	
+J00/134	21	3	111	{F5}	{}	{}	f	
+J00/134	22	0	7	{F1}	{}	{}	f	
+J00/134	22	1	34	{F5}	{}	{}	f	
+J00/134	22	2	62	{F3}	{}	{}	f	
+J00/134	22	3	111	{F5}	{}	{}	f	
+J00/134	23	0	14	{F1}	{}	{}	f	
+J00/134	23	1	34	{F5}	{}	{}	f	
+J00/134	23	2	64	{F3}	{}	{}	f	
+J00/134	23	3	111	{F5}	{}	{}	f	
+J00/134	24	0	14	{F1}	{}	{}	f	
+J00/134	24	1	34	{F5}	{}	{}	f	
+J00/134	24	2	68	{F3}	{}	{}	f	
+J00/134	24	3	111	{F5}	{}	{}	f	
+J00/134	25	0	9	{F1}	{}	{}	f	
+J00/134	25	1	34	{F5}	{}	{}	f	
+J00/134	25	2	62	{F3}	{}	{}	f	
+J00/134	25	3	111	{F5}	{}	{}	f	
+J00/134	26	0	17	{F1}	{}	{}	f	
+J00/134	26	1	34	{F5}	{}	{}	f	
+J00/134	26	2	61	{F3}	{}	{}	f	
+J00/134	26	3	111	{F5}	{}	{}	f	
+J00/134	27	0	12	{F1}	{}	{}	f	
+J00/134	27	1	30	{F5}	{}	{}	f	
+J00/134	27	2	62	{F3}	{}	{}	f	
+J00/134	27	3	111	{F5}	{}	{}	f	
+J00/134	28	0	34	{F5}	{}	{}	f	
+J00/134	28	1	89	{F3}	{}	{}	f	
+J00/134	28	2	110	{F1}	{}	{}	f	
+J00/134	29	0	10	{F1}	{}	{}	f	
+J00/134	29	1	26	{F5}	{}	{}	f	
+J00/134	29	2	62	{F3}	{}	{}	f	
+J00/134	29	3	111	{F5}	{}	{}	f	
+J00/134	30	0	7	{F1}	{}	{}	f	
+J00/134	30	1	34	{F5}	{}	{}	f	
+J00/134	30	2	62	{F3}	{}	{}	f	
+J00/134	30	3	111	{F5}	{}	{}	f	
+J00/134	32	0	1	{F1}	{}	{}	f	
+J00/134	32	1	20	{F2}	{}	{}	f	
+J00/134	32	2	40	{F4}	{}	{}	f	
+J00/134	32	3	60	{F3}	{}	{}	f	
+J00/134	60	0	7	{F1}	{}	{}	f	
+J00/134	60	1	26	{F5}	{}	{}	f	
+J00/134	60	2	62	{F3}	{}	{}	f	
+J00/134	60	3	104	{F5}	{}	{}	f	
+J00/134	61	0	7	{F1}	{}	{}	f	
+J00/134	61	1	45	{F5}	{}	{}	f	
+J00/134	61	2	62	{F3}	{}	{}	f	
+J00/134	61	3	104	{F5}	{}	{}	f	
+J00/134	62	0	11	{F1}	{}	{}	f	
+J00/134	62	1	30	{F5}	{}	{}	f	
+J00/134	62	2	34	{F3}	{}	{}	f	
+J00/134	62	3	62	{F5}	{}	{}	f	
+J00/134	68	0	7	{F1}	{}	{}	f	
+J00/134	68	1	20	{F5}	{}	{}	f	
+J00/134	68	2	62	{F3}	{}	{}	f	
+J00/134	68	3	111	{F5}	{}	{}	f	
+J00/135	1	0	39	{}	{}	{PV}	f	3
+J00/135	1	1	46	{}	{}	{}	f	3+
+J00/135	1	2	47	{}	{}	{PV}	f	3+
+J00/135	2	0	40	{}	{}	{PV}	f	3
+J00/135	2	1	47	{}	{}	{}	f	3+
+J00/135	2	2	48	{}	{}	{PV}	f	3+
+J00/135	3	0	40	{}	{}	{PV}	f	3
+J00/135	3	1	47	{}	{}	{}	f	3+
+J00/135	3	2	48	{}	{}	{PV}	f	3+
+J00/135	5	0	34	{}	{}	{PV}	f	3
+J00/135	5	1	41	{}	{}	{}	f	3+
+J00/135	5	2	42	{}	{}	{PV}	f	3+
+J00/135	8	0	37	{}	{}	{PV}	f	3
+J00/135	8	1	44	{}	{}	{}	f	3+
+J00/135	8	2	45	{}	{}	{PV}	f	3+
+J00/136	1	0	2	{}	{}	{PV}	f	1
+J00/136	1	1	9	{}	{}	{}	f	1+
+J00/136	1	2	10	{}	{}	{PV}	f	1+
+J00/136	2	0	2	{}	{}	{PV}	f	1
+J00/136	2	1	9	{}	{}	{}	f	1+
+J00/136	2	2	10	{}	{}	{PV}	f	1+
+J00/136	3	0	2	{}	{}	{PV}	f	1
+J00/136	3	1	9	{}	{}	{}	f	1+
+J00/136	3	2	10	{}	{}	{PV}	f	1+
+J00/136	5	0	2	{}	{}	{PV}	f	1
+J00/136	5	1	9	{}	{}	{}	f	1+
+J00/136	5	2	10	{}	{}	{PV}	f	1+
+J00/136	8	0	2	{}	{}	{PV}	f	1
+J00/136	8	1	9	{}	{}	{}	f	1+
+J00/136	8	2	10	{}	{}	{PV}	f	1+
+J00/137	1	0	2	{}	{}	{PV}	f	1
+J00/137	1	1	9	{}	{}	{}	f	1+
+J00/137	1	2	10	{}	{}	{PV}	f	1+
+J00/137	2	0	2	{}	{}	{PV}	f	1
+J00/137	2	1	9	{}	{}	{}	f	1+
+J00/137	2	2	10	{}	{}	{PV}	f	1+
+J00/137	3	0	2	{}	{}	{PV}	f	1
+J00/137	3	1	9	{}	{}	{}	f	1+
+J00/137	3	2	10	{}	{}	{PV}	f	1+
+J00/137	5	0	2	{}	{}	{PV}	f	1
+J00/137	5	1	9	{}	{}	{}	f	1+
+J00/137	5	2	10	{}	{}	{PV}	f	1+
+J00/137	8	0	2	{}	{}	{PV}	f	1
+J00/137	8	1	9	{}	{}	{}	f	1+
+J00/137	8	2	10	{}	{}	{PV}	f	1+
+J00/138	1	0	25	{F2}	{}	{}	f	2f
+J00/138	1	1	26	{F1,F2}	{}	{}	t	2f+
+J00/138	1	2	36	{F1}	{}	{}	f	2f+
+J00/138	1	3	69	{F1}	{DUM}	{}	f	6f
+J00/138	1	4	84	{F1}	{DUM}	{}	f	1
+J00/138	1	5	93	{F2}	{}	{}	f	1+
+J00/138	1	6	95	{F1,F2}	{}	{}	t	1+
+J00/138	1	7	104	{F1}	{}	{}	f	1+
+J00/138	2	0	31	{F2}	{}	{}	f	2f
+J00/138	2	1	32	{F1,F2}	{}	{}	t	2f+
+J00/138	2	2	42	{F1}	{}	{}	f	2f+
+J00/138	2	3	70	{F1}	{DUM}	{}	f	1
+J00/138	2	4	83	{F2}	{}	{}	f	1+
+J00/138	2	5	84	{F1,F2}	{}	{}	t	1+
+J00/138	2	6	94	{F1}	{}	{}	f	1+
+J00/138	3	0	25	{F2}	{}	{}	f	2f
+J00/138	3	1	26	{F1,F2}	{}	{}	t	2f+
+J00/138	3	2	36	{F1}	{}	{}	f	2f+
+J00/138	3	3	69	{F1}	{DUM}	{}	f	6f
+J00/138	3	4	84	{F1}	{DUM}	{}	f	1
+J00/138	3	5	93	{F2}	{}	{}	f	1+
+J00/138	3	6	95	{F1,F2}	{}	{}	t	1+
+J00/138	3	7	104	{F1}	{}	{}	f	1+
+J00/138	5	0	3	{F1}	{}	{}	f	1+
+J00/138	5	1	40	{F2}	{}	{}	f	2f
+J00/138	5	2	41	{F1,F2}	{}	{}	t	2f+
+J00/138	5	3	51	{F1}	{}	{}	f	2f+
+J00/138	5	4	70	{F1}	{DUM}	{}	f	1
+J00/138	5	5	88	{F2}	{}	{}	f	1+
+J00/138	5	6	89	{F1,F2}	{}	{}	t	1+
+J00/138	8	0	34	{F2}	{}	{}	f	2f
+J00/138	8	1	35	{F1,F2}	{}	{}	t	2f+
+J00/138	8	2	45	{F1}	{}	{}	f	2f+
+J00/138	8	3	70	{F1}	{DUM}	{}	f	1
+J00/138	8	4	86	{F2}	{}	{}	f	1+
+J00/138	8	5	87	{F1,F2}	{}	{}	t	1+
+J00/138	8	6	97	{F1}	{}	{}	f	1+
+J00/138	32	0	1	{F1}	{}	{}	f	
+J00/138	32	1	20	{F2}	{DX}	{}	f	
+J00/139	1	0	3	{F1}	{DUM}	{}	f	4f
+J00/139	1	1	6	{F2}	{}	{}	f	4f+
+J00/139	1	2	7	{F1,F2}	{}	{}	t	4f+
+J00/139	1	3	18	{F1}	{}	{}	f	1
+J00/139	1	4	57	{F1}	{DUM}	{}	f	2
+J00/139	1	5	79	{F1}	{DUM}	{}	f	3
+J00/139	2	0	3	{F1}	{DUM}	{}	f	4F
+J00/139	2	1	6	{F2}	{}	{}	f	4F+
+J00/139	2	2	7	{F1,F2}	{}	{}	t	4F+
+J00/139	2	3	18	{F1}	{}	{}	f	1
+J00/139	2	4	57	{F1}	{DUM}	{}	f	2
+J00/139	2	5	79	{F1}	{DUM}	{}	f	3
+J00/139	3	0	9	{F1}	{DUM}	{}	f	4f
+J00/139	3	1	12	{F2}	{}	{}	f	4f+
+J00/139	3	2	13	{F1,F2}	{}	{}	t	4f+
+J00/139	3	3	24	{F1}	{}	{}	f	1
+J00/139	3	4	63	{F1}	{DUM}	{}	f	2
+J00/139	3	5	83	{F1}	{DUM}	{}	f	3
+J00/139	5	0	4	{F1}	{DUM}	{}	f	4f
+J00/139	5	1	7	{F2}	{}	{}	f	4f+
+J00/139	5	2	8	{F1,F2}	{}	{}	t	4f+
+J00/139	5	3	19	{F1}	{}	{}	f	1
+J00/139	5	4	55	{F1}	{DUM}	{}	f	2
+J00/139	5	5	70	{F1}	{DUM}	{}	f	3
+J00/139	8	0	9	{F1}	{DUM}	{}	f	4f
+J00/139	8	1	12	{F2}	{}	{}	f	4f+
+J00/139	8	2	13	{F1,F2}	{}	{}	t	4f+
+J00/139	8	3	24	{F1}	{}	{}	f	1
+J00/139	8	4	67	{F1}	{DUM}	{}	f	2
+J00/139	8	5	83	{F1}	{DUM}	{}	f	3
+J00/139	11	0	3	{F1}	{DUM}	{}	f	4f
+J00/139	11	1	6	{F2}	{}	{}	f	4f+
+J00/139	11	2	7	{F1,F2}	{}	{}	t	4f+
+J00/139	11	3	18	{F1}	{}	{}	f	5F
+J00/139	11	4	33	{F1}	{}	{}	f	1
+J00/139	11	5	57	{F1}	{DUM}	{}	f	2
+J00/139	11	6	79	{F1}	{DUM}	{}	f	3
+J00/139	12	0	3	{F1}	{DUM}	{}	f	4f
+J00/139	12	1	6	{F2}	{}	{}	f	4f+
+J00/139	12	2	7	{F1,F2}	{}	{}	t	4f+
+J00/139	12	3	18	{F1}	{}	{}	f	5F
+J00/139	12	4	35	{F1}	{}	{}	f	1
+J00/139	12	5	57	{F1}	{DUM}	{}	f	2
+J00/139	12	6	79	{F1}	{DUM}	{}	f	3
+J00/139	13	0	3	{F1}	{DUM}	{}	f	4f
+J00/139	13	1	6	{F2}	{}	{}	f	4f+
+J00/139	13	2	7	{F1,F2}	{}	{}	t	4f+
+J00/139	13	3	18	{F1}	{}	{}	f	5F
+J00/139	13	4	37	{F1}	{}	{}	f	1
+J00/139	13	5	57	{F1}	{DUM}	{}	f	2
+J00/139	13	6	79	{F1}	{DUM}	{}	f	3
+J00/139	19	0	3	{F1}	{DUM}	{}	f	4f
+J00/139	19	1	6	{F2}	{}	{}	f	4f+
+J00/139	19	2	7	{F1,F2}	{}	{}	t	4f+
+J00/139	19	3	18	{F1}	{}	{}	f	1
+J00/139	19	4	57	{F1}	{DUM}	{}	f	2
+J00/139	19	5	79	{F1}	{DUM}	{}	f	3
+J00/139	22	0	6	{F2}	{}	{}	f	
+J00/139	22	1	7	{F1,F2}	{}	{}	t	
+J00/139	22	2	17	{F1}	{}	{}	f	
+J00/139	23	0	6	{F2}	{}	{}	f	
+J00/139	23	1	7	{F1,F2}	{}	{}	t	
+J00/139	23	2	17	{F1}	{}	{}	f	
+J00/139	32	0	1	{F1}	{}	{}	f	
+J00/139	32	1	20	{F2}	{DX}	{}	f	
+\.
+
+
+--
+-- Data for Name: plan_timetables; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.plan_timetables (site_number, subgroup, region, wat, control, ctv, sco, status, period, cell) FROM stdin;
+J00/002	S00/002	R0315	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/003	S00/003	R0023	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/004	S00/004	R0886	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/005	S00/005	R0015	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/006	S00/006	R0315	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/007	S00/007	R0615	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/008	S00/008	R0801	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/009	S00/009	R0013	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/010	S00/010	R0290	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J00/011	S00/011	R0000	FT00	FT00		111	{LC,IS,TI,FD-L14-A05,SO}	AM	CNTR
+J00/012	S00/012	R0374	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/013	S00/013	R0374	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/014	S00/016	R0374	SC01	SC01		111	{CC,SC,LF}	AM	CNTR
+J00/015	S00/015	R0010	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/016	S00/016	R0374	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/019	S00/019	R0827	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/020	S00/020	R0027	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/021	S00/021	R0027	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/022	S00/022	R0027	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/023	S00/023	R0927	SC01	FT00		111	{LC,TB,FD-I05}	AM	CNTR
+J00/024	S00/024	R0013	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/025	S00/025	R0026	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/027	S00/027	R0315	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/028	S00/028	R0292	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/029	S00/029	R0315	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/030	S00/030	R0314	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/031	S00/031	R0314	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/032	S00/032	R0387	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/033	S00/033	R0011	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/035	S00/035	R0928	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/036	S00/036	R0610	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/037	S00/037	R0028	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/042	S00/037	R0028	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/044	S00/044	R0374	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/048	S00/048	R0013	SC01	SC01		111	{CC,SC,PR,LF}	AM	CNTR
+J00/051	S00/051	R0010	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/052	S00/052	R0010	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/055	S00/055	G0013	FT51	FT51			{CC,FT}	AM	CNTR
+J00/056	S00/056	R0027	FT00	FT00		111	{LC,DF}	AM	CNTR
+J00/057	S00/008	R0801	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/058	S00/008	R0801	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/059	S00/059	R0015	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/060	S00/060	R0232	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/064	S00/064	R0013	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/065	S00/065	R0928	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/068	S00/016	R0374	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/070	S00/009	R0013	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/078	S00/078	R0011	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/080	S00/033	R0011	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/081	S00/033	R0011	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/083	S00/083	R0010	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/087	S00/011	R0000	FT00	FT00		111	{LC,IS,TI,FD-L05}	AM	CNTR
+J00/089	S00/089	R0866	FT00	FT00		111	{LC}	AM	CNTR
+J00/090	S00/090	R0866	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/091	S00/090	R0866	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/097	S00/064	R0013	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/100	S00/044	R0374	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/103	S00/037	R0028	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/104	S00/044	R0374	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/107	S00/107	R0013	SC01	FT00		111	{LC,IS}	AM	CNTR
+J00/108	S00/108	R0011	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/113	S00/113	R0374	FT00	FT00		111	{LC}	AM	CNTR
+J00/114	S00/114	R0974	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/115	S00/115	R0027	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/116	S00/116	R0026	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/117	S00/117	R0774	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/118	S00/118	R0010	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/122	S00/006	R0315	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/123	S00/006	R0315	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/125	S00/125	R0374	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/126	S00/126	R0010	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/127	S00/016	R0374	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/130	S00/003	R0023	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/131	S00/117	R0774	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/132	S00/006	R0315	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/134	S00/006	R0315	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/138	S00/005	R0015	SC01	SC01		111	{CC,SC}	AM	CNTR
+J00/139	S00/003	R0023	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/140	S00/140	G0010	FT00	FT00			{LC}	AM	CNTR
+J00/141	S00/141	R0801	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J00/142	S00/142	R1030	SC01	SC01		111	{CC,SC}	AM	CNTR
+X00/502	S00/502	G0315	FT00	FT00			{LC}	AM	CNTR
+X00/505	S00/505	G1053	FT00	FT00			{LC}	AM	CNTR
+X00/506	S00/506	G0315	FT00	FT00			{LC}	AM	CNTR
+X00/509	S00/509	G0013	FT51	FT51			{CC,FT}	AM	CNTR
+X00/528	S00/528	G0292	FT00	FT00			{LC}	AM	CNTR
+X00/531	S00/531	G0314	FT00	FT00			{LC}	AM	CNTR
+X00/559	S00/559	G0015	FT00	FT00			{LC}	AM	CNTR
+X00/622	S00/622	G0315	FT00	FT00			{LC}	AM	CNTR
+X00/642	S00/642	G1030	FT00	FT00			{LC}	AM	CNTR
+J00/850	S00/850	R0290	FT52	FT52		111	{CC,FT}	AM	CNTR
+J01/001	S01/002	R0106	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/002	S01/002	R0106	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/003	S01/003	R0006	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/004	S01/002	R0106	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/005	S01/005	R0106	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/006	S01/052	R0006	SC01	FT00		111	{LC,TB,FD-A06}	AM	CNTR
+J01/007	S01/007	R0018	SC04	SC04		111	{CC,SC,PR}	AM	CNTR
+J01/009	S01/009	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/010	S01/009	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/011	S01/011	R0421	SC18	SC18		111	{CC,SC,SI}	AM	CNTR
+J01/012	S01/012	R0421	SC18	SC18		111	{CC,SC,SI}	AM	CNTR
+J01/014	S01/014	R1051	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/016	S01/016	R0136	SC01	SC01		111	{CC,SC,LF}	AM	CNTR
+J01/017	S01/016	R0136	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/018	S01/016	R0136	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/019	S01/019	R0807	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/020	S01/020	R0007	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/021	S01/021	R0007	SC01	SC01		111	{CC,SC,PR,LF}	AM	CNTR
+J01/022	S01/022	R0007	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/023	S01/023	R0007	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/024	S01/024	R0007	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/025	S01/025	R0007	SC11	SC11		111	{CC,SC,PR}	AM	CNTR
+J01/026	S01/026	R0807	SC09	SC09		111	{CC,SC}	AM	CNTR
+J01/027	S01/027	R0007	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/028	S01/028	R0007	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/030	S01/030	R0007	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/032	S01/032	R0007	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/033	S01/033	R0017	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/034	S01/034	R0017	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/035	S01/035	R0207	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/036	S01/036	R0050	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/037	S01/037	R0050	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/038	S01/038	R0050	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/039	S01/039	R0005	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/040	S01/040	R0005	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/043	S01/043	R0306	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/044	S01/044	R0553	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J01/045	S01/044	R0553	SC02	SC02		111	{CC,SC}	AM	CNTR
+J01/046	S01/046	R0020	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/047	S01/046	R0020	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/048	S01/048	R0053	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/051	S01/051	R0006	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/052	S01/052	R0006	SC01	FT00		111	{LC,TB,FD-A06}	AM	CNTR
+J01/053	S01/052	R0006	SC01	FT00		111	{LC,TB,FD-I06}	AM	CNTR
+J01/054	S01/054	R0306	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/057	S01/057	R0121	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/058	S01/057	R0121	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/059	S01/059	R0706	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/062	S01/062	R0006	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/063	S01/063	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/064	S01/064	R0807	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/065	S01/064	R0807	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/066	S01/066	R0019	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/067	S01/067	R0019	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/068	S01/068	R0019	SC01	SC01		111	{CC,SC,FW}	AM	CNTR
+J01/069	S01/069	R0025	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/070	S01/070	R0025	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/071	S01/071	R0025	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/072	S01/072	R1025	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/073	S01/073	R1025	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/075	S01/075	R0850	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/076	S01/076	R0317	SC01	SC01		111	{CC,SC,PR,DF}	AM	CNTR
+J01/077	S01/077	R0850	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/078	S01/078	R0135	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/079	S01/079	R1035	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/080	S01/080	R0019	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/081	S01/081	R0135	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/082	S01/082	R0390	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/083	S01/083	R0891	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/084	S01/084	R0850	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/085	S01/085	R0850	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/086	S01/086	R0233	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/087	S01/087	R0030	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/088	S01/088	R0017	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/089	S01/089	R0024	FT51	FT51		111	{CC,FT}	AM	CNTR
+J01/090	S01/090	R0018	SC04	SC04		111	{CC,SC,PR}	AM	CNTR
+J01/092	S01/092	R0922	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/093	S01/093	R0635	SC01	SC01		111	{CC,SC,PR,LF}	AM	CNTR
+J01/094	S01/094	R0053	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/095	S01/095	R0053	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/097	S01/097	R0000	FT00	FT00		111	{LC,TI}	AM	CNTR
+J01/098	S01/098	R0598	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/099	S01/099	R0850	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/102	S01/102	R0017	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/103	S01/103	R0822	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/105	S01/105	R0235	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/106	S01/106	R0235	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/107	S01/107	R0963	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/108	S01/108	R0963	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/109	S01/109	R0963	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/111	S01/112	R0033	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/112	S01/112	R0033	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/113	S01/113	R0033	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/122	S01/122	R0341	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/124	S01/124	R0033	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/125	S01/125	R0963	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/127	S01/127	R0201	SC09	SC09		111	{CC,SC}	AM	CNTR
+J01/128	S01/128	R0001	SC01	FT00		111	{LC,TB,TI}	AM	CNTR
+J01/129	S01/129	R0001	SC01	FT00		111	{LC,TB,FD-I05}	AM	CNTR
+J01/130	S01/130	R0132	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/131	S01/131	R0132	SC01	FT00		111	{LC,TB,FD-I05}	AM	CNTR
+J01/132	S01/132	R0536	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/133	S01/133	R0963	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/134	S01/134	R0963	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/139	S01/139	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/140	S01/139	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/141	S01/139	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/142	S01/142	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/143	S01/143	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/144	S01/144	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/146	S01/146	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/147	S01/146	R0003	SC01	SC01		111	{CC,SC,PR,DF}	AM	CNTR
+J01/148	S01/148	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/149	S01/148	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/150	S01/148	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/151	S01/151	R0203	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/152	S01/152	R0203	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/153	S01/153	R0203	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/154	S01/154	R0603	SC01	SC01		111	{CC,SC,PR,RI}	AM	CNTR
+J01/155	S01/155	R0603	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/156	S01/156	R0003	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/157	S01/157	R0564	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/158	S01/158	R0564	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/159	S01/159	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/160	S01/160	R0002	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/161	S01/161	R0002	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/162	S01/162	R0002	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/163	S01/163	R0002	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/164	S01/164	R0002	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/165	S01/165	R0002	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/166	S01/166	R0002	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/167	S01/167	R0399	SC02	SC02		111	{CC,SC}	AM	CNTR
+J01/168	S01/168	R0399	SC02	SC02		111	{CC,SC}	AM	CNTR
+J01/169	S01/169	R0399	SC02	SC02		111	{CC,SC}	AM	CNTR
+J01/170	S01/170	R0399	SC02	SC02		111	{CC,SC}	AM	CNTR
+J01/171	S01/171	R0922	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/172	S01/172	R0922	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/173	S01/173	R0923	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/174	S01/174	R0923	SC01	SC01		111	{CC,SC,PR,LF}	AM	CNTR
+J01/175	S01/175	R0922	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/176	S01/176	R0923	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/177	S01/177	R0022	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/178	S01/178	R0022	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/179	S01/179	R0022	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/180	S01/180	R0022	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/181	S01/180	R0022	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/182	S01/182	R0022	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/184	S01/184	R0005	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/185	S01/185	R0005	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/186	S01/186	R0021	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/187	S01/187	R0021	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/188	S01/188	R0021	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/189	S01/189	R0021	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/190	S01/190	R0005	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/192	S01/192	R0022	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/193	S01/193	R0923	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/194	S01/194	R0005	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/195	S01/195	R0016	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/196	S01/196	R0016	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/197	S01/197	R0016	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/198	S01/198	R0737	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/199	S01/199	R0016	SC01	FT00		111	{LC,TB,FD-I05}	AM	CNTR
+J01/200	S01/200	R0016	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/201	S01/201	R0016	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/202	S01/202	R0016	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/203	S01/203	R0016	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/204	S01/139	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/205	S01/205	R0922	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/206	S01/206	R0922	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/207	S01/207	R0004	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/208	S01/208	R0004	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/209	S01/209	R0004	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/210	S01/210	R0004	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/211	S01/211	R0515	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/212	S01/212	R0005	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/215	S01/215	R2121	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/216	S01/216	R2121	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/217	S01/217	R2121	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/218	S01/218	R2121	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/221	S01/221	R1616	SC01	SC01	547400	111	{CC,SC}	AM	CNTR
+J01/222	S01/222	R0002	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/231	S01/231	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/232	S01/232	R0564	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/239	S01/239	R0000	FT00	FT00		111	{LC}	AM	CNTR
+J01/241	S01/241	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/242	S01/242	G0515	FT00	FT00			{LC}	AM	CNTR
+J01/243	S01/243	R0515	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/246	S01/246	R0106	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/247	S01/247	R0515	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/248	S01/248	R1616	FT00	FT00		111	{LC}	AM	CNTR
+J01/249	S01/249	R0017	SC04	SC04		111	{CC,SC,PR}	AM	CNTR
+J01/254	S01/254	R0635	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/256	S01/256	R0001	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/258	S01/258	R0025	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/259	S01/259	R0306	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/260	S01/260	R0106	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/261	S01/016	R0136	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/265	S01/024	R0007	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/272	S01/272	R0020	SC01	FT00		111	{LC,TB,FD-I05}	AM	CNTR
+J01/273	S01/393	R1053	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/277	S01/241	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/279	S01/279	R0132	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/280	S01/281	R0106	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/281	S01/281	R0106	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/282	S01/283	R0106	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/283	S01/283	R0106	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/284	S01/284	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/287	S01/287	R0207	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/288	S01/288	R1119	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/292	S01/292	R0206	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/295	S01/296	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/296	S01/296	R0018	SC04	SC04		111	{CC,SC,PR}	AM	CNTR
+J01/300	S01/300	R1033	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/302	S01/302	R0019	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/303	S01/302	R0019	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/304	S01/304	R0053	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/305	S01/304	R0053	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/306	S01/306	R1025	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/308	S01/308	R0024	FT51	FT00		111	{LC,TB,TI,FD-L05}	AM	CNTR
+J01/310	S01/310	R0055	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/311	S01/311	R0055	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/312	S01/312	R0055	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/313	S01/046	R0020	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/314	S01/046	R0020	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/315	S01/315	R0063	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/322	S01/146	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/323	S01/323	R0006	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/324	S01/052	R0006	SC01	FT00		111	{LC,TB,FD-A06}	AM	CNTR
+J01/325	S01/325	R0535	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/332	S01/332	R0024	FT51	FT51		111	{CC,FT,LF}	AM	CNTR
+J01/333	S01/052	R0006	SC01	FT00		111	{LC,TB,FD-A06}	AM	CNTR
+J01/334	S01/334	R0030	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/346	S01/346	R0121	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/348	S01/348	R0030	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/349	S01/349	R0736	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/355	S01/355	R0019	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/356	S01/355	R0019	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/357	S01/068	R0019	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/358	S01/068	R0019	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/359	S01/360	R0126	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/360	S01/360	R0126	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/361	S01/360	R0126	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/362	S01/360	R0126	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/363	S01/360	R0126	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/364	S01/360	R0126	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/366	S01/366	R0132	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/367	S01/367	R0030	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/369	S01/369	R0007	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/370	S01/360	R0126	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/371	S01/366	R0132	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/372	S01/372	R0053	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/375	S01/372	R0053	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/376	S01/376	R0053	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/382	S01/148	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/386	S01/386	R2121	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/389	S01/279	R0132	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/390	S01/390	R0207	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/391	S01/390	R0207	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/392	S01/393	R1053	SC01	SC01		111	{CC,SC,DF}	AM	CNTR
+J01/393	S01/393	R1053	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/394	S01/095	R0053	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/402	S01/402	R0022	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/403	S01/139	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/405	S01/405	R0001	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/406	S01/406	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/408	S01/408	R0006	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/410	S01/211	R0515	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/416	S01/143	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/419	S01/142	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/424	S01/144	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/425	S01/146	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/426	S01/139	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/428	S01/139	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/429	S01/139	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/433	S01/139	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/434	S01/146	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/436	S01/436	R0003	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/438	S01/438	R0002	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/450	S01/176	R0923	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/451	S01/048	R0053	SC01	SC01		111	{CC,SC,FW,LF}	AM	CNTR
+J01/452	S01/048	R0053	SC01	SC01		111	{CC,SC,FW}	AM	CNTR
+J01/453	S01/044	R0553	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J01/456	S01/036	R0050	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/461	S01/461	R0030	SC01	FT00		111	{LC,TB,FD-I05}	AM	CNTR
+J01/469	S01/469	R0055	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/473	S01/473	R0007	SC01	SC01		111	{CC,SC,LF}	AM	CNTR
+J01/474	S01/473	R0007	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/478	S01/478	R0007	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/480	S01/063	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/481	S01/063	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/483	S01/483	R0018	SC04	SC04		111	{CC,SC,PR}	AM	CNTR
+J01/488	S01/488	R0736	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/490	S01/490	R0317	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/497	S01/497	R0007	SC12	SC12		111	{CC,SC}	AM	CNTR
+J01/498	S01/498	R0201	SC09	SC09		111	{CC,SC,PR}	AM	CNTR
+J01/500	S01/488	R0736	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/503	S01/109	R0963	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/507	S01/507	R0053	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/510	S01/510	R0017	FT00	FT00		111	{LC}	AM	CNTR
+J01/511	S01/511	R0017	SC04	SC04		111	{CC,SC,PR}	AM	CNTR
+X01/516	S01/516	G0000	FT00	FT00			{LC}	AM	CNTR
+J01/523	S01/009	R0018	SC04	SC04		111	{CC,SC,FW}	AM	CNTR
+J01/524	S01/524	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/525	S01/524	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/527	S01/527	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/528	S01/528	R0018	SC04	SC04		111	{CC,SC,FW}	AM	CNTR
+J01/529	S01/009	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/530	S01/009	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/531	S01/009	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/532	S01/009	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/533	S01/009	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/534	S01/009	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/535	S01/009	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/537	S01/063	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/538	S01/538	R0024	FT51	FT51		111	{CC,FT}	AM	CNTR
+J01/541	S01/048	R0053	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/543	S01/543	R0024	FT51	FT51		111	{CC,FT}	AM	CNTR
+J01/544	S01/068	R0019	SC01	SC01		111	{CC,SC,FW}	AM	CNTR
+X01/546	S01/546	G0020	FT00	FT00			{LC}	AM	CNTR
+J01/551	S01/551	R1051	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/552	S01/067	R0019	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/558	S01/002	R0106	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/559	S01/016	R0136	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/561	S01/561	R0001	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/567	S01/360	R0126	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/568	S01/360	R0126	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/569	S01/360	R0126	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/570	S01/570	R0126	SC13	SC13		111	{CC,SC}	AM	CNTR
+J01/572	S01/038	R0050	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/573	S01/573	R1051	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/574	S01/574	R0421	SC18	SC18		111	{CC,SC,SI}	AM	CNTR
+J01/577	S01/577	R0019	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/579	S01/057	R0121	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/580	S01/093	R0635	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J01/583	S01/583	R0053	FT00	FT00		111	{LC,SS}	AM	CNTR
+J01/587	S01/040	R0005	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/588	S01/577	R0019	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/589	S01/589	G0770	FT51	FT51			{CC,FT}	AM	CNTR
+J01/590	S01/589	G0770	FT51	FT51			{CC,FT}	AM	CNTR
+J01/593	S01/593	R1035	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/595	S01/595	R0018	SC04	SC04		111	{CC,SC}	AM	CNTR
+J01/598	S01/598	R0963	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/599	S01/507	R0053	SC01	SC01		111	{CC,SC}	AM	CNTR
+X01/600	S01/300	G1033	FT00	FT00			{LC}	AM	CNTR
+J01/601	S01/601	R0053	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/602	S01/601	R0053	SC01	SC01		111	{CC,SC}	AM	CNTR
+X01/604	S01/604	G0106	FT00	FT00			{LC}	AM	CNTR
+J01/606	S01/606	R0019	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/607	S01/607	R1616	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/611	S01/611	R0963	SC01	SC01		111	{CC,SC}	AM	CNTR
+J01/621	S01/089	R0024	FT51	FT51		111	{CC,FT}	AM	CNTR
+X01/635	S01/635	G0207	FT00	FT00			{LC}	AM	CNTR
+X01/642	S01/642	G0003	FT00	FT00			{LC,FD-L06}	AM	CNTR
+X01/648	S01/648	G0053	FT00	FT00			{LC}	AM	CNTR
+X01/657	S01/657	G0564	FT00	FT00			{LC}	AM	CNTR
+X01/663	S01/663	G0018	FT00	FT00			{LC}	AM	CNTR
+X01/667	S01/667	G0019	FT00	FT00			{LC}	AM	CNTR
+X01/672	S01/672	G0053	FT00	FT00			{LC}	AM	CNTR
+X01/687	S01/687	G0016	FT00	FT00			{LC}	AM	CNTR
+X01/773	S01/773	G0207	FT00	FT00			{LC}	AM	CNTR
+X01/808	S01/808	G0024	FT00	FT00			{LC,TI,FD-L05}	AM	CNTR
+X01/832	S01/832	G0024	FT00	FT00			{LC}	AM	CNTR
+J01/850	S01/850	G0000	FT00	FT00			{LC,TI,FD-L05}	AM	CNTR
+J02/002	S02/224	R0149	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/012	S02/012	R0509	SC01	SC01		111	{CC,SC,LF}	AM	CNTR
+J02/013	S02/013	R0509	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/014	S02/014	R0008	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/015	S02/015	R0000	FT00	FT00		111	{LC,IS,TI,FD-L05}	AM	CNTR
+J02/016	S02/016	R1054	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/017	S02/017	R0008	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/018	S02/021	R0008	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/019	S02/019	R0379	FT52	FT52		111	{CC,FT}	AM	CNTR
+J02/020	S02/020	R0008	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/021	S02/021	R0008	SC01	SC01		111	{CC,SC,PR,DF}	AM	CNTR
+J02/025	S02/025	R1030	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/034	S02/034	R0379	FT52	FT52		111	{CC,FT}	AM	CNTR
+J02/038	S02/038	R0218	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/044	S02/044	R0149	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J02/045	S02/045	R0149	SC02	SC02		111	{CC,SC,PR,LF}	AM	CNTR
+J02/046	S02/046	R0218	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/047	S02/047	R0218	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/048	S02/048	R0218	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/049	S02/021	R0008	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/050	S02/050	R0452	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/052	S02/050	R0452	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/054	S02/054	R0218	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/055	S02/055	R0149	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J02/058	S02/058	R0009	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J02/059	S02/059	R0009	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J02/060	S02/060	R0009	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J02/062	S02/062	R0009	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J02/063	S02/063	R0052	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J02/064	S02/064	R0008	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/067	S02/067	R0642	FT01	FT00		111	{LC,TB,TI,RI}	AM	CNTR
+J02/068	S02/068	R0442	FT01	FT01		111	{CC,FT}	AM	CNTR
+J02/069	S02/021	R0008	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/070	S02/070	R0014	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/071	S02/071	R0014	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/072	S02/045	R0149	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J02/078	S02/078	R0244	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/080	S02/080	R0216	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/083	S02/083	R0218	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/085	S02/085	R0009	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/086	S02/086	R0054	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/087	S02/087	R0054	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/088	S02/088	R0054	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/089	S02/089	R0054	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/091	S02/091	R0052	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/103	S02/103	R0616	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/105	S02/105	R0052	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/123	S02/123	R0052	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/143	S02/143	R0008	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/144	S02/144	R0008	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/145	S02/014	R0008	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/164	S02/164	R0008	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/167	S02/167	R0509	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/170	S02/050	R0452	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/179	S02/179	R1054	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/188	S02/188	R0418	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/191	S02/191	R1030	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/193	S02/021	R0008	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/207	S02/207	R0408	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/221	S02/221	R0418	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/223	S02/223	R0149	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J02/224	S02/224	R0149	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/227	S02/221	R0418	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/229	S02/229	R0149	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/235	S02/223	R0149	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J02/253	S02/253	R0149	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J02/254	S02/254	R1452	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/266	S02/266	R0506	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/267	S02/267	R0506	SC01	SC01		111	{CC,SC,PR,TI}	AM	CNTR
+J02/276	S02/062	R0009	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J02/280	S02/280	R0149	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/281	S02/045	R0149	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/283	S02/283	R0408	FT00	FT00		111	{LC,SS}	AM	CNTR
+J02/284	S02/283	R0408	FT00	FT00		111	{LC,SS}	AM	CNTR
+J02/286	S02/286	G0149	FT00	FT00			{LC}	AM	CNTR
+J02/293	S02/293	G0000	FT00	FT00			{LC,TI,SO}	AM	CNTR
+J02/294	S02/294	R0506	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/301	S02/080	R0216	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/303	S02/303	R0244	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/305	S02/078	R0244	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/306	S02/078	R0244	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J02/307	S02/223	R0149	SC02	SC02		111	{CC,SC,PR}	AM	CNTR
+J02/308	S02/308	G0149	FT00	FT00			{LC}	AM	CNTR
+J02/314	S02/314	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/315	S02/314	R0003	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/326	S02/326	R0509	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/327	S02/327	G0408	FT00	FT00			{LC,SS}	AM	CNTR
+J02/328	S02/328	R0509	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/329	S02/179	R1054	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/330	S02/179	R1054	SC02	SC02		111	{CC,SC}	AM	CNTR
+J02/331	S03/032	R0344	SC01	SC01		111	{CC,SC}	AM	CNTR
+J02/334	S02/334	R0218	FT00	FT00		111	{LC}	AM	CNTR
+X02/513	S02/513	G0509	FT00	FT00			{LC}	AM	CNTR
+X02/517	S02/517	G0008	FT00	FT00			{LC}	AM	CNTR
+X02/519	S02/519	G0009	FT00	FT00			{LC}	AM	CNTR
+X02/525	S02/525	G1030	FT00	FT00			{LC}	AM	CNTR
+J02/855	S02/855	R0008	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/001	S03/001	R0240	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/002	S03/002	R0240	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/003	S03/003	R0059	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/004	S03/004	R0059	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/005	S03/005	R0142	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/006	S03/006	R0008	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/016	S03/016	R0000	FT00	FT00		111	{LC,TI,FD-L05}	AM	CNTR
+J03/027	S03/004	R0059	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/029	S03/029	R0013	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/031	S03/031	R0142	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/032	S03/032	R0344	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/033	S03/033	R0144	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/034	S03/034	R0343	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/035	S03/035	R0000	FT00	FT00		111	{LC,TI,FD-L05}	AM	CNTR
+J03/038	S03/038	R0144	SC01	SC01		111	{CC,SC,PR,DF}	AM	CNTR
+J03/039	S03/039	R0240	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/040	S03/040	R0853	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/043	S03/004	R0059	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/044	S03/044	R0159	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/052	S03/052	R0459	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/056	S03/056	R0345	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/057	S03/057	R0343	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/058	S03/057	R0343	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/069	S03/069	R0008	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/076	S03/076	R0240	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/081	S03/069	R0008	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/085	S03/057	R0343	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/086	S03/057	R0343	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/088	S03/088	R0569	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/089	S03/089	R0459	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/094	S03/094	R0345	SC01	SC01		111	{CC,SC,PR,DF}	AM	CNTR
+J03/096	S03/096	R0059	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/098	S03/098	R0059	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/099	S03/099	R0059	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/115	S03/158	R0059	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/131	S03/004	R0059	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/139	S03/139	R0343	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/158	S03/158	R0059	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/166	S03/158	R0059	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/167	S03/179	R0343	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/172	S03/172	R0008	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/177	S03/179	R0343	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/179	S03/179	R0343	SC01	SC01		111	{CC,SC,DF}	AM	CNTR
+J03/181	S03/179	R0343	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/184	S03/184	R0059	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/187	S03/187	R0418	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/190	S03/190	R0142	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/193	S03/193	R0059	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J03/200	S03/006	R0008	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/201	S03/006	R0008	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/306	S03/158	R0059	SC01	SC01		111	{CC,SC}	AM	CNTR
+J03/312	S03/312	R0344	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+X03/532	S03/532	G0344	FT00	FT00			{LC}	AM	CNTR
+X03/679	S03/679	G0000	FT00	FT00			{LC}	AM	CNTR
+X03/681	S03/681	G0000	FT00	FT00			{LC}	AM	CNTR
+X03/779	S03/779	G0000	FT00	FT00			{LC}	AM	CNTR
+J03/852	S03/852	G0144	FT51	FT51			{CC,FT}	AM	CNTR
+J04/003	S04/003	R0143	SC08	SC08		111	{CC,SC,PR}	AM	CNTR
+J04/006	S04/006	R0291	SC01	SC01		111	{CC,SC}	AM	CNTR
+J04/030	S04/030	R0143	SC08	SC08		111	{CC,SC,PR}	AM	CNTR
+J04/031	S04/031	R1036	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J04/033	S04/033	R0143	SC08	SC08		111	{CC,SC,PR}	AM	CNTR
+J04/036	S04/036	R1043	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J04/044	S04/044	R0143	SC08	SC08		111	{CC,SC,PR}	AM	CNTR
+J04/045	S04/003	R0143	SC08	SC08		111	{CC,SC,PR}	AM	CNTR
+J04/090	S04/090	R0346	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J04/091	S04/091	G0346	FT00	FT00			{LC,SS}	AM	CNTR
+J04/127	S04/127	R0143	FT00	FT00		111	{LC}	AM	CNTR
+J04/128	S04/044	R0143	SC08	SC08		111	{CC,SC,PR}	AM	CNTR
+J04/184	S04/003	R0143	SC08	SC08		111	{CC,SC,PR}	AM	CNTR
+J04/196	S04/196	R0143	FT00	FT00		111	{LC}	AM	CNTR
+J04/197	S04/197	R0143	SC08	SC08		111	{CC,SC,PR}	AM	CNTR
+J04/198	S04/198	R0143	SC08	SC08		111	{CC,SC,PR}	AM	CNTR
+J04/199	S04/036	R1043	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J04/202	S04/202	G1037	FT00	FT00			{LC,TI}	AM	CNTR
+X04/536	S04/536	G1043	FT00	FT00			{LC}	AM	CNTR
+J05/014	S05/014	R0029	SC11	SC11		111	{CC,SC,PR}	AM	CNTR
+J05/021	S05/021	R0028	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J05/028	S05/028	R0028	SC01	SC01		111	{CC,SC}	AM	CNTR
+J05/041	S05/041	R0028	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J05/095	S05/095	R0023	SC01	SC01		111	{CC,SC,PR,DF}	AM	CNTR
+J05/096	S05/096	R0023	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J05/097	S05/097	R0023	SC13	SC13		111	{CC,SC}	AM	CNTR
+J05/194	S05/194	R0028	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J05/195	S05/041	R0028	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J05/214	S05/214	R0023	SC01	SC01		111	{CC,SC}	AM	CNTR
+J05/215	S05/214	R0023	SC01	SC01		111	{CC,SC}	AM	CNTR
+J05/229	S05/229	R0028	SC01	SC01		111	{CC,SC}	AM	CNTR
+J05/230	S05/230	R0023	SC01	SC01		111	{CC,SC}	AM	CNTR
+J05/248	S05/248	R0610	SC01	SC01		111	{CC,SC}	AM	CNTR
+J05/259	S05/259	R0023	SC01	SC01		111	{CC,SC}	AM	CNTR
+J05/271	S05/259	R0023	SC01	SC01		111	{CC,SC}	AM	CNTR
+J05/272	S05/095	R0023	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J05/282	S05/194	R0028	SC01	SC01		111	{CC,SC}	AM	CNTR
+J05/284	S05/284	R0100	FT00	FT00		111	{LC}	AM	CNTR
+J05/298	S05/298	R0293	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J05/301	S05/301	G0023	FT00	FT00			{LC}	AM	CNTR
+J05/373	S05/373	R0028	SC01	SC01		111	{CC,SC}	AM	CNTR
+J05/423	S05/423	R0610	SC01	SC01		111	{CC,SC,TI}	AM	CNTR
+J05/430	S05/041	R0028	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J05/431	S05/041	R0028	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J05/439	S05/229	R0028	SC01	SC01		111	{CC,SC}	AM	CNTR
+X05/541	S05/541	G0028	FT00	FT00			{LC}	AM	CNTR
+X05/595	S05/595	G0023	FT00	FT00			{LC}	AM	CNTR
+X05/694	S05/694	G0029	FT00	FT00			{LC}	AM	CNTR
+J08/003	S08/003	R0161	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/004	S08/004	R0361	FT51	FT51		111	{CC,FT,TI}	AM	CNTR
+J08/005	S08/005	R0261	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/008	S08/008	R0161	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/027	S08/027	R0315	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/028	S08/028	R0612	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/029	S08/029	R0612	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/030	S08/030	R0812	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/031	S08/031	R0832	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/032	S08/032	R0202	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/033	S08/033	R0202	SC01	SC01		111	{CC,SC,PR,DF}	AM	CNTR
+J08/034	S08/034	R0738	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/035	S08/035	R0530	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/036	S08/036	R0888	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/038	S08/038	R0238	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/042	S08/042	R0000	FT00	FT00		111	{LC,TI,FD-L05}	AM	CNTR
+J08/045	S08/045	R0202	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/051	S08/051	R0012	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/052	S08/052	R0012	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/054	S08/054	R0261	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/055	S08/055	R0012	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/056	S08/056	R0012	SC01	SC01		111	{CC,SC,LF}	AM	CNTR
+J08/078	S08/078	R0579	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/092	S08/092	R0162	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/094	S08/094	R0162	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/103	S08/103	R0162	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/104	S08/104	R0162	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/127	S08/127	R0888	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/140	S08/140	G0200	FT00	FT00			{LC}	AM	CNTR
+J08/142	S08/142	G0012	FT00	FT00			{LC}	AM	CNTR
+J08/143	S08/143	R1010	FT00	FT00		111	{LC,SS}	AM	CNTR
+J08/153	S08/153	R2202	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/159	S08/159	R0202	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/208	S08/208	R2202	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/210	S08/210	R2202	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/215	S08/215	R0315	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/217	S08/032	R0202	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/218	S08/218	R0202	SC01	SC01		111	{CC,SC,LF}	AM	CNTR
+J08/234	S08/003	R0161	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/235	S08/235	R0161	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/236	S08/005	R0261	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/239	S08/027	R0315	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/251	S08/251	R0962	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/257	S08/257	R0238	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/258	S08/051	R0012	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/265	S08/265	R0833	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/274	S08/274	R0833	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/280	S08/280	R0252	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/284	S08/284	R0888	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/287	S08/380	R1021	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/289	S08/289	R0468	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/306	S08/309	R0367	SC01	SC01		111	{CC,SC,TI}	AM	CNTR
+J08/307	S08/309	R0367	SC01	SC01		111	{CC,SC,TI}	AM	CNTR
+J08/308	S08/309	R0367	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/309	S08/309	R0367	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/310	S08/309	R0367	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/311	S08/309	R0367	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/312	S08/309	R0367	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/313	S08/309	R0367	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/319	S08/309	R0367	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/320	S08/309	R0367	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/323	S08/323	R0200	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/335	S08/380	R1021	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/336	S08/380	R1021	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/346	S08/346	R0162	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/356	S08/346	R0162	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/357	S08/346	R0162	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/358	S08/358	G0162	FT00	FT00			{LC}	AM	CNTR
+J08/359	S08/359	G0162	FT00	FT00			{LC}	AM	CNTR
+J08/360	S08/360	G0162	FT00	FT00			{LC}	AM	CNTR
+J08/376	S08/094	R0162	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/377	S08/094	R0162	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/378	S08/094	R0162	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/379	S08/094	R0162	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/380	S08/380	R1021	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/381	S08/380	R1021	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/382	S08/036	R0888	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J08/383	S08/380	R1021	SC01	SC01		111	{CC,SC}	AM	CNTR
+J08/389	S08/389	R0000	FT00	FT00		111	{LC,TI,SO}	AM	CNTR
+J08/390	S08/390	R0000	FT00	FT00		111	{LC,TI,SO}	AM	CNTR
+J08/393	S08/257	R0238	SC01	SC01		111	{CC,SC}	AM	CNTR
+X08/503	S08/503	G0000	FT00	FT00			{LC,FD-L05}	AM	CNTR
+X08/527	S08/527	G0315	FT00	FT00			{LC}	AM	CNTR
+X08/528	S08/528	G0612	FT00	FT00			{LC}	AM	CNTR
+X08/529	S08/529	G0000	FT00	FT00			{LC}	AM	CNTR
+X08/578	S08/578	G0579	FT00	FT00			{LC}	AM	CNTR
+X08/580	S08/580	G1021	FT00	FT00			{LC}	AM	CNTR
+X08/628	S08/628	G0000	FT00	FT00			{LC}	AM	CNTR
+X08/684	S08/684	G0000	FT00	FT00			{LC}	AM	CNTR
+J09/035	S09/035	R0935	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J09/036	S09/036	R0263	SC01	FT00		111	{LC,IS,FD-L05}	AM	CNTR
+J09/037	S09/037	R0277	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J09/051	S09/051	R0164	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J09/070	S09/070	R0468	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J09/071	S09/071	R0277	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J09/076	S09/076	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/086	S09/086	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/088	S09/076	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/090	S09/086	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/091	S09/086	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/112	S09/112	R0269	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J09/120	S09/120	R0368	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/125	S09/125	R0269	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/160	S09/160	R0269	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/198	S09/198	R2164	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J09/199	S09/199	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/203	S09/203	R0262	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J09/235	S09/120	R0368	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/236	S09/120	R0368	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/239	S09/239	R1077	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J09/250	S09/250	R1068	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/254	S09/254	R0262	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J09/270	S09/324	R0373	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/285	S09/285	R0269	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/290	S09/285	R0269	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/296	S09/296	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/301	S09/120	R0368	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/302	S09/120	R0368	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/303	S09/120	R0368	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/304	S09/120	R0368	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/305	S09/120	R0368	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/308	S09/308	R0262	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J09/313	S09/313	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/317	S09/198	R2164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/320	S09/320	R1263	FT51	FT51		111	{CC,FT}	AM	CNTR
+J09/321	S09/321	R1263	FT51	FT51		111	{CC,FT}	AM	CNTR
+J09/324	S09/324	R0373	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/325	S09/324	R0373	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/326	S09/324	R0373	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/327	S09/327	R0373	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/334	S09/076	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/335	S09/076	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/336	S09/076	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/338	S09/086	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/340	S09/086	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/341	S09/086	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/342	S09/313	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/373	S09/373	R0973	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J09/386	S09/386	R0468	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/394	S09/313	R0164	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/398	S09/398	R0269	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/399	S09/398	R0269	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/400	S09/400	R0269	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/401	S09/400	R0269	SC01	SC01		111	{CC,SC}	AM	CNTR
+J09/402	S09/070	R0468	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+X09/576	S09/576	G0164	FT00	FT00			{LC}	AM	CNTR
+X09/588	S09/088	G0164	FT00	FT00			{LC}	AM	CNTR
+X09/590	S09/590	G0164	FT00	FT00			{LC}	AM	CNTR
+X09/658	S09/658	G0277	FT00	FT00			{LC}	AM	CNTR
+X09/676	S09/676	G0164	FT00	FT00			{LC}	AM	CNTR
+J09/851	S09/851	G1263	FT51	FT00			{LC,TB,TI}	AM	CNTR
+J11/011	S11/011	R0319	SC01	SC01		111	{CC,SC,PR,TI}	AM	CNTR
+J11/016	S11/016	R0220	SC01	SC01		111	{CC,SC}	AM	CNTR
+J11/017	S11/017	R0220	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J11/019	S11/019	R0324	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J11/020	S11/020	R0324	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J11/022	S11/022	R0122	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J11/023	S11/023	R0321	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J11/024	S11/024	R0326	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J11/025	S11/025	R0327	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J11/033	S11/033	R0000	FT00	FT00		111	{LC,TI}	AM	CNTR
+J11/041	S11/041	R0321	SC01	SC01		111	{CC,SC}	AM	CNTR
+J11/045	S11/045	R0147	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J11/049	S11/049	R0319	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J11/050	S11/049	R0319	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J11/082	S11/017	R0220	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J11/137	S11/017	R0220	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J11/144	S11/144	R0319	SC01	SC01		111	{CC,SC}	AM	CNTR
+J11/146	S11/023	R0321	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J11/156	S11/156	R0122	SC01	SC01		111	{CC,SC}	AM	CNTR
+J11/157	S11/156	R0122	SC01	SC01		111	{CC,SC}	AM	CNTR
+J11/159	S11/159	R0422	SC01	SC01		111	{CC,SC}	AM	CNTR
+J11/166	S11/166	R1111	FT51	FT51		111	{CC,FT}	AM	CNTR
+X11/516	S11/516	G0220	FT00	FT00			{LC}	AM	CNTR
+X11/517	S11/517	G0220	FT00	FT00			{LC}	AM	CNTR
+J12/002	S12/002	R0523	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/003	S12/003	R2523	FT51	FT51		111	{CC,FT}	AM	CNTR
+J12/004	S12/004	R0421	SC18	SC18		111	{CC,SC,SI,PR}	AM	CNTR
+J12/005	S12/005	R0523	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/006	S12/006	R0120	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/008	S12/012	R0420	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/009	S12/009	R0320	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/010	S12/010	R0120	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/011	S12/012	R0420	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/012	S12/012	R0420	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/013	S12/013	R0120	SC01	FT00		111	{LC,TB,FD-I05}	AM	CNTR
+J12/016	S12/016	R0323	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/017	S12/017	R0120	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/018	S12/018	R0123	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/019	S12/019	R0123	SC01	FT00		111	{LC,TB,FD-I05}	AM	CNTR
+J12/020	S12/020	R0524	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/021	S12/021	R0524	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/022	S12/022	R0123	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/023	S12/023	R0524	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/025	S12/025	R0124	SC09	SC09		111	{CC,SC,PR}	AM	CNTR
+J12/033	S12/033	R0219	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/037	S12/037	R0219	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/040	S12/040	R0119	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/041	S12/041	R0119	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/048	S12/048	R0223	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/049	S12/049	R0123	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/050	S12/050	R0223	SC01	FT00		111	{LC,TB,FD-I05}	AM	CNTR
+J12/051	S12/051	R0223	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/052	S12/052	R0123	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/057	S12/057	R0030	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/061	S12/061	R0124	SC09	SC09		111	{CC,SC,PR}	AM	CNTR
+J12/062	S12/062	R0124	SC09	SC09		111	{CC,SC,PR}	AM	CNTR
+J12/063	S12/063	R0898	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/064	S12/064	R0124	SC09	SC09		111	{CC,SC,PR,LF}	AM	CNTR
+J12/066	S12/066	R0233	SC01	SC01		111	{CC,SC,PR,FD-I14,SO,LF}	AM	CNTR
+J12/067	S12/067	R0614	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/068	S12/068	R0421	SC18	SC18		111	{CC,SC,SI,PR}	AM	CNTR
+J12/069	S12/017	R0120	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/070	S12/070	R0233	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/071	S12/071	R0119	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/072	S12/073	R0898	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/073	S12/073	R0898	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/074	S12/074	R0220	SC12	SC12		111	{CC,SC,PR}	AM	CNTR
+J12/076	S12/076	R0220	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/077	S12/077	R0124	SC09	SC09		111	{CC,SC,PR}	AM	CNTR
+J12/078	S12/078	R0000	FT00	FT00		111	{LC,TI,FD-L05}	AM	CNTR
+J12/082	S12/082	R0220	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/083	S12/082	R0220	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/091	S12/067	R0614	SC01	SC01		111	{CC,SC,TI}	AM	CNTR
+J12/094	S12/017	R0120	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/118	S12/004	R0421	SC18	SC18		111	{CC,SC,SI}	AM	CNTR
+J12/121	S12/121	R0219	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/125	S12/125	R0392	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/133	S12/133	R0323	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/134	S12/134	G1134	FT00	FT00			{LC}	AM	CNTR
+J12/135	S12/135	R0320	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/136	S12/136	R0421	SC18	SC18		111	{CC,SC,SI}	AM	CNTR
+J12/146	S12/146	R0219	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/147	S12/040	R0119	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/156	S12/156	R0898	FT00	FT00		111	{LC}	AM	CNTR
+J12/158	S12/158	R0119	FT00	FT00		111	{LC,LF}	AM	CNTR
+J12/160	S12/160	R0323	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/171	S12/076	R0220	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/173	S12/173	G0900	FT00	FT00			{LC,TB}	AM	CNTR
+J12/175	S12/002	R0523	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/177	S12/017	R0120	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/184	S12/184	R0223	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/185	S12/186	R0119	FT00	FT00		111	{LC}	AM	CNTR
+J12/186	S12/186	R0119	FT00	FT00		111	{LC}	AM	CNTR
+J12/190	S12/190	R0123	SC01	FT00		111	{LC,TB,FD-I05}	AM	CNTR
+J12/191	S12/191	R0030	FT00	FT00		111	{LC,TB,FD-I08}	AM	CNTR
+J12/194	S12/194	R0900	FT00	FT00		111	{LC,SS}	AM	CNTR
+J12/199	S12/199	G0900	FT00	FT00			{LC}	AM	CNTR
+J12/207	S12/207	G0900	FT00	FT00			{LC,TB}	AM	CNTR
+J12/208	S12/194	R0900	FT00	FT00		111	{LC}	AM	CNTR
+J12/209	S12/002	R0523	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/210	S12/002	R0523	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/211	S12/211	R0392	SC01	FT00		111	{LC,TB,FD-I05}	AM	CNTR
+J12/215	S12/215	R0614	SC01	SC01		111	{CC,SC}	AM	CNTR
+J12/221	S12/006	R0120	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/222	S12/006	R0120	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/224	S12/224	R0898	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/225	S12/040	R0119	SC01	SC01		111	{CC,SC,PR}	AM	CNTR
+J12/227	S12/199	G0900	FT00	FT00			{LC}	AM	CNTR
+J12/228	S12/199	G0900	FT00	FT00			{LC,SS}	AM	CNTR
+J12/232	S12/194	R0900	FT00	FT00		111	{LC,SS}	AM	CNTR
+X12/537	S12/537	G0219	FT00	FT00			{LC}	AM	CNTR
+X12/612	S12/612	G0421	FT00	FT00			{LC}	AM	CNTR
+P00/047	S00/116	R0026	SC01	SC01		111	{cc,sc,fw}	AM	CNTR
+P00/050	S00/031	R0314	SC01	SC01		111	{cc,sc}	AM	CNTR
+P00/062	S00/062	R0026	FT00	FT00		111	{lc}	AM	CNTR
+P00/063	S00/102	R0026	FT00	FT00		111	{lc}	AM	CNTR
+P00/069	S00/102	R0026	FT00	FT00		111	{lc}	AM	CNTR
+P00/073	S00/076	R0011	SC01	SC01		111	{cc,sc}	AM	CNTR
+P00/074	S00/076	R0011	SC01	SC01		111	{cc,sc}	AM	CNTR
+P00/075	S00/076	R0011	SC01	SC01		111	{cc,sc}	AM	CNTR
+P00/076	S00/076	R0011	SC01	SC01		111	{cc,sc}	AM	CNTR
+P00/101	S00/101	R0028	SC01	SC01		111	{cc,sc}	AM	CNTR
+P00/102	S00/102	R0026	SC01	SC01		111	{cc,sc}	AM	CNTR
+P00/110	S00/035	R0928	SC01	SC01		111	{cc,sc}	AM	CNTR
+P00/111	S00/019	R0827	SC01	SC01		111	{cc,sc,pr}	AM	CNTR
+P00/119	S00/119	R0026	FT00	FT00		111	{lc}	AM	CNTR
+P00/120	S00/120	R0974	SC01	SC01		111	{cc,sc}	AM	CNTR
+P00/121	S00/121	R0026	FT00	FT00		111	{lc}	AM	CNTR
+P00/135	S00/004	R0886	SC01	SC01		111	{cc,sc,pr}	AM	CNTR
+P00/136	S00/004	R0886	SC01	SC01		111	{cc,sc,pr}	AM	CNTR
+P00/137	S00/004	R0886	SC01	SC01		111	{cc,sc,pr}	AM	CNTR
+P01/031	S01/024	R0007	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/061	S01/061	R0006	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/183	S01/182	R0022	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/274	S01/274	R0020	SC01	SC01		111	{cc,sc,xc}	AM	CNTR
+P01/307	S01/307	R0002	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/319	S01/319	R0020	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/320	S01/319	R0020	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/335	S01/021	R0007	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/343	S01/343	R0033	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/347	S01/112	R0033	SC01	SC01		111	{cc,sc,fw}	AM	CNTR
+P01/350	S01/349	R0736	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/353	S01/162	R0002	SC01	SC01		111	{cc,sc,df,lf,fw,pn}	AM	CNTR
+P01/373	S01/373	G0235	FT00	MO			{lc}	AM	CNTR
+P01/378	S01/206	R0922	SC01	SC01		111	{cc,sc,fw}	AM	CNTR
+P01/379	S01/207	R0004	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/383	S01/360	R0126	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/385	S01/131	R0132	SC01	FT00		111	{lc,tb,ri,fd-A05}	AM	CNTR
+P01/387	S01/209	R0004	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/388	S01/388	R0000	FT00	FT00		111	{lc,ri,fd-L05,fw}	AM	CNTR
+P01/404	S01/404	R0100	FT00	FT00		111	{lc}	AM	CNTR
+P01/409	S01/210	R0004	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/412	S01/412	R0822	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/413	S01/413	R0822	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/427	S01/406	R0003	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/430	S01/430	G0003	FT00	FT00			{lc}	AM	CNTR
+P01/445	S01/445	R0007	SC01	FT00		111	{lc,ti,xc}	AM	CNTR
+P01/459	S01/461	R0030	SC01	FT00		111	{lc,tb,ri,fd-A05,pn}	AM	CNTR
+P01/460	S01/461	R0030	SC01	FT00		111	{lc,tb,ri,fd-A05,pn}	AM	CNTR
+P01/467	S01/467	G0000	FT00	MO			{lc}	AM	CNTR
+P01/472	S01/312	R0055	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/479	S01/023	R0007	SC01	SC01		111	{cc,sc,xc}	AM	CNTR
+P01/489	S01/489	R0317	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/496	S01/496	R0019	SC01	SC01		111	{cc,sc,fw}	AM	CNTR
+P01/548	S01/548	G0900	FT00	FT00			{lc}	AM	CNTR
+P01/549	S01/549	G0900	FT00	FT00			{lc}	AM	CNTR
+P01/556	S01/157	R0564	SC01	SC01		111	{cc,sc,fw}	AM	CNTR
+P01/594	S01/002	R0106	SC01	SC01		111	{cc,sc}	AM	CNTR
+P01/608	S01/608	R0001	SC01	SC01		111	{cc,sc}	AM	CNTR
+P02/061	S02/058	R0009	SC02	SC02		111	{cc,sc,pn,xc}	AM	CNTR
+P02/141	S02/141	R0149	SC02	SC02		111	{cc,sc}	AM	CNTR
+P02/142	S02/142	R0149	SC02	SC02		111	{cc,sc}	AM	CNTR
+P02/157	S02/044	R0149	SC02	SC02		111	{cc,sc}	AM	CNTR
+P02/158	S02/044	R0149	SC02	SC02		111	{cc,sc}	AM	CNTR
+P02/169	S02/169	R0452	SC01	SC01		111	{cc,sc}	AM	CNTR
+P02/178	S02/143	R0008	SC01	SC01		111	{cc,sc}	AM	CNTR
+P02/202	S02/064	R0008	SC01	SC01		111	{cc,sc,xc}	AM	CNTR
+P02/215	S02/045	R0149	SC02	SC02		111	{cc,sc}	AM	CNTR
+P02/250	S02/059	R0009	SC02	SC02		111	{cc,sc,xc}	AM	CNTR
+P02/252	S02/252	R0008	SC01	SC01		111	{cc,sc,pn}	AM	CNTR
+P03/070	S03/070	R0144	SC01	SC01		111	{cc,sc}	AM	CNTR
+P03/083	S03/099	R0059	SC01	SC01		111	{cc,sc,pn}	AM	CNTR
+P03/113	S03/113	R0345	FT00	FT00		111	{lc}	AM	CNTR
+P03/114	S03/113	R0345	FT00	FT00		111	{lc}	AM	CNTR
+P03/116	S03/116	R0159	SC01	SC01		111	{cc,sc}	AM	CNTR
+P03/117	S03/116	R0159	SC01	SC01		111	{cc,sc}	AM	CNTR
+P03/118	S03/003	R0059	SC01	SC01		111	{cc,sc}	AM	CNTR
+P03/119	S03/003	R0059	SC01	SC01		111	{cc,sc}	AM	CNTR
+P03/142	S03/142	R0345	FT00	FT00		111	{lc}	AM	CNTR
+P03/149	S03/032	R0344	SC01	SC01		111	{cc,sc,pr}	AM	CNTR
+P03/170	S03/170	R0008	SC01	SC01		111	{cc,sc}	AM	CNTR
+P03/175	S03/158	R0059	SC01	SC01		111	{cc,sc,fw}	AM	CNTR
+P03/188	S02/021	R0008	SC01	SC01		111	{cc,sc,fw,xc}	AM	CNTR
+P04/004	S04/003	R0143	SC08	SC08		111	{cc,sc,pr}	AM	CNTR
+P04/034	S04/034	R0143	FT00	FT00		111	{lc,xc}	AM	CNTR
+P04/125	S04/125	R0343	SC01	SC01		111	{cc,sc}	AM	CNTR
+P04/126	S04/125	R0343	SC01	SC01		111	{cc,sc}	AM	CNTR
+P04/194	S04/194	R0143	FT00	FT00		111	{lc}	AM	CNTR
+P04/195	S04/195	R0143	FT00	FT00		111	{lc}	AM	CNTR
+P04/201	S04/202	G1037	FT00	FT00			{lc,ti}	AM	CNTR
+P05/051	S05/051	R0028	SC01	SC01		111	{cc,sc,fw,pn}	AM	CNTR
+P05/065	S05/065	R0023	SC01	SC01		111	{cc,sc}	AM	CNTR
+P05/105	S05/105	R0029	SC01	SC01		111	{cc,sc}	AM	CNTR
+P05/106	S05/105	R0029	SC01	SC01		111	{cc,sc}	AM	CNTR
+P05/192	S05/192	R0293	SC01	SC01		111	{cc,sc}	AM	CNTR
+P05/252	S05/252	R0293	SC01	SC01		111	{cc,sc}	AM	CNTR
+P05/311	S05/311	R0293	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/079	S08/079	R0579	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/083	S08/083	R0612	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/090	S08/090	R0579	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/091	S08/090	R0579	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/093	S08/093	R0162	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/156	S08/027	R0315	SC01	SC01		111	{cc,sc,pr}	AM	CNTR
+P08/216	S08/032	R0202	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/248	S08/248	R0000	FT00	MO		111	{lc}	AM	CNTR
+P08/256	S09/035	R0935	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/293	S08/323	R0200	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/294	S08/323	R0200	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/326	S08/326	R0261	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/328	S08/328	R0832	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/330	S08/330	R0812	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/331	S08/030	R0812	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/332	S08/332	R0832	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/333	S08/031	R0832	SC01	SC01		111	{cc,sc}	AM	CNTR
+P08/364	S08/364	G0012	FT00	FT00			{lc}	AM	CNTR
+P08/408	S08/408	R0579	SC01	SC01		111	{cc,sc,xc}	AM	CNTR
+P08/409	S08/409	R0833	FT00	FT00		111	{lc}	AM	CNTR
+P09/102	S09/076	R0164	SC01	SC01		111	{cc,sc,fw}	AM	CNTR
+P09/127	S09/127	R0468	SC01	SC01		111	{cc,sc}	AM	CNTR
+P09/132	S09/132	R0269	SC01	SC01		111	{cc,sc}	AM	CNTR
+P09/168	S09/168	R0164	SC01	SC01		111	{cc,sc,pn}	AM	CNTR
+P09/169	S09/169	R0373	SC01	FT00		111	{lc,tb,ri,fd-I05}	AM	CNTR
+P09/197	S09/197	R0164	SC01	SC01		111	{cc,sc,pa,pn}	AM	CNTR
+P09/200	S09/200	R0238	SC01	SC01		111	{cc,sc}	AM	CNTR
+P09/201	S09/201	R0238	SC01	SC01		111	{cc,sc}	AM	CNTR
+P09/206	S09/206	R0262	SC01	SC01		111	{cc,sc}	AM	CNTR
+P09/237	S09/237	R0269	SC01	SC01		111	{cc,sc}	AM	CNTR
+P09/257	S09/257	R0277	SC01	SC01		111	{cc,sc}	AM	CNTR
+P09/258	S09/258	R0277	SC01	SC01		111	{cc,sc}	AM	CNTR
+P09/259	S09/259	R0277	SC01	SC01		111	{cc,sc}	AM	CNTR
+P09/286	S09/286	G0269	FT00	MO			{lc}	AM	CNTR
+P09/287	S09/286	G0269	FT00	MO			{lc}	AM	CNTR
+P09/322	S09/308	R0262	SC01	SC01		111	{cc,sc}	AM	CNTR
+P09/410	S09/198	R2164	SC01	SC01		111	{cc,sc,pn}	AM	CNTR
+P11/031	S11/031	R0319	SC01	SC01		111	{cc,sc,pn,xc}	AM	CNTR
+P11/032	S11/031	R0319	SC01	SC01		111	{cc,sc,pn,xc}	AM	CNTR
+P11/036	S11/036	R0122	SC01	SC01		111	{cc,sc}	AM	CNTR
+P11/037	S11/022	R0122	SC01	SC01		111	{cc,sc}	AM	CNTR
+P11/060	S11/023	R0321	SC01	SC01		111	{cc,sc,fw,xc}	AM	CNTR
+P11/081	S11/081	R0122	SC01	SC01		111	{cc,sc}	AM	CNTR
+P11/145	S11/150	R0220	SC01	SC01		111	{cc,sc,xc}	AM	CNTR
+P11/150	S11/150	R0220	SC01	SC01		111	{cc,sc}	AM	CNTR
+P11/184	S11/041	R0321	SC01	SC01		111	{cc,sc}	AM	CNTR
+P12/014	S12/014	R0323	SC01	SC01		111	{cc,sc,xc}	AM	CNTR
+P12/015	S12/015	R0323	SC01	SC01		111	{cc,sc}	AM	CNTR
+P12/024	S12/010	R0120	SC01	SC01		111	{cc,sc,pr}	AM	CNTR
+P12/038	S12/038	R0219	SC01	SC01		111	{cc,sc}	AM	CNTR
+P12/039	S12/039	R0119	FT00	FT00		111	{lc,pn}	AM	CNTR
+P12/080	S12/080	R0123	FT00	FT00		111	{lc}	AM	CNTR
+P12/084	S12/084	G0900	FT00	MO			{lc}	AM	CNTR
+P12/088	S12/184	R0223	SC01	SC01		111	{cc,sc,pr}	AM	CNTR
+P12/089	S12/089	R0421	SC18	SC18		111	{cc,sc,si}	AM	CNTR
+P12/090	S12/089	R0421	SC18	SC18		111	{cc,sc,si}	AM	CNTR
+P12/093	S12/093	R0123	FT00	FT00		111	{lc}	AM	CNTR
+P12/098	S12/098	R0219	SC01	SC01		111	{cc,sc}	AM	CNTR
+P12/099	S12/098	R0219	SC01	SC01		111	{cc,sc}	AM	CNTR
+P12/100	S12/100	R0119	FT00	FT00		111	{lc}	AM	CNTR
+P12/101	S12/100	R0119	FT00	FT00		111	{lc}	AM	CNTR
+P12/104	S12/104	R0235	SC01	SC01		111	{cc,sc}	AM	CNTR
+P12/105	S12/104	R0235	SC01	SC01		111	{cc,sc}	AM	CNTR
+P12/106	S01/105	R0235	SC01	SC01		111	{cc,sc}	AM	CNTR
+P12/107	S01/105	R0235	SC01	SC01		111	{cc,sc}	AM	CNTR
+P12/108	S12/146	R0219	SC01	SC01		111	{cc,sc}	AM	CNTR
+P12/109	S12/146	R0219	SC01	SC01		111	{cc,sc}	AM	CNTR
+P12/110	S12/110	R0421	SC18	SC18		111	{cc,sc,si}	AM	CNTR
+P12/111	S12/110	R0421	SC18	SC18		111	{cc,sc,si}	AM	CNTR
+P12/112	S12/112	R0421	SC18	SC18		111	{cc,sc,si}	AM	CNTR
+P12/114	S12/114	R0421	SC18	SC18		111	{cc,sc,si}	AM	CNTR
+P12/119	S12/119	R0220	FT00	FT00		111	{lc}	AM	CNTR
+P12/120	S12/121	R0219	SC01	SC01		111	{cc,sc,xc}	AM	CNTR
+P12/126	S12/125	R0392	SC01	SC01		111	{cc,sc}	AM	CNTR
+P12/129	S12/110	R0421	SC18	SC18		111	{cc,sc,si}	AM	CNTR
+P12/130	S12/110	R0421	SC18	SC18		111	{cc,sc,si}	AM	CNTR
+P12/137	S12/137	R0219	FT00	FT00		111	{lc}	AM	CNTR
+P12/138	S12/135	R0320	SC01	SC01		111	{cc,sc}	AM	CNTR
+P12/144	S12/012	R0420	SC01	SC01		111	{cc,sc,pr}	AM	CNTR
+P12/145	S12/012	R0420	SC01	SC01		111	{cc,sc,pr}	AM	CNTR
+P12/159	S12/158	R0119	FT00	FT00		111	{lc,pn}	AM	CNTR
+P12/170	S12/170	G0900	FT00	MO			{lc}	AM	CNTR
+P12/178	S12/178	G0900	FT00	MO			{lc,is,ri,fd}	AM	CNTR
+P12/179	S12/179	G0900	FT00	MO			{lc,is,ri,fd}	AM	CNTR
+P12/180	S12/180	G0900	FT00	MO			{lc,is,ri,fd}	AM	CNTR
+P12/181	S12/181	G0900	FT00	MO			{lc,is,ri,fd}	AM	CNTR
+P12/187	S12/184	R0223	SC01	SC01		111	{cc,sc,pr}	AM	CNTR
+P12/189	S12/189	G0223	FT00	FT00			{lc}	AM	CNTR
+P12/195	S12/195	G0100	FT00	FT00			{lc,ri,fd-L05}	AM	CNTR
+P12/198	S12/198	G0900	FT00	MO			{lc}	AM	CNTR
+P12/200	S12/200	G0900	FT00	MO			{lc}	AM	CNTR
+P12/201	S12/051	R0223	SC01	SC01		111	{cc,sc}	AM	CNTR
+P12/202	S12/202	R0030	FT00	FT00		111	{lc,xc}	AM	CNTR
+P12/203	S12/203	R0123	FT00	FT00		111	{lc}	AM	CNTR
+P12/204	S12/121	R0219	SC01	SC01		111	{cc,sc,xc}	AM	CNTR
+P12/205	S12/121	R0219	SC01	SC01		111	{cc,sc,xc}	AM	CNTR
+P12/206	S12/206	G0900	FT00	FT00			{lc}	AM	CNTR
+P12/220	S12/220	G0900	FT00	FT00			{lc}	AM	CNTR
+P12/223	S12/223	G0900	FT00	MO			{lc}	AM	CNTR
+P12/234	S12/234	G0900	FT00	FT00			{lc,ri}	AM	CNTR
+F00/002	S00/002	G0315	MO	MO			{SIGNS,-SSOFF,lc}	AM	CNTR
+F00/004	S00/004	G0886	MO	MO			{STREAM-ON,lc}	AM	CNTR
+F00/028	S00/028	G0292	MO	MO			{LOOP,-CLR,lc}	AM	CNTR
+F00/089	S00/089	G0866	MO	MO			{LIMR,-LIMIT,lc}	AM	CNTR
+F00/107	S00/107	G0100	MO	MO			{LIMIT,-CLR,lc,is}	AM	CNTR
+F00/113	S00/113	G0374	MO	MO			{LIMR,-CLR,lc}	AM	CNTR
+F00/115	S00/115	G0027	MO	MO			{LIMR,-CLR,lc}	AM	CNTR
+F00/117	S00/117	G0774	MO	MO			{LAMPS,-ON,lc}	AM	CNTR
+F00/130	S00/003	G0023	MO	MO			{LAMPS,-ON,lc}	AM	CNTR
+F01/009	S01/009	G0018	MO	MO			{-,lc}	AM	CNTR
+F01/010	S01/009	G0018	MO	MO			{-,lc}	AM	CNTR
+F01/016	S01/016	G0136	MO	MO			{SIGS,-ON,lc}	AM	CNTR
+F01/044	S01/044	G0553	MO	MO			{SS,-SSON,lc}	AM	CNTR
+F01/048	S01/048	G0053	MO	MO			{SSIGN,-ON,lc}	AM	CNTR
+F01/066	S01/066	G0019	MO	MO			{SIGN,-ON,lc}	AM	CNTR
+F01/142	S01/142	G0003	MO	MO			{PHASE,-G,lc}	AM	CNTR
+F01/144	S01/144	G0003	MO	MO	547365		{PARK,-OPEN,lc}	AM	CNTR
+F01/147	S01/144	G0003	MO	MO	547365		{PARK,-OPEN,lc}	AM	CNTR
+F01/148	S01/148	G0003	MO	MO	547365		{PARK,-OPEN,lc}	AM	CNTR
+F01/198	S01/198	G0737					{SIGN,lc,tb}	AM	CNTR
+F01/204	S01/204	G0003					{STAGE4,lc,tb}	AM	CNTR
+F01/205	S01/205	G0922	ON				{SSIGN,lc,tb}	AM	CNTR
+F01/206	S01/206	G0922	ON		041290		{SIGN,lc,tb}	AM	CNTR
+F01/242	S01/242	G0515	MO	MO			{LIMR,-CLR,lc}	AM	CNTR
+F01/273	S01/393	G1053	MO	MO	111111		{PTMI,-PTOFF,lc}	AM	CNTR
+F01/312	S01/312	G0055					{STG8,lc,tb}	AM	CNTR
+F01/346	S01/346	G0121	MO	MO			{LIMR,-CLR,lc}	AM	CNTR
+F01/359	S01/359	G0126					{SWITCH,lc,is}	AM	CNTR
+F01/360	S01/360	G0126					{SWITCH,lc,tb}	AM	CNTR
+F01/361	S01/361	G0126		ON			{SWITCH-ON,nw,tb}	AM	CNTR
+F01/362	S01/360	G0126			546501		{SWITCH,lc,tb}	AM	CNTR
+F01/364	S01/364	G0126					{STAGE,lc,tb}	AM	CNTR
+F01/372	S01/372	G0053					{SIGNS,lc,tb}	AM	CNTR
+F01/376	S01/376	G0053					{CLF,lc,tb}	AM	CNTR
+F01/390	S01/390	G0207	MO	MO			{STREAM-ON,lc}	AM	CNTR
+F01/391	S01/390	G0207	MO	MO			{STREAM-ON,lc}	AM	CNTR
+F01/392	S01/393	G1053	MO	MO	111111		{PTMI,-PTOFF,lc}	AM	CNTR
+F01/393	S01/393	G1053	MO	MO	111111		{PTMI,-PTOFF,lc}	AM	CNTR
+F01/469	S01/469	G0055	MO	MO	054212		{KEY,-OFF,lc}	AM	CNTR
+F01/480	S01/063	G0018	MO	MO			{LIGHTS-ON,lc}	AM	CNTR
+F01/510	S01/510	G0017	MO	MO			{LIMR,-CLR,lc}	AM	CNTR
+F01/531	S01/009	G0018	MO	MO			{-,lc}	AM	CNTR
+F01/535	S01/009	G0018	MO	MO			{-,lc}	AM	CNTR
+F01/574	S01/574	G0421	MO	MO			{GATE,-OPEN,lc}	AM	CNTR
+F02/019	S02/019	G0379					{SIGNS,lc,tb}	AM	CNTR
+F02/020	S02/020	G0008					{OVRD,lc,tb}	AM	CNTR
+F02/058	S02/058	G0009	MO	MO			{SIGNS,-ON,lc}	AM	CNTR
+F02/060	S02/060	G0009	MO	MO			{SS,-ON,lc}	AM	CNTR
+F02/207	S02/207	G0408	MO	MO			{LAMPS,-ON,lc}	AM	CNTR
+F02/276	S02/062	G0009	MO	MO			{SIGNS,-OFF,lc,is}	AM	CNTR
+F02/328	S02/328	G0509					{lc,tb}	AM	CNTR
+F04/036	S04/036	G1043					{HC,lc,tb}	AM	CNTR
+F05/014	S05/014	G0029					{HCO,lc,tb}	AM	CNTR
+F05/051	S05/051	G0028	MO	MO			{DETECT-FAULT,lc}	AM	CNTR
+F05/097	S05/097	G0023	MO	MO			{SIGS,-ON,lc}	AM	CNTR
+F05/194	S05/194	G0028	MO	MO			{HC,-ZERO,lc}	AM	CNTR
+F08/004	S08/004	G0000	MO	MO			{wigwag-waggle,lc,ti}	AM	CNTR
+F08/140	S08/140	G0200	MO	MO			{LIMR,-CLR,lc}	AM	CNTR
+F08/142	S08/142	G0012	MO	MO			{LIMR,-LIMIT,lc}	AM	CNTR
+F08/143	S08/143	G1010	MO	MO			{LIMR,-CLR,lc}	AM	CNTR
+F08/389	S08/389	G0000	MO	MO			{LIMR,-limit,lc,ti}	AM	CNTR
+F08/390	S08/390	G0000	MO	MO			{LIMR,-limit,lc,ti}	AM	CNTR
+F09/086	S09/086	G0164	MO	MO			{SIGOFF-ON,lc}	AM	CNTR
+F09/250	S09/250	G1068			054253		{HCO,lc,tb}	AM	CNTR
+F09/302	S09/120	G0368	MO	MO	054227		{QDET,-CLR,lc}	AM	CNTR
+F09/313	S09/313	G0164	MO	MO			{STREAM-ON,lc}	AM	CNTR
+F09/335	S09/076	G0164	MO	MO			{Demand-S1_no,lc}	AM	CNTR
+F09/386	S09/386	G0468					{Ovrde,lc,tb}	AM	CNTR
+F11/166	S11/166	G1111	MO	MO			{LIMR,-CLR,lc}	AM	CNTR
+F12/020	S12/020	G0524	MO	MO			{SIGN,-ON,lc}	AM	CNTR
+F12/040	S12/040	G0119	MO	MO			{BARR,-UP,lc}	AM	CNTR
+F12/050	S12/050	G0223		off			{HCO,-off,nw,tb,fd-A05}	AM	CNTR
+F12/051	S12/051	G0223					{HCO,lc,tb}	AM	CNTR
+F12/134	S12/134	G1134	MO	MO			{LIMR,-LIMIT,lc}	AM	CNTR
+J00/002	S00/002	R0315	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/003	S00/003	R0023	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/004	S00/004	R0886	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/005	S00/005	R0015	SC01	SC01		111	{CC,SC}	OP	CNTR
+J00/006	S00/006	R0315	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/007	S00/007	R0615	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/008	S00/008	R0801	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/009	S00/009	R0013	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/010	S00/010	R0290	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/011	S00/011	R0000	FT00	FT00		111	{LC,IS,TI,FD-L14-A05,SO}	OP	CNTR
+J00/012	S00/012	R0374	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/013	S00/013	R0374	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/014	S00/016	R0374	SC02	SC02		111	{CC,SC,LF}	OP	CNTR
+J00/015	S00/015	R0010	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/016	S00/016	R0374	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/019	S00/019	R0827	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/020	S00/020	R0027	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/021	S00/021	R0027	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/022	S00/022	R0027	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/023	S00/023	R0927	SC02	FT00		111	{LC,TB,FD-I05}	OP	CNTR
+J00/024	S00/024	R0013	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/025	S00/025	R0026	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/027	S00/027	R0315	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/028	S00/028	R0292	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/029	S00/029	R0315	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/030	S00/030	R0314	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/031	S00/031	R0314	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/032	S00/032	R0387	SC02	FT00		111	{LC,TB,FD-I06}	OP	CNTR
+J00/033	S00/033	R0011	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/035	S00/035	R0928	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/036	S00/036	R0610	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/037	S00/037	R0028	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/042	S00/037	R0028	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/044	S00/044	R0374	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/048	S00/048	R0013	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/051	S00/051	R0010	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/052	S00/052	R0010	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/055	S00/055	G0013	FT52	FT52			{CC,FT}	OP	CNTR
+J00/056	S00/056	R0027	FT00	FT00		111	{LC,DF}	OP	CNTR
+J00/057	S00/008	R0801	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/058	S00/008	R0801	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/059	S00/059	R0015	SC01	SC01		111	{CC,SC}	OP	CNTR
+J00/060	S00/060	R0232	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/064	S00/064	R0013	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/065	S00/065	R0928	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/068	S00/016	R0374	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/070	S00/009	R0013	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/078	S00/078	R0011	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/080	S00/033	R0011	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/081	S00/033	R0011	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/083	S00/083	R0010	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/087	S00/011	R0000	FT00	FT00		111	{LC,IS,TI,FD-L05}	OP	CNTR
+J00/089	S00/089	R0866	FT00	FT00		111	{LC}	OP	CNTR
+J00/090	S00/090	R0866	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/091	S00/090	R0866	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/097	S00/064	R0013	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/100	S00/044	R0374	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/103	S00/037	R0028	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/104	S00/044	R0374	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/107	S00/107	R0013	SC02	FT00		111	{LC,IS,SS}	OP	CNTR
+J00/108	S00/108	R0011	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/113	S00/113	R0374	FT00	FT00		111	{LC}	OP	CNTR
+J00/114	S00/114	R0974	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/115	S00/115	R0027	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/116	S00/116	R0026	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/117	S00/117	R0774	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/118	S00/118	R0010	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/122	S00/006	R0315	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/123	S00/006	R0315	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/125	S00/125	R0374	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/126	S00/126	R0010	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/127	S00/016	R0374	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/130	S00/003	R0023	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/131	S00/117	R0774	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/132	S00/006	R0315	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/134	S00/006	R0315	SC02	SC02		111	{CC,SC}	OP	CNTR
+J00/138	S00/005	R0015	SC01	SC01		111	{CC,SC}	OP	CNTR
+J00/139	S00/003	R0023	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/140	S00/140	G0010	FT00	FT00			{LC}	OP	CNTR
+J00/141	S00/141	R0801	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J00/142	S00/142	R1030	SC02	SC02		111	{CC,SC}	OP	CNTR
+X00/502	S00/502	G0315	FT00	FT00			{LC}	OP	CNTR
+X00/505	S00/505	G1053	FT00	FT00			{LC}	OP	CNTR
+X00/506	S00/506	G0315	FT00	FT00			{LC}	OP	CNTR
+X00/509	S00/509	G0013	FT52	FT52			{CC,FT}	OP	CNTR
+X00/528	S00/528	G0292	FT00	FT00			{LC}	OP	CNTR
+X00/531	S00/531	G0314	FT00	FT00			{LC}	OP	CNTR
+X00/559	S00/559	G0015	FT00	FT00			{LC}	OP	CNTR
+X00/622	S00/622	G0315	FT00	FT00			{LC}	OP	CNTR
+X00/642	S00/642	G1030	FT00	FT00			{LC}	OP	CNTR
+J00/850	S00/850	R0290	FT52	FT52		111	{CC,FT}	OP	CNTR
+J01/001	S01/002	R0106	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/002	S01/002	R0106	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/003	S01/003	R0006	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/004	S01/002	R0106	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/005	S01/005	R0106	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/006	S01/052	R0006	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/007	S01/007	R0018	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/009	S01/009	R0018	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/010	S01/009	R0018	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/011	S01/011	R0421	SC18	SC18		111	{CC,SC,SI}	OP	CNTR
+J01/012	S01/012	R0421	SC18	SC18		111	{CC,SC,SI}	OP	CNTR
+J01/014	S01/014	R1051	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/016	S01/016	R0136	SC02	SC02		111	{CC,SC,LF}	OP	CNTR
+J01/017	S01/016	R0136	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/018	S01/016	R0136	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/019	S01/019	R0807	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/020	S01/020	R0007	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/021	S01/021	R0007	SC02	SC02		111	{CC,SC,PR,LF}	OP	CNTR
+J01/022	S01/022	R0007	SC02	FT27		111	{CC,FT,NW}	OP	CNTR
+J01/023	S01/023	R0007	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/024	S01/024	R0007	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/025	S01/025	R0007	SC11	SC11		111	{CC,SC,PR}	OP	CNTR
+J01/026	S01/026	R0807	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/027	S01/027	R0007	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/028	S01/028	R0007	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/030	S01/030	R0007	SC02	FT27		111	{CC,FT,NW}	OP	CNTR
+J01/032	S01/032	R0007	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/033	S01/033	R0017	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/034	S01/034	R0017	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/035	S01/035	R0207	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/036	S01/036	R0050	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/037	S01/037	R0050	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/038	S01/038	R0050	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/039	S01/039	R0005	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/040	S01/040	R0005	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/043	S01/043	R0306	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/044	S01/044	R0553	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/045	S01/044	R0553	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/046	S01/046	R0020	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/047	S01/046	R0020	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/048	S01/048	R0053	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/051	S01/051	R0006	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/052	S01/052	R0006	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/053	S01/052	R0006	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/054	S01/054	R0306	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/057	S01/057	R0121	SC02	FT00		111	{LC,TB,FD-A06}	OP	CNTR
+J01/058	S01/057	R0121	SC02	FT00		111	{LC,TB,FD-A06}	OP	CNTR
+J01/059	S01/059	R0706	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/062	S01/062	R0006	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/063	S01/063	R0018	FT24	FT24		111	{CC,FT}	OP	CNTR
+J01/064	S01/064	R0807	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/065	S01/064	R0807	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/066	S01/066	R0019	SC02	FT00		111	{LC,TB,FD-I06}	OP	CNTR
+J01/067	S01/067	R0019	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/068	S01/068	R0019	SC02	SC02		111	{CC,SC,FW}	OP	CNTR
+J01/069	S01/069	R0025	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/070	S01/070	R0025	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/071	S01/071	R0025	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/072	S01/072	R1025	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/073	S01/073	R1025	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/075	S01/075	R0850	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/076	S01/076	R0317	SC02	SC02		111	{CC,SC,PR,DF}	OP	CNTR
+J01/077	S01/077	R0850	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/078	S01/078	R0135	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/079	S01/079	R1035	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/080	S01/080	R0019	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/081	S01/081	R0135	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/082	S01/082	R0390	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/083	S01/083	R0891	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/084	S01/084	R0850	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/085	S01/085	R0850	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/086	S01/086	R0233	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/087	S01/087	R0030	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/088	S01/088	R0017	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/089	S01/089	R0024	FT52	FT52		111	{CC,FT}	OP	CNTR
+J01/090	S01/090	R0018	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/092	S01/092	R0922	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/093	S01/093	R0635	SC02	SC02		111	{CC,SC,PR,LF}	OP	CNTR
+J01/094	S01/094	R0053	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/095	S01/095	R0053	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/097	S01/097	R0000	FT00	FT00		111	{LC,TI}	OP	CNTR
+J01/098	S01/098	R0598	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/099	S01/099	R0850	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/102	S01/102	R0017	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/103	S01/103	R0822	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/105	S01/105	R0235	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/106	S01/106	R0235	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/107	S01/107	R0963	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/108	S01/108	R0963	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/109	S01/109	R0963	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/111	S01/112	R0033	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/112	S01/112	R0033	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/113	S01/113	R0033	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/122	S01/122	R0341	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/124	S01/124	R0033	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/125	S01/125	R0963	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/127	S01/127	R0201	SC09	SC09		111	{CC,SC}	OP	CNTR
+J01/128	S01/128	R0001	SC02	FT00		111	{LC,TB,TI}	OP	CNTR
+J01/129	S01/129	R0001	SC02	FT00		111	{LC,TB,FD-I05}	OP	CNTR
+J01/130	S01/130	R0132	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/131	S01/131	R0132	SC02	FT00		111	{LC,TB,FD-I05}	OP	CNTR
+J01/132	S01/132	R0536	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/133	S01/133	R0963	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/134	S01/134	R0963	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/139	S01/139	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/140	S01/139	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/141	S01/139	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/142	S01/142	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/143	S01/143	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/144	S01/144	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/146	S01/146	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/147	S01/146	R0003	SC02	SC02		111	{CC,SC,PR,DF}	OP	CNTR
+J01/148	S01/148	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/149	S01/148	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/150	S01/148	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/151	S01/151	R0203	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/152	S01/152	R0203	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/153	S01/153	R0203	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/154	S01/154	R0603	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/155	S01/155	R0603	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/156	S01/156	R0003	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/157	S01/157	R0564	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/158	S01/158	R0564	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/159	S01/159	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/160	S01/160	R0002	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/161	S01/161	R0002	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/162	S01/162	R0002	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/163	S01/163	R0002	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/164	S01/164	R0002	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/165	S01/165	R0002	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/166	S01/166	R0002	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/167	S01/167	R0399	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/168	S01/168	R0399	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/169	S01/169	R0399	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/170	S01/170	R0399	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/171	S01/171	R0922	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/172	S01/172	R0922	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/173	S01/173	R0923	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/174	S01/174	R0923	SC02	SC02		111	{CC,SC,PR,LF}	OP	CNTR
+J01/175	S01/175	R0922	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/176	S01/176	R0923	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/177	S01/177	R0022	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/178	S01/178	R0022	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/179	S01/179	R0022	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/180	S01/180	R0022	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/181	S01/180	R0022	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/182	S01/182	R0022	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/184	S01/184	R0005	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/185	S01/185	R0005	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/186	S01/186	R0021	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/187	S01/187	R0021	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/188	S01/188	R0021	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/189	S01/189	R0021	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/190	S01/190	R0005	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/192	S01/192	R0022	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/193	S01/193	R0923	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/194	S01/194	R0005	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/195	S01/195	R0016	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/196	S01/196	R0016	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/197	S01/197	R0016	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/198	S01/198	R0737	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/199	S01/199	R0016	SC02	FT00		111	{LC,TB,FD-I05}	OP	CNTR
+J01/200	S01/200	R0016	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/201	S01/201	R0016	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/202	S01/202	R0016	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/203	S01/203	R0016	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/204	S01/139	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/205	S01/205	R0922	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/206	S01/206	R0922	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/207	S01/207	R0004	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/208	S01/208	R0004	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/209	S01/209	R0004	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/210	S01/210	R0004	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/211	S01/211	R0515	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/212	S01/212	R0005	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/215	S01/215	R2121	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/216	S01/216	R2121	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/217	S01/217	R2121	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/218	S01/218	R2121	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/221	S01/221	R1616	SC02	SC02	547400	111	{CC,SC}	OP	CNTR
+J01/222	S01/222	R0002	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/231	S01/231	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/232	S01/232	R0564	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/239	S01/239	R0000	FT00	FT00		111	{LC}	OP	CNTR
+J01/241	S01/241	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/242	S01/242	G0515	FT00	FT00			{LC}	OP	CNTR
+J01/243	S01/243	R0515	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/246	S01/246	R0106	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/247	S01/247	R0515	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/248	S01/248	R1616	FT00	FT00		111	{LC}	OP	CNTR
+J01/249	S01/249	R0017	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/254	S01/254	R0635	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/256	S01/256	R0001	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/258	S01/258	R0025	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/259	S01/259	R0306	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/260	S01/260	R0106	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/261	S01/016	R0136	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/265	S01/024	R0007	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/272	S01/272	R0020	SC02	FT00		111	{LC,TB,FD-I05}	OP	CNTR
+J01/273	S01/393	R1053	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/277	S01/241	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/279	S01/279	R0132	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/280	S01/281	R0106	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/281	S01/281	R0106	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/282	S01/283	R0106	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/283	S01/283	R0106	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/284	S01/284	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/287	S01/287	R0207	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/288	S01/288	R1119	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/292	S01/292	R0206	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/295	S01/296	R0018	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/296	S01/296	R0018	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/300	S01/300	R1033	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/302	S01/302	R0019	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/303	S01/302	R0019	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/304	S01/304	R0053	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/305	S01/304	R0053	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/306	S01/306	R1025	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/308	S01/308	R0024	FT52	FT00		111	{LC,TB,TI}	OP	CNTR
+J01/310	S01/310	R0055	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/311	S01/311	R0055	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/312	S01/312	R0055	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/313	S01/046	R0020	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/314	S01/046	R0020	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/315	S01/315	R0063	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/322	S01/146	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/323	S01/323	R0006	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/324	S01/052	R0006	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/325	S01/325	R0535	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/332	S01/332	R0024	FT52	FT52		111	{CC,FT,LF}	OP	CNTR
+J01/333	S01/052	R0006	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/334	S01/334	R0030	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/346	S01/346	R0121	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/348	S01/348	R0730	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/349	S01/349	R0736	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/355	S01/355	R0019	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/356	S01/355	R0019	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/357	S01/068	R0019	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/358	S01/068	R0019	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/359	S01/360	R0126	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/360	S01/360	R0126	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/361	S01/360	R0126	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/362	S01/360	R0126	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/363	S01/360	R0126	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/364	S01/360	R0126	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/366	S01/366	R0132	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/367	S01/367	R0030	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/369	S01/369	R0007	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/370	S01/360	R0126	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/371	S01/366	R0132	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/372	S01/372	R0053	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/375	S01/372	R0053	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/376	S01/376	R0053	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/382	S01/148	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/386	S01/386	R2121	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/389	S01/279	R0132	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/390	S01/390	R0207	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/391	S01/390	R0207	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/392	S01/393	R1053	SC02	SC02		111	{CC,SC,DF}	OP	CNTR
+J01/393	S01/393	R1053	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/394	S01/095	R0053	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/402	S01/402	R0022	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/403	S01/139	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/405	S01/405	R0001	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/406	S01/406	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/408	S01/408	R0006	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/410	S01/211	R0515	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/416	S01/143	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/419	S01/142	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/424	S01/144	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/425	S01/146	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/426	S01/139	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/428	S01/139	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/429	S01/139	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/433	S01/139	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/434	S01/146	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/436	S01/436	R0003	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/438	S01/438	R0002	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/450	S01/176	R0923	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/451	S01/048	R0053	SC02	SC02		111	{CC,SC,FW,LF}	OP	CNTR
+J01/452	S01/048	R0053	SC02	SC02		111	{CC,SC,FW}	OP	CNTR
+J01/453	S01/044	R0553	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/456	S01/036	R0050	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/461	S01/461	R0730	SC02	FT00		111	{LC,TB,FD-I05}	OP	CNTR
+J01/469	S01/469	R0055	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/473	S01/473	R0007	SC02	SC02		111	{CC,SC,LF}	OP	CNTR
+J01/474	S01/473	R0007	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/478	S01/478	R0007	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/480	S01/063	R0018	FT24	FT24		111	{CC,FT}	OP	CNTR
+J01/481	S01/063	R0018	FT24	FT24		111	{CC,FT}	OP	CNTR
+J01/483	S01/483	R0018	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/488	S01/488	R0736	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/490	S01/490	R0317	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/497	S01/497	R0007	SC12	SC12		111	{CC,SC}	OP	CNTR
+J01/498	S01/498	R0201	SC09	SC09		111	{CC,SC,PR}	OP	CNTR
+J01/500	S01/488	R0736	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/503	S01/109	R0963	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/507	S01/507	R0053	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/510	S01/510	R0017	FT00	FT00		111	{LC,SS}	OP	CNTR
+J01/511	S01/511	R0017	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+X01/516	S01/516	G0000	FT00	FT00			{LC}	OP	CNTR
+J01/523	S01/009	R0018	SC02	SC02		111	{CC,SC,FW}	OP	CNTR
+J01/524	S01/524	R0018	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/525	S01/524	R0018	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/527	S01/527	R0018	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/528	S01/528	R0018	SC02	SC02		111	{CC,SC,FW}	OP	CNTR
+J01/529	S01/009	R0018	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/530	S01/009	R0018	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/531	S01/009	R0018	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/532	S01/009	R0018	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/533	S01/009	R0018	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/534	S01/009	R0018	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/535	S01/009	R0018	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/537	S01/063	R0018	FT24	FT24		111	{CC,FT}	OP	CNTR
+J01/538	S01/538	R0024	FT52	FT00		111	{LC,TB,FD-I06}	OP	CNTR
+J01/541	S01/048	R0053	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/543	S01/543	R0024	FT52	FT52		111	{CC,FT}	OP	CNTR
+J01/544	S01/068	R0019	SC02	SC02		111	{CC,SC,FW}	OP	CNTR
+X01/546	S01/546	G0020	FT00	FT00			{LC}	OP	CNTR
+J01/551	S01/551	R1051	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/552	S01/067	R0019	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/558	S01/002	R0106	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/559	S01/016	R0136	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/561	S01/561	R0001	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/567	S01/360	R0126	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/568	S01/360	R0126	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/569	S01/360	R0126	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/570	S01/570	R0126	SC12	SC12		111	{CC,SC}	OP	CNTR
+J01/572	S01/038	R0050	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/573	S01/573	R1051	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/574	S01/574	R0421	SC18	SC18		111	{CC,SC,SI}	OP	CNTR
+J01/577	S01/577	R0019	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/579	S01/057	R0121	SC02	FT00		111	{LC,TB,FD-I06}	OP	CNTR
+J01/580	S01/093	R0635	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J01/583	S01/583	R0053	FT00	FT00		111	{LC,SS}	OP	CNTR
+J01/587	S01/040	R0005	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/588	S01/577	R0019	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/589	S01/589	G0770	FT52	FT52			{CC,FT}	OP	CNTR
+J01/590	S01/589	G0770	FT52	FT52			{CC,FT}	OP	CNTR
+J01/593	S01/593	R1035	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/595	S01/595	R0018	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/598	S01/598	R0963	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/599	S01/507	R0053	SC02	SC02		111	{CC,SC}	OP	CNTR
+X01/600	S01/300	G1033	FT00	FT00			{LC}	OP	CNTR
+J01/601	S01/601	R0053	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/602	S01/601	R0053	SC02	SC02		111	{CC,SC}	OP	CNTR
+X01/604	S01/604	G0106	FT00	FT00			{LC}	OP	CNTR
+J01/606	S01/606	R0019	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/607	S01/607	R1616	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/611	S01/611	R0963	SC02	SC02		111	{CC,SC}	OP	CNTR
+J01/621	S01/089	R0024	FT52	FT52		111	{CC,FT}	OP	CNTR
+X01/635	S01/635	G0207	FT00	FT00			{LC}	OP	CNTR
+X01/642	S01/642	G0003	FT00	FT00			{LC}	OP	CNTR
+X01/648	S01/648	G0053	FT00	FT00			{LC}	OP	CNTR
+X01/657	S01/657	G0564	FT00	FT00			{LC}	OP	CNTR
+X01/663	S01/663	G0018	FT00	FT00			{LC}	OP	CNTR
+X01/667	S01/667	G0019	FT00	FT00			{LC}	OP	CNTR
+X01/672	S01/672	G0053	FT00	FT00			{LC}	OP	CNTR
+X01/687	S01/687	G0016	FT00	FT00			{LC}	OP	CNTR
+X01/773	S01/773	G0207	FT00	FT00			{LC}	OP	CNTR
+X01/808	S01/808	G0024	FT00	FT00			{LC,TI}	OP	CNTR
+X01/832	S01/832	G0024	FT00	FT00			{LC}	OP	CNTR
+J01/850	S01/850	G0000	FT00	FT00			{LC,TI,FD-L05}	OP	CNTR
+J02/002	S02/224	R0149	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/012	S02/012	R0509	SC02	SC02		111	{CC,SC,LF}	OP	CNTR
+J02/013	S02/013	R0509	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/014	S02/014	R0008	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/015	S02/015	R0000	FT00	FT00		111	{LC,IS,TI,FD-L05}	OP	CNTR
+J02/016	S02/016	R1054	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/017	S02/017	R0008	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/018	S02/021	R0008	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/019	S02/019	R0379	FT52	FT52		111	{CC,FT}	OP	CNTR
+J02/020	S02/020	R0008	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/021	S02/021	R0008	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/025	S02/025	R1030	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/034	S02/034	R0379	FT52	FT52		111	{CC,FT}	OP	CNTR
+J02/038	S02/038	R0218	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/044	S02/044	R0149	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/045	S02/045	R0149	SC02	SC02		111	{CC,SC,PR,LF}	OP	CNTR
+J02/046	S02/046	R0218	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/047	S02/047	R0218	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/048	S02/048	R0218	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/049	S02/021	R0008	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/050	S02/050	R0452	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/052	S02/050	R0452	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/054	S02/054	R0218	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/055	S02/055	R0149	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/058	S02/058	R0009	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/059	S02/059	R0009	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/060	S02/060	R0009	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/062	S02/062	R0009	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/063	S02/063	R0052	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/064	S02/064	R0008	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/067	S02/067	R0642	FT02	FT02		111	{CC,FT}	OP	CNTR
+J02/068	S02/068	R0442	FT02	FT02		111	{CC,FT}	OP	CNTR
+J02/069	S02/021	R0008	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/070	S02/070	R0014	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/071	S02/071	R0014	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/072	S02/045	R0149	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/078	S02/078	R0244	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/080	S02/080	R0216	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/083	S02/083	R0218	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/085	S02/085	R0009	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/086	S02/086	R0054	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/087	S02/087	R0054	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/088	S02/088	R0054	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/089	S02/089	R0054	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/091	S02/091	R0052	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/103	S02/103	R0616	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/105	S02/105	R0052	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/123	S02/123	R0052	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/143	S02/143	R0008	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/144	S02/144	R0008	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/145	S02/014	R0008	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/164	S02/164	R0008	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/167	S02/167	R0509	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/170	S02/050	R0452	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/179	S02/179	R1054	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/188	S02/188	R0418	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/191	S02/191	R1030	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/193	S02/021	R0008	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/207	S02/207	R0408	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/221	S02/221	R0418	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/223	S02/223	R0149	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/224	S02/224	R0149	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/227	S02/221	R0418	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/229	S02/229	R0149	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/235	S02/223	R0149	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/253	S02/253	R0149	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/254	S02/254	R1452	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/266	S02/266	R0506	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/267	S02/267	R0506	SC02	SC02		111	{CC,SC,PR,TI}	OP	CNTR
+J02/276	S02/062	R0009	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/280	S02/280	R0149	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/281	S02/045	R0149	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/283	S02/283	R0408	FT00	FT00		111	{LC,SS}	OP	CNTR
+J02/284	S02/283	R0408	FT00	FT00		111	{LC,SS}	OP	CNTR
+J02/286	S02/286	G0149	FT00	FT00			{LC}	OP	CNTR
+J02/293	S02/293	G0000	FT00	FT00			{LC,TI,SO}	OP	CNTR
+J02/294	S02/294	R0506	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/301	S02/080	R0216	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/303	S02/303	R0244	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/305	S02/078	R0244	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/306	S02/078	R0244	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/307	S02/223	R0149	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J02/308	S02/308	G0149	FT00	FT00			{LC}	OP	CNTR
+J02/314	S02/314	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/315	S02/314	R0003	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/326	S02/326	R0509	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/327	S02/327	G0408	FT00	FT00			{LC,SS}	OP	CNTR
+J02/328	S02/328	R0509	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/329	S02/179	R1054	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/330	S02/179	R1054	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/331	S03/032	R0344	SC02	SC02		111	{CC,SC}	OP	CNTR
+J02/334	S02/334	R0218	FT00	FT00		111	{LC}	OP	CNTR
+X02/513	S02/513	G0509	FT00	FT00			{LC}	OP	CNTR
+X02/517	S02/517	G0008	FT00	FT00			{LC}	OP	CNTR
+X02/519	S02/519	G0009	FT00	FT00			{LC}	OP	CNTR
+X02/525	S02/525	G1030	FT00	FT00			{LC}	OP	CNTR
+J02/855	S02/855	R0008	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/001	S03/001	R0240	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/002	S03/002	R0240	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/003	S03/003	R0059	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/004	S03/004	R0059	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/005	S03/005	R0142	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/006	S03/006	R0008	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/016	S03/016	R0000	FT00	FT00		111	{LC,TI,FD-L05}	OP	CNTR
+J03/027	S03/004	R0059	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/029	S03/029	R0013	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/031	S03/031	R0142	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/032	S03/032	R0344	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/033	S03/033	R0144	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/034	S03/034	R0343	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/035	S03/035	R0000	FT00	FT00		111	{LC,TI,FD-L05}	OP	CNTR
+J03/038	S03/038	R0144	SC02	SC02		111	{CC,SC,PR,DF}	OP	CNTR
+J03/039	S03/039	R0240	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/040	S03/040	R0853	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/043	S03/004	R0059	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/044	S03/044	R0159	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/052	S03/052	R0459	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/056	S03/056	R0345	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/057	S03/057	R0343	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/058	S03/057	R0343	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/069	S03/069	R0008	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/076	S03/076	R0240	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/081	S03/069	R0008	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/085	S03/057	R0343	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/086	S03/057	R0343	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/088	S03/088	R0569	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/089	S03/089	R0459	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/094	S03/094	R0345	SC02	SC02		111	{CC,SC,PR,DF}	OP	CNTR
+J03/096	S03/096	R0059	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/098	S03/098	R0059	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/099	S03/099	R0059	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/115	S03/158	R0059	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/131	S03/004	R0059	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/139	S03/139	R0343	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/158	S03/158	R0059	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/166	S03/158	R0059	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/167	S03/179	R0343	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/172	S03/172	R0008	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/177	S03/179	R0343	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/179	S03/179	R0343	SC02	SC02		111	{CC,SC,DF}	OP	CNTR
+J03/181	S03/179	R0343	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/184	S03/184	R0059	FT00	FT00		111	{LC,SS}	OP	CNTR
+J03/187	S03/187	R0418	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/190	S03/190	R0142	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/193	S03/193	R0059	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J03/200	S03/006	R0008	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/201	S03/006	R0008	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/306	S03/158	R0059	SC02	SC02		111	{CC,SC}	OP	CNTR
+J03/312	S03/312	R0344	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+X03/532	S03/532	G0344	FT00	FT00			{LC}	OP	CNTR
+X03/679	S03/679	G0000	FT00	FT00			{LC}	OP	CNTR
+X03/681	S03/681	G0000	FT00	FT00			{LC}	OP	CNTR
+X03/779	S03/779	G0000	FT00	FT00			{LC}	OP	CNTR
+J03/852	S03/852	G0144	FT52	FT52			{CC,FT,LF}	OP	CNTR
+J04/003	S04/003	R0143	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J04/006	S04/006	R0291	SC02	SC02		111	{CC,SC}	OP	CNTR
+J04/030	S04/030	R0143	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J04/031	S04/031	R1036	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J04/033	S04/033	R0143	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J04/036	S04/036	R1043	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J04/044	S04/044	R0143	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J04/045	S04/003	R0143	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J04/090	S04/090	R0346	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J04/091	S04/091	G0346	FT00	FT00			{LC,SS}	OP	CNTR
+J04/127	S04/127	R0143	FT00	FT00		111	{LC}	OP	CNTR
+J04/128	S04/044	R0143	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J04/184	S04/003	R0143	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J04/196	S04/196	R0143	FT00	FT00		111	{LC}	OP	CNTR
+J04/197	S04/197	R0143	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J04/198	S04/198	R0143	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J04/199	S04/036	R1043	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J04/202	S04/202	G1037	FT00	FT00			{LC,TI}	OP	CNTR
+X04/536	S04/536	G1043	FT00	FT00			{LC}	OP	CNTR
+J05/014	S05/014	R0029	SC03	SC03		111	{CC,SC,PR}	OP	CNTR
+J05/021	S05/021	R0028	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J05/028	S05/028	R0028	SC02	SC02		111	{CC,SC}	OP	CNTR
+J05/041	S05/041	R0028	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J05/095	S05/095	R0023	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J05/096	S05/096	R0023	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J05/097	S05/097	R0023	SC11	SC11		111	{CC,SC}	OP	CNTR
+J05/194	S05/194	R0028	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J05/195	S05/041	R0028	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J05/214	S05/214	R0023	SC02	SC02		111	{CC,SC}	OP	CNTR
+J05/215	S05/214	R0023	SC02	SC02		111	{CC,SC}	OP	CNTR
+J05/229	S05/229	R0028	SC02	SC02		111	{CC,SC}	OP	CNTR
+J05/230	S05/230	R0023	SC02	SC02		111	{CC,SC}	OP	CNTR
+J05/248	S05/248	R0610	SC02	SC02		111	{CC,SC}	OP	CNTR
+J05/259	S05/259	R0023	SC02	SC02		111	{CC,SC}	OP	CNTR
+J05/271	S05/259	R0023	SC02	SC02		111	{CC,SC}	OP	CNTR
+J05/272	S05/095	R0023	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J05/282	S05/194	R0028	SC02	SC02		111	{CC,SC}	OP	CNTR
+J05/284	S05/284	R0100	FT00	FT00		111	{LC}	OP	CNTR
+J05/298	S05/298	R0293	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J05/301	S05/301	G0023	FT00	FT00			{LC}	OP	CNTR
+J05/373	S05/373	R0028	SC02	SC02		111	{CC,SC}	OP	CNTR
+J05/423	S05/423	R0610	SC02	FT00		111	{LC,TB,TI}	OP	CNTR
+J05/430	S05/041	R0028	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J05/431	S05/041	R0028	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J05/439	S05/229	R0028	SC02	SC02		111	{CC,SC}	OP	CNTR
+X05/541	S05/541	G0028	FT00	FT00			{LC}	OP	CNTR
+X05/595	S05/595	G0023	FT00	FT00			{LC}	OP	CNTR
+X05/694	S05/694	G0029	FT00	FT00			{LC}	OP	CNTR
+J08/003	S08/003	R0161	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/004	S08/004	R0361	FT52	FT52		111	{CC,FT,TI}	OP	CNTR
+J08/005	S08/005	R0261	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/008	S08/008	R0161	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/027	S08/027	R0315	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/028	S08/028	R0612	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/029	S08/029	R0612	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/030	S08/030	R0812	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/031	S08/031	R0832	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/032	S08/032	R0202	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/033	S08/033	R0202	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/034	S08/034	R0738	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/035	S08/035	R0530	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/036	S08/036	R0888	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/038	S08/038	R0238	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/042	S08/042	R0000	FT00	FT00		111	{LC,TI,FD-L05}	OP	CNTR
+J08/045	S08/045	R0202	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/051	S08/051	R0012	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/052	S08/052	R0012	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/054	S08/054	R0261	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/055	S08/055	R0012	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/056	S08/056	R0012	SC02	SC02		111	{CC,SC,LF}	OP	CNTR
+J08/078	S08/078	R0579	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/092	S08/092	R0162	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/094	S08/094	R0162	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/103	S08/103	R0162	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/104	S08/104	R0162	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/127	S08/127	R0162	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/140	S08/140	G0200	FT00	FT00			{LC}	OP	CNTR
+J08/142	S08/142	G0012	FT00	FT00			{LC}	OP	CNTR
+J08/143	S08/143	R1010	FT00	FT00		111	{LC,SS}	OP	CNTR
+J08/153	S08/153	R2202	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/159	S08/159	R0202	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/208	S08/208	R2202	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/210	S08/210	R2202	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/215	S08/215	R0315	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/217	S08/032	R0202	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/218	S08/218	R0202	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/234	S08/003	R0161	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/235	S08/235	R0161	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/236	S08/005	R0261	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/239	S08/027	R0315	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/251	S08/251	R0962	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/257	S08/257	R0238	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/258	S08/051	R0012	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/265	S08/265	R0833	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/274	S08/274	R0833	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/280	S08/280	R0252	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/284	S08/284	R0888	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/287	S08/380	R1021	SC01	SC01		111	{CC,SC}	OP	CNTR
+J08/289	S08/289	R0468	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/306	S08/309	R0367	SC02	FT00		111	{LC,TB,TI}	OP	CNTR
+J08/307	S08/309	R0367	SC02	FT00		111	{LC,TB,TI,SS}	OP	CNTR
+J08/308	S08/309	R0367	SC02	FT00		111	{LC,TB}	OP	CNTR
+J08/309	S08/309	R0367	SC02	FT00		111	{LC,TB,SS}	OP	CNTR
+J08/310	S08/309	R0367	SC02	FT00		111	{LC,TB}	OP	CNTR
+J08/311	S08/309	R0367	SC02	FT00		111	{LC,TB}	OP	CNTR
+J08/312	S08/309	R0367	SC02	FT00		111	{LC,TB,SS}	OP	CNTR
+J08/313	S08/309	R0367	SC02	FT00		111	{LC,TB}	OP	CNTR
+J08/319	S08/309	R0367	SC02	FT00		111	{LC,TB,SS}	OP	CNTR
+J08/320	S08/309	R0367	SC02	FT00		111	{LC,TB,SS}	OP	CNTR
+J08/323	S08/323	R0200	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/335	S08/380	R1021	SC01	SC01		111	{CC,SC}	OP	CNTR
+J08/336	S08/380	R1021	SC01	SC01		111	{CC,SC}	OP	CNTR
+J08/346	S08/346	R0162	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/356	S08/346	R0162	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/357	S08/346	R0162	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/358	S08/358	G0162	FT00	FT00			{LC}	OP	CNTR
+J08/359	S08/359	G0162	FT00	FT00			{LC}	OP	CNTR
+J08/360	S08/360	G0162	FT00	FT00			{LC}	OP	CNTR
+J08/376	S08/094	R0162	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/377	S08/094	R0162	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/378	S08/094	R0162	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/379	S08/094	R0162	SC02	SC02		111	{CC,SC}	OP	CNTR
+J08/380	S08/380	R1021	SC01	SC01		111	{CC,SC}	OP	CNTR
+J08/381	S08/380	R1021	SC01	SC01		111	{CC,SC}	OP	CNTR
+J08/382	S08/036	R0888	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J08/383	S08/380	R1021	SC01	SC01		111	{CC,SC}	OP	CNTR
+J08/389	S08/389	R0000	FT00	FT00		111	{LC,TI,SO}	OP	CNTR
+J08/390	S08/390	R0000	FT00	FT00		111	{LC,TI,SO}	OP	CNTR
+J08/393	S08/257	R0238	SC02	SC02		111	{CC,SC}	OP	CNTR
+X08/503	S08/503	G0000	FT00	FT00			{LC,FD-L05}	OP	CNTR
+X08/527	S08/527	G0315	FT00	FT00			{LC}	OP	CNTR
+X08/528	S08/528	G0612	FT00	FT00			{LC}	OP	CNTR
+X08/529	S08/529	G0000	FT00	FT00			{LC}	OP	CNTR
+X08/578	S08/578	G0579	FT00	FT00			{LC}	OP	CNTR
+X08/580	S08/580	G1021	FT00	FT00			{LC}	OP	CNTR
+X08/628	S08/628	G0000	FT00	FT00			{LC}	OP	CNTR
+X08/684	S08/684	G0000	FT00	FT00			{LC}	OP	CNTR
+J09/035	S09/035	R0935	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J09/036	S09/036	R0263	SC02	FT00		111	{LC,IS,FD-L05}	OP	CNTR
+J09/037	S09/037	R0277	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J09/051	S09/051	R0164	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J09/070	S09/070	R0468	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J09/071	S09/071	R0277	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J09/076	S09/076	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/086	S09/086	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/088	S09/076	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/090	S09/086	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/091	S09/086	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/112	S09/112	R0269	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J09/120	S09/120	R0368	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/125	S09/125	R0269	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/160	S09/160	R0269	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/198	S09/198	R2164	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J09/199	S09/199	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/203	S09/203	R0262	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J09/235	S09/120	R0368	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/236	S09/120	R0368	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/239	S09/239	R1077	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J09/250	S09/250	R1068	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/254	S09/254	R0262	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J09/270	S09/324	R0373	SC02	FT00		111	{LC,TB,FD-A06}	OP	CNTR
+J09/285	S09/285	R0269	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/290	S09/285	R0269	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/296	S09/296	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/301	S09/120	R0368	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/302	S09/120	R0368	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/303	S09/120	R0368	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/304	S09/120	R0368	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/305	S09/120	R0368	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/308	S09/308	R0262	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J09/313	S09/313	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/317	S09/198	R2164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/320	S09/320	R1263	FT52	FT52		111	{CC,FT}	OP	CNTR
+J09/321	S09/321	R1263	FT52	FT52		111	{CC,FT}	OP	CNTR
+J09/324	S09/324	R0373	SC02	FT00		111	{LC,TB,FD-A06}	OP	CNTR
+J09/325	S09/324	R0373	SC02	FT00		111	{LC,TB,FD-I06}	OP	CNTR
+J09/326	S09/324	R0373	SC02	FT00		111	{LC,TB,FD-A06}	OP	CNTR
+J09/327	S09/327	R0373	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/334	S09/076	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/335	S09/076	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/336	S09/076	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/338	S09/086	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/340	S09/086	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/341	S09/086	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/342	S09/313	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/373	S09/373	R0973	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J09/386	S09/386	R0468	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/394	S09/313	R0164	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/398	S09/398	R0269	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/399	S09/398	R0269	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/400	S09/400	R0269	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/401	S09/400	R0269	SC02	SC02		111	{CC,SC}	OP	CNTR
+J09/402	S09/070	R0468	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+X09/576	S09/576	G0164	FT00	FT00			{LC}	OP	CNTR
+X09/588	S09/088	G0164	FT00	FT00			{LC}	OP	CNTR
+X09/590	S09/590	G0164	FT00	FT00			{LC}	OP	CNTR
+X09/658	S09/658	G0277	FT00	FT00			{LC}	OP	CNTR
+X09/676	S09/676	G0164	FT00	FT00			{LC}	OP	CNTR
+J09/851	S09/851	G1263	FT52	FT52			{CC,FT}	OP	CNTR
+J11/011	S11/011	R0319	SC02	SC02		111	{CC,SC,PR,TI}	OP	CNTR
+J11/016	S11/016	R0220	SC07	SC07		111	{CC,SC}	OP	CNTR
+J11/017	S11/017	R0220	SC07	SC07		111	{CC,SC,PR}	OP	CNTR
+J11/019	S11/019	R0324	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J11/020	S11/020	R0324	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J11/022	S11/022	R0122	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J11/023	S11/023	R0321	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J11/024	S11/024	R0326	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J11/025	S11/025	R0327	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J11/033	S11/033	R0000	FT00	FT00		111	{LC,TI}	OP	CNTR
+J11/041	S11/041	R0321	SC02	SC02		111	{CC,SC}	OP	CNTR
+J11/045	S11/045	R0147	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J11/049	S11/049	R0319	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J11/050	S11/049	R0319	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J11/082	S11/017	R0220	SC07	SC07		111	{CC,SC,PR}	OP	CNTR
+J11/137	S11/017	R0220	SC07	SC07		111	{CC,SC,PR}	OP	CNTR
+J11/144	S11/144	R0319	FT00	FT00		111	{LC}	OP	CNTR
+J11/146	S11/023	R0321	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J11/156	S11/156	R0122	SC02	SC02		111	{CC,SC}	OP	CNTR
+J11/157	S11/156	R0122	SC02	SC02		111	{CC,SC}	OP	CNTR
+J11/159	S11/159	R0422	SC02	SC02		111	{CC,SC}	OP	CNTR
+J11/166	S11/166	R1111	FT52	FT52		111	{CC,FT}	OP	CNTR
+X11/516	S11/516	G0220	FT00	FT00			{LC}	OP	CNTR
+X11/517	S11/517	G0220	FT00	FT00			{LC}	OP	CNTR
+J12/002	S12/002	R0523	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/003	S12/003	R2523	FT52	FT52		111	{CC,FT}	OP	CNTR
+J12/004	S12/004	R0421	SC18	SC18		111	{CC,SC,SI,PR}	OP	CNTR
+J12/005	S12/005	R0523	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/006	S12/006	R0120	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/008	S12/012	R0420	SC01	SC01		111	{CC,SC,PR}	OP	CNTR
+J12/009	S12/009	R0320	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/010	S12/010	R0120	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/011	S12/012	R0420	SC01	SC01		111	{CC,SC,PR}	OP	CNTR
+J12/012	S12/012	R0420	SC01	SC01		111	{CC,SC,PR}	OP	CNTR
+J12/013	S12/013	R0120	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/016	S12/016	R0323	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/017	S12/017	R0120	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/018	S12/018	R0123	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/019	S12/019	R0123	SC02	FT00		111	{LC,TB,FD-I05}	OP	CNTR
+J12/020	S12/020	R0524	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/021	S12/021	R0524	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/022	S12/022	R0123	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/023	S12/023	R0524	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/025	S12/025	R0124	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/033	S12/033	R0219	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/037	S12/037	R0219	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/040	S12/040	R0119	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/041	S12/041	R0119	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/048	S12/048	R0223	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/049	S12/049	R0123	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/050	S12/050	R0223	SC02	FT00		111	{LC,TB,FD-I05}	OP	CNTR
+J12/051	S12/051	R0223	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/052	S12/052	R0123	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/057	S12/057	R0030	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/061	S12/061	R0124	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/062	S12/062	R0124	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/063	S12/063	R0898	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/064	S12/064	R0124	SC02	SC02		111	{CC,SC,PR,LF}	OP	CNTR
+J12/066	S12/066	R0233	SC02	SC02		111	{CC,SC,PR,FD-I14,SO,LF}	OP	CNTR
+J12/067	S12/067	R0614	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/068	S12/068	R0421	SC18	SC18		111	{CC,SC,SI,PR}	OP	CNTR
+J12/069	S12/017	R0120	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/070	S12/070	R0233	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/071	S12/071	R0119	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/072	S12/073	R0898	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/073	S12/073	R0898	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/074	S12/074	R0220	SC12	SC12		111	{CC,SC,PR}	OP	CNTR
+J12/076	S12/076	R0220	SC07	SC07		111	{CC,SC}	OP	CNTR
+J12/077	S12/077	R0124	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/078	S12/078	R0000	FT00	FT00		111	{LC,TI,FD-L05}	OP	CNTR
+J12/082	S12/082	R0220	SC07	SC07		111	{CC,SC}	OP	CNTR
+J12/083	S12/082	R0220	SC07	SC07		111	{CC,SC}	OP	CNTR
+J12/091	S12/067	R0614	SC02	SC02		111	{CC,SC,TI}	OP	CNTR
+J12/094	S12/017	R0120	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/118	S12/004	R0421	SC18	SC18		111	{CC,SC,SI}	OP	CNTR
+J12/121	S12/121	R0219	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/125	S12/125	R0392	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/133	S12/133	R0323	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/134	S12/134	G1134	FT00	FT00			{LC}	OP	CNTR
+J12/135	S12/135	R0320	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/136	S12/136	R0421	SC18	SC18		111	{CC,SC,SI}	OP	CNTR
+J12/146	S12/146	R0219	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/147	S12/040	R0119	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/156	S12/156	R0898	FT00	FT00		111	{LC,SS}	OP	CNTR
+J12/158	S12/158	R0119	FT00	FT00		111	{LC,LF}	OP	CNTR
+J12/160	S12/160	R0323	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/171	S12/076	R0220	SC07	SC07		111	{CC,SC}	OP	CNTR
+J12/173	S12/173	G0900	FT00	FT00			{LC,TB}	OP	CNTR
+J12/175	S12/002	R0523	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/177	S12/017	R0120	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/184	S12/184	R0223	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/185	S12/186	R0119	FT00	FT00		111	{LC}	OP	CNTR
+J12/186	S12/186	R0119	FT00	FT00		111	{LC}	OP	CNTR
+J12/190	S12/190	R0123	SC02	FT00		111	{LC,TB,FD-I05}	OP	CNTR
+J12/191	S12/191	R0030	FT00	FT00		111	{LC,TB,FD-I08}	OP	CNTR
+J12/194	S12/194	R0900	FT00	FT00		111	{LC,SS}	OP	CNTR
+J12/199	S12/199	G0900	FT00	FT00			{LC,SS}	OP	CNTR
+J12/207	S12/207	G0900	FT00	FT00			{LC,TB}	OP	CNTR
+J12/208	S12/194	R0900	FT00	FT00		111	{LC,SS}	OP	CNTR
+J12/209	S12/002	R0523	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/210	S12/002	R0523	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/211	S12/211	R0392	SC02	FT00		111	{LC,TB,FD-I05}	OP	CNTR
+J12/215	S12/215	R0614	SC02	SC02		111	{CC,SC}	OP	CNTR
+J12/221	S12/006	R0120	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/222	S12/006	R0120	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/224	S12/224	R0898	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/225	S12/040	R0119	SC02	SC02		111	{CC,SC,PR}	OP	CNTR
+J12/227	S12/199	G0900	FT00	FT00			{LC,SS}	OP	CNTR
+J12/228	S12/199	G0900	FT00	FT00			{LC,SS}	OP	CNTR
+J12/232	S12/194	R0900	FT00	FT00		111	{LC,SS}	OP	CNTR
+X12/537	S12/537	G0219	FT00	FT00			{LC}	OP	CNTR
+X12/612	S12/612	G0421	FT00	FT00			{LC}	OP	CNTR
+P00/047	S00/116	R0026	SC02	SC02		111	{cc,sc,fw}	OP	CNTR
+P00/050	S00/031	R0314	SC02	SC02		111	{cc,sc}	OP	CNTR
+P00/062	S00/062	R0026	FT00	FT00		111	{lc}	OP	CNTR
+P00/063	S00/102	R0026	FT00	FT00		111	{lc}	OP	CNTR
+P00/069	S00/102	R0026	FT00	FT00		111	{lc}	OP	CNTR
+P00/073	S00/076	R0011	SC02	SC02		111	{cc,sc}	OP	CNTR
+P00/074	S00/076	R0011	SC02	SC02		111	{cc,sc}	OP	CNTR
+P00/075	S00/076	R0011	SC02	SC02		111	{cc,sc}	OP	CNTR
+P00/076	S00/076	R0011	SC02	SC02		111	{cc,sc}	OP	CNTR
+P00/101	S00/101	R0028	SC02	SC02		111	{cc,sc}	OP	CNTR
+P00/102	S00/102	R0026	FT00	FT00		111	{lc}	OP	CNTR
+P00/110	S00/035	R0928	SC02	SC02		111	{cc,sc}	OP	CNTR
+P00/111	S00/019	R0827	SC02	SC02		111	{cc,sc,pr}	OP	CNTR
+P00/119	S00/119	R0026	FT00	FT00		111	{lc}	OP	CNTR
+P00/120	S00/120	R0974	SC02	SC02		111	{cc,sc}	OP	CNTR
+P00/121	S00/121	R0026	FT00	FT00		111	{lc}	OP	CNTR
+P00/135	S00/004	R0886	SC02	SC02		111	{cc,sc,pr}	OP	CNTR
+P00/136	S00/004	R0886	SC02	SC02		111	{cc,sc,pr}	OP	CNTR
+P00/137	S00/004	R0886	SC02	SC02		111	{cc,sc,pr}	OP	CNTR
+P01/031	S01/024	R0007	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/061	S01/061	R0006	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/183	S01/182	R0022	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/274	S01/274	R0020	SC02	SC02		111	{cc,sc,xc}	OP	CNTR
+P01/307	S01/307	R0002	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/319	S01/319	R0020	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/320	S01/319	R0020	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/335	S01/021	R0007	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/343	S01/343	R0033	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/347	S01/112	R0033	SC02	SC02		111	{cc,sc,fw}	OP	CNTR
+P01/350	S01/349	R0736	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/353	S01/162	R0002	SC02	SC02		111	{cc,sc,df,lf,fw,pn}	OP	CNTR
+P01/373	S01/373	G0235	FT00	MO			{lc}	OP	CNTR
+P01/378	S01/206	R0922	SC02	SC02		111	{cc,sc,fw}	OP	CNTR
+P01/379	S01/207	R0004	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/383	S01/360	R0126	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/385	S01/131	R0132	SC02	FT00		111	{lc,tb,ri,fd-A05}	OP	CNTR
+P01/387	S01/209	R0004	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/388	S01/388	R0000	FT00	FT00		111	{lc,ri,fd-L05,fw}	OP	CNTR
+P01/404	S01/404	R0100	FT00	FT00		111	{lc}	OP	CNTR
+P01/409	S01/210	R0004	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/412	S01/412	R0822	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/413	S01/413	R0822	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/427	S01/406	R0003	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/430	S01/430	G0003	FT00	FT00			{lc}	OP	CNTR
+P01/445	S01/445	R0007	SC02	FT00		111	{lc,ti,xc}	OP	CNTR
+P01/459	S01/461	R0730	SC02	FT00		111	{lc,tb,ri,fd-A05,pn}	OP	CNTR
+P01/460	S01/461	R0730	SC02	FT00		111	{lc,tb,ri,fd-A05,pn}	OP	CNTR
+P01/467	S01/467	G0000	FT00	MO			{lc}	OP	CNTR
+P01/472	S01/312	R0055	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/479	S01/023	R0007	SC02	SC02		111	{cc,sc,xc}	OP	CNTR
+P01/489	S01/489	R0317	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/496	S01/496	R0019	SC02	SC02		111	{cc,sc,fw}	OP	CNTR
+P01/548	S01/548	G0900	FT00	FT00			{lc}	OP	CNTR
+P01/549	S01/549	G0900	FT00	FT00			{lc}	OP	CNTR
+P01/556	S01/157	R0564	SC02	SC02		111	{cc,sc,fw}	OP	CNTR
+P01/594	S01/002	R0106	SC02	SC02		111	{cc,sc}	OP	CNTR
+P01/608	S01/608	R0001	SC02	SC02		111	{cc,sc}	OP	CNTR
+P02/061	S02/058	R0009	SC02	SC02		111	{cc,sc,pa,pn,xc}	OP	CNTR
+P02/141	S02/141	R0149	SC02	SC02		111	{cc,sc}	OP	CNTR
+P02/142	S02/142	R0149	SC02	SC02		111	{cc,sc}	OP	CNTR
+P02/157	S02/044	R0149	SC02	SC02		111	{cc,sc}	OP	CNTR
+P02/158	S02/044	R0149	SC02	SC02		111	{cc,sc}	OP	CNTR
+P02/169	S02/169	R0452	SC02	SC02		111	{cc,sc}	OP	CNTR
+P02/178	S02/143	R0008	SC02	SC02		111	{cc,sc}	OP	CNTR
+P02/202	S02/064	R0008	SC02	SC02		111	{cc,sc,xc}	OP	CNTR
+P02/215	S02/045	R0149	SC02	SC02		111	{cc,sc}	OP	CNTR
+P02/250	S02/059	R0009	SC02	SC02		111	{cc,sc,xc}	OP	CNTR
+P02/252	S02/252	R0008	SC02	SC02		111	{cc,sc,pn}	OP	CNTR
+P03/070	S03/070	R0144	SC02	SC02		111	{cc,sc}	OP	CNTR
+P03/083	S03/099	R0059	SC02	SC02		111	{cc,sc,pn}	OP	CNTR
+P03/113	S03/113	R0345	FT00	FT00		111	{lc}	OP	CNTR
+P03/114	S03/113	R0345	FT00	FT00		111	{lc}	OP	CNTR
+P03/116	S03/116	R0159	FT00	FT00		111	{lc}	OP	CNTR
+P03/117	S03/116	R0159	FT00	FT00		111	{lc}	OP	CNTR
+P03/118	S03/003	R0059	SC02	SC02		111	{cc,sc}	OP	CNTR
+P03/119	S03/003	R0059	SC02	SC02		111	{cc,sc}	OP	CNTR
+P03/142	S03/142	R0345	FT00	FT00		111	{lc}	OP	CNTR
+P03/149	S03/032	R0344	SC02	SC02		111	{cc,sc,pr}	OP	CNTR
+P03/170	S03/170	R0008	SC02	SC02		111	{cc,sc}	OP	CNTR
+P03/175	S03/158	R0059	SC02	SC02		111	{cc,sc,fw}	OP	CNTR
+P03/188	S02/021	R0008	SC02	SC02		111	{cc,sc,fw,xc}	OP	CNTR
+P04/004	S04/003	R0143	SC02	SC02		111	{cc,sc,pr}	OP	CNTR
+P04/034	S04/034	R0143	FT00	FT00		111	{lc,xc}	OP	CNTR
+P04/125	S04/125	R0343	SC02	SC02		111	{cc,sc}	OP	CNTR
+P04/126	S04/125	R0343	SC02	SC02		111	{cc,sc}	OP	CNTR
+P04/194	S04/194	R0143	FT00	FT00		111	{lc}	OP	CNTR
+P04/195	S04/195	R0143	FT00	FT00		111	{lc}	OP	CNTR
+P04/201	S04/202	G1037	FT00	FT00			{lc,ti}	OP	CNTR
+P05/051	S05/051	R0028	SC02	SC02		111	{cc,sc,fw,pn}	OP	CNTR
+P05/065	S05/065	R0023	SC02	SC02		111	{cc,sc}	OP	CNTR
+P05/105	S05/105	R0029	SC03	SC03		111	{cc,sc}	OP	CNTR
+P05/106	S05/105	R0029	SC03	SC03		111	{cc,sc}	OP	CNTR
+P05/192	S05/192	R0293	SC02	SC02		111	{cc,sc}	OP	CNTR
+P05/252	S05/252	R0293	SC02	SC02		111	{cc,sc}	OP	CNTR
+P05/311	S05/311	R0293	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/079	S08/079	R0579	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/083	S08/083	R0612	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/090	S08/090	R0579	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/091	S08/090	R0579	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/093	S08/093	R0162	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/156	S08/027	R0315	SC02	SC02		111	{cc,sc,pr}	OP	CNTR
+P08/216	S08/032	R0202	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/248	S08/248	R0000	FT00	MO		111	{lc}	OP	CNTR
+P08/256	S09/035	R0935	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/293	S08/323	R0200	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/294	S08/323	R0200	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/326	S08/326	R0261	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/328	S08/328	R0832	FT00	FT00		111	{lc}	OP	CNTR
+P08/330	S08/330	R0812	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/331	S08/030	R0812	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/332	S08/332	R0832	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/333	S08/031	R0832	SC02	SC02		111	{cc,sc}	OP	CNTR
+P08/364	S08/364	G0012	FT00	FT00			{lc}	OP	CNTR
+P08/408	S08/408	R0579	SC02	SC02		111	{cc,sc,xc}	OP	CNTR
+P08/409	S08/409	R0833	FT00	FT00		111	{lc}	OP	CNTR
+P09/102	S09/076	R0164	SC02	SC02		111	{cc,sc,fw}	OP	CNTR
+P09/127	S09/127	R0468	SC02	SC02		111	{cc,sc}	OP	CNTR
+P09/132	S09/132	R0269	SC02	SC02		111	{cc,sc}	OP	CNTR
+P09/168	S09/168	R0164	SC02	SC02		111	{cc,sc,pa,pn}	OP	CNTR
+P09/169	S09/169	R0373	SC02	FT00		111	{lc,tb,ri,fd-I05}	OP	CNTR
+P09/197	S09/197	R0164	SC02	SC02		111	{cc,sc,pn}	OP	CNTR
+P09/200	S09/200	R0238	SC02	SC02		111	{cc,sc}	OP	CNTR
+P09/201	S09/201	R0238	SC02	SC02		111	{cc,sc}	OP	CNTR
+P09/206	S09/206	R0262	SC02	SC02		111	{cc,sc}	OP	CNTR
+P09/237	S09/237	R0269	SC02	SC02		111	{cc,sc}	OP	CNTR
+P09/257	S09/257	R0277	SC02	SC02		111	{cc,sc}	OP	CNTR
+P09/258	S09/258	R0277	SC02	SC02		111	{cc,sc}	OP	CNTR
+P09/259	S09/259	R0277	SC02	SC02		111	{cc,sc}	OP	CNTR
+P09/286	S09/286	G0269	FT00	MO			{lc}	OP	CNTR
+P09/287	S09/286	G0269	FT00	MO			{lc}	OP	CNTR
+P09/322	S09/308	R0262	SC02	SC02		111	{cc,sc}	OP	CNTR
+P09/410	S09/198	R2164	SC02	SC02		111	{cc,sc,pn}	OP	CNTR
+P11/031	S11/031	R0319	SC02	SC02		111	{cc,sc,pn,xc}	OP	CNTR
+P11/032	S11/031	R0319	SC02	SC02		111	{cc,sc,pn,xc}	OP	CNTR
+P11/036	S11/036	R0122	SC02	SC02		111	{cc,sc}	OP	CNTR
+P11/037	S11/022	R0122	SC02	SC02		111	{cc,sc}	OP	CNTR
+P11/060	S11/023	R0321	SC02	SC02		111	{cc,sc,fw,xc}	OP	CNTR
+P11/081	S11/081	R0122	SC02	SC02		111	{cc,sc,ri}	OP	CNTR
+P11/145	S11/150	R0220	SC07	SC07		111	{cc,sc,xc}	OP	CNTR
+P11/150	S11/150	R0220	SC07	SC07		111	{cc,sc}	OP	CNTR
+P11/184	S11/041	R0321	SC02	SC02		111	{cc,sc}	OP	CNTR
+P12/014	S12/014	R0323	SC02	SC02		111	{cc,sc,xc}	OP	CNTR
+P12/015	S12/015	R0323	SC02	SC02		111	{cc,sc}	OP	CNTR
+P12/024	S12/010	R0120	SC02	SC02		111	{cc,sc,pr}	OP	CNTR
+P12/038	S12/038	R0219	SC02	SC02		111	{cc,sc}	OP	CNTR
+P12/039	S12/039	R0119	FT00	FT00		111	{lc,pn}	OP	CNTR
+P12/080	S12/080	R0123	FT00	FT00		111	{lc}	OP	CNTR
+P12/084	S12/084	G0900	FT00	MO			{lc}	OP	CNTR
+P12/088	S12/184	R0223	SC02	SC02		111	{cc,sc,pr}	OP	CNTR
+P12/089	S12/089	R0421	SC18	SC18		111	{cc,sc,si}	OP	CNTR
+P12/090	S12/089	R0421	SC18	SC18		111	{cc,sc,si}	OP	CNTR
+P12/093	S12/093	R0123	FT00	FT00		111	{lc}	OP	CNTR
+P12/098	S12/098	R0219	SC02	SC02		111	{cc,sc}	OP	CNTR
+P12/099	S12/098	R0219	SC02	SC02		111	{cc,sc}	OP	CNTR
+P12/100	S12/100	R0119	FT00	FT00		111	{lc}	OP	CNTR
+P12/101	S12/100	R0119	FT00	FT00		111	{lc}	OP	CNTR
+P12/104	S12/104	R0235	SC02	SC02		111	{cc,sc}	OP	CNTR
+P12/105	S12/104	R0235	SC02	SC02		111	{cc,sc}	OP	CNTR
+P12/106	S01/105	R0235	SC02	SC02		111	{cc,sc}	OP	CNTR
+P12/107	S01/105	R0235	SC02	SC02		111	{cc,sc}	OP	CNTR
+P12/108	S12/146	R0219	SC02	SC02		111	{cc,sc}	OP	CNTR
+P12/109	S12/146	R0219	SC02	SC02		111	{cc,sc}	OP	CNTR
+P12/110	S12/110	R0421	SC18	SC18		111	{cc,sc,si}	OP	CNTR
+P12/111	S12/110	R0421	SC18	SC18		111	{cc,sc,si}	OP	CNTR
+P12/112	S12/112	R0421	SC18	SC18		111	{cc,sc,si}	OP	CNTR
+P12/114	S12/114	R0421	SC18	SC18		111	{cc,sc,si}	OP	CNTR
+P12/119	S12/119	R0220	FT00	FT00		111	{lc,ri}	OP	CNTR
+P12/120	S12/121	R0219	SC02	SC02		111	{cc,sc,xc}	OP	CNTR
+P12/126	S12/125	R0392	SC02	SC02		111	{cc,sc}	OP	CNTR
+P12/129	S12/110	R0421	SC18	SC18		111	{cc,sc,si}	OP	CNTR
+P12/130	S12/110	R0421	SC18	SC18		111	{cc,sc,si}	OP	CNTR
+P12/137	S12/137	R0219	FT00	FT00		111	{lc}	OP	CNTR
+P12/138	S12/135	R0320	SC02	SC02		111	{cc,sc}	OP	CNTR
+P12/144	S12/012	R0420	SC01	SC01		111	{cc,sc,pr}	OP	CNTR
+P12/145	S12/012	R0420	SC01	SC01		111	{cc,sc,pr}	OP	CNTR
+P12/159	S12/158	R0119	FT00	FT00		111	{lc,pn}	OP	CNTR
+P12/170	S12/170	G0900	FT00	MO			{lc}	OP	CNTR
+P12/178	S12/178	G0900	FT00	MO			{lc,is}	OP	CNTR
+P12/179	S12/179	G0900	FT00	MO			{lc,is}	OP	CNTR
+P12/180	S12/180	G0900	FT00	MO			{lc,is}	OP	CNTR
+P12/181	S12/181	G0900	FT00	MO			{lc,is}	OP	CNTR
+P12/187	S12/184	R0223	SC02	SC02		111	{cc,sc,pr}	OP	CNTR
+P12/189	S12/189	G0223	FT00	FT00			{lc}	OP	CNTR
+P12/195	S12/195	G0100	FT00	FT00			{lc,ri,fd-L05}	OP	CNTR
+P12/198	S12/198	G0900	FT00	MO			{lc}	OP	CNTR
+P12/200	S12/200	G0900	FT00	MO			{lc}	OP	CNTR
+P12/201	S12/051	R0223	SC02	SC02		111	{cc,sc}	OP	CNTR
+P12/202	S12/202	R0030	FT00	FT00		111	{lc,xc}	OP	CNTR
+P12/203	S12/203	R0123	FT00	FT00		111	{lc}	OP	CNTR
+P12/204	S12/121	R0219	SC02	SC02		111	{cc,sc,xc}	OP	CNTR
+P12/205	S12/121	R0219	SC02	SC02		111	{cc,sc,xc}	OP	CNTR
+P12/206	S12/206	G0900	FT00	FT00			{lc}	OP	CNTR
+P12/220	S12/220	G0900	FT00	FT00			{lc}	OP	CNTR
+P12/223	S12/223	G0900	FT00	MO			{lc}	OP	CNTR
+P12/234	S12/234	G0900	FT00	FT00			{lc}	OP	CNTR
+F00/002	S00/002	G0315	MO	MO			{SIGNS,-SSOFF,lc}	OP	CNTR
+F00/004	S00/004	G0886	MO	MO			{STREAM-ON,lc}	OP	CNTR
+F00/028	S00/028	G0292	MO	MO			{LOOP,-CLR,lc}	OP	CNTR
+F00/089	S00/089	G0866	MO	MO			{LIMR,-CLR,lc}	OP	CNTR
+F00/107	S00/107	G0100	MO	MO			{LIMIT,-CLR,lc,is}	OP	CNTR
+F00/113	S00/113	G0374	MO	MO			{LIMR,-CLR,lc}	OP	CNTR
+F00/115	S00/115	G0027	MO	MO			{LIMR,-CLR,lc}	OP	CNTR
+F00/117	S00/117	G0774	MO	MO			{LAMPS,-ON,lc}	OP	CNTR
+F00/130	S00/003	G0023	MO	MO			{LAMPS,-ON,lc}	OP	CNTR
+F01/009	S01/009	G0018	MO	MO			{-,lc}	OP	CNTR
+F01/010	S01/009	G0018	MO	MO			{-,lc}	OP	CNTR
+F01/016	S01/016	G0136	MO	MO			{SIGS,-ON,lc}	OP	CNTR
+F01/044	S01/044	G0553	MO	MO			{SS,-SSON,lc}	OP	CNTR
+F01/048	S01/048	G0053	MO	MO			{SSIGN,-ON,lc}	OP	CNTR
+F01/066	S01/066	G0019	MO	MO			{SIGN,-ON,lc,fd-A06}	OP	CNTR
+F01/142	S01/142	G0003	MO	MO			{PHASE,-G,lc}	OP	CNTR
+F01/144	S01/144	G0003	MO	MO	547365		{PARK,-OPEN,lc}	OP	CNTR
+F01/147	S01/144	G0003	MO	MO	547365		{PARK,-OPEN,lc}	OP	CNTR
+F01/148	S01/148	G0003	MO	MO	547365		{PARK,-OPEN,lc}	OP	CNTR
+F01/198	S01/198	G0737					{SIGN,lc,tb}	OP	CNTR
+F01/204	S01/204	G0003					{STAGE4,lc,tb}	OP	CNTR
+F01/205	S01/205	G0922	ON				{SSIGN,lc,tb}	OP	CNTR
+F01/206	S01/206	G0922	ON		041290		{SIGN,lc,tb}	OP	CNTR
+F01/242	S01/242	G0515	MO	MO			{LIMR,-LIMIT,lc}	OP	CNTR
+F01/273	S01/393	G1053	MO	MO	111111		{PTMI,-PTOFF,lc}	OP	CNTR
+F01/312	S01/312	G0055					{STG8,lc,tb}	OP	CNTR
+F01/346	S01/346	G0121	MO	MO			{LIMR,-CLR,lc}	OP	CNTR
+F01/359	S01/359	G0126					{SWITCH,lc,is}	OP	CNTR
+F01/360	S01/360	G0126					{SWITCH,lc,tb}	OP	CNTR
+F01/361	S01/361	G0126		ON			{SWITCH-ON,nw,tb}	OP	CNTR
+F01/362	S01/360	G0126			546501		{SWITCH,lc,tb}	OP	CNTR
+F01/364	S01/364	G0126					{STAGE,lc,tb}	OP	CNTR
+F01/372	S01/372	G0053					{SIGNS,lc,tb}	OP	CNTR
+F01/376	S01/376	G0053					{CLF,lc,tb}	OP	CNTR
+F01/390	S01/390	G0207	MO	MO			{STREAM-ON,lc}	OP	CNTR
+F01/391	S01/390	G0207	MO	MO			{STREAM-ON,lc}	OP	CNTR
+F01/392	S01/393	G1053	MO	MO	111111		{PTMI,-PTOFF,lc}	OP	CNTR
+F01/393	S01/393	G1053	MO	MO	111111		{PTMI,-PTOFF,lc}	OP	CNTR
+F01/469	S01/469	G0055	MO	MO	054212		{KEY,-OFF,lc}	OP	CNTR
+F01/480	S01/063	G0018	MO	MO			{LIGHTS-ON,lc}	OP	CNTR
+F01/510	S01/510	G0017	MO	MO			{LIMR,-CLR,lc}	OP	CNTR
+F01/531	S01/009	G0018	MO	MO			{-,lc}	OP	CNTR
+F01/535	S01/009	G0018	MO	MO			{-,lc}	OP	CNTR
+F01/574	S01/574	G0421	MO	MO			{GATE,-OPEN,lc}	OP	CNTR
+F02/019	S02/019	G0379					{SIGNS,lc,tb}	OP	CNTR
+F02/020	S02/020	G0008					{OVRD,lc,tb}	OP	CNTR
+F02/058	S02/058	G0009	MO	MO			{SIGNS,-ON,lc}	OP	CNTR
+F02/060	S02/060	G0009	MO	MO			{SS,-ON,lc}	OP	CNTR
+F02/207	S02/207	G0408	MO	MO			{LAMPS,-ON,lc}	OP	CNTR
+F02/276	S02/062	G0009	MO	MO			{SIGNS,-OFF,lc,is}	OP	CNTR
+F02/328	S02/328	G0509					{lc,tb}	OP	CNTR
+F04/036	S04/036	G1043					{HC,lc,tb}	OP	CNTR
+F05/014	S05/014	G0029					{HCO,lc,tb}	OP	CNTR
+F05/051	S05/051	G0028	MO	MO			{DETECT-FAULT,lc}	OP	CNTR
+F05/097	S05/097	G0023	MO	MO			{SIGS,-ON,lc}	OP	CNTR
+F05/194	S05/194	G0028	MO	MO			{HC,-ZERO,lc}	OP	CNTR
+F08/004	S08/004	G0000	MO	MO			{wigwag-waggle,lc,ti}	OP	CNTR
+F08/140	S08/140	G0200	MO	MO			{LIMR,-LIMIT,lc}	OP	CNTR
+F08/142	S08/142	G0012	MO	MO			{LIMR,-LIMIT,lc}	OP	CNTR
+F08/143	S08/143	G1010	MO	MO			{LIMR,-CLR,lc}	OP	CNTR
+F08/389	S08/389	G0000	MO	MO			{LIMR,-limit,lc,ti}	OP	CNTR
+F08/390	S08/390	G0000	MO	MO			{LIMR,-limit,lc,ti}	OP	CNTR
+F09/086	S09/086	G0164	MO	MO			{SIGOFF-ON,lc}	OP	CNTR
+F09/250	S09/250	G1068			054253		{HCO,lc,tb}	OP	CNTR
+F09/302	S09/120	G0368	MO	MO	054227		{QDET,-CLR,lc}	OP	CNTR
+F09/313	S09/313	G0164	MO	MO			{STREAM-ON,lc}	OP	CNTR
+F09/335	S09/076	G0164	MO	MO			{Demand-S1_no,lc}	OP	CNTR
+F09/386	S09/386	G0468					{Ovrde,lc,tb}	OP	CNTR
+F11/166	S11/166	G1111	MO	MO			{LIMR,-CLR,lc}	OP	CNTR
+F12/020	S12/020	G0524	MO	MO			{SIGN,-ON,lc}	OP	CNTR
+F12/040	S12/040	G0119	MO	MO			{BARR,-UP,lc}	OP	CNTR
+F12/050	S12/050	G0223		off			{HCO,-off,nw,tb,fd-A05}	OP	CNTR
+F12/051	S12/051	G0223					{HCO,lc,tb}	OP	CNTR
+F12/134	S12/134	G1134	MO	MO			{LIMR,-LIMIT,lc}	OP	CNTR
+J00/002	S00/002	R0315	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/003	S00/003	R0023	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/004	S00/004	R0886	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/005	S00/005	R0015	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/006	S00/006	R0315	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/007	S00/007	R0615	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/008	S00/008	R0801	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/009	S00/009	R0013	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/010	S00/010	R0290	SC02	SC02		111	{CC,SC,PR}	PM	CNTR
+J00/011	S00/011	R0000	FT00	FT00		111	{LC,IS,TI,FD-L14-A05,SO}	PM	CNTR
+J00/012	S00/012	R0374	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/013	S00/013	R0374	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/014	S00/016	R0374	SC03	SC03		111	{CC,SC,LF}	PM	CNTR
+J00/015	S00/015	R0010	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/016	S00/016	R0374	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/019	S00/019	R0827	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/020	S00/020	R0027	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/021	S00/021	R0027	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/022	S00/022	R0027	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/023	S00/023	R0927	SC03	FT00		111	{LC,TB,FD-I05}	PM	CNTR
+J00/024	S00/024	R0013	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/025	S00/025	R0026	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/027	S00/027	R0315	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/028	S00/028	R0292	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/029	S00/029	R0315	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/030	S00/030	R0314	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/031	S00/031	R0314	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/032	S00/032	R0387	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/033	S00/033	R0011	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/035	S00/035	R0928	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/036	S00/036	R0610	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/037	S00/037	R0028	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/042	S00/037	R0028	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/044	S00/044	R0374	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/048	S00/048	R0013	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/051	S00/051	R0010	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/052	S00/052	R0010	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/055	S00/055	G0013	FT53	FT53			{CC,FT}	PM	CNTR
+J00/056	S00/056	R0027	FT00	FT00		111	{LC,DF}	PM	CNTR
+J00/057	S00/008	R0801	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/058	S00/008	R0801	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/059	S00/059	R0015	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/060	S00/060	R0232	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/064	S00/064	R0013	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/065	S00/065	R0928	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/068	S00/016	R0374	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/070	S00/009	R0013	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/078	S00/078	R0011	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/080	S00/033	R0011	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/081	S00/033	R0011	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/083	S00/083	R0010	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/087	S00/011	R0000	FT00	FT00		111	{LC,IS,TI,FD-L05}	PM	CNTR
+J00/089	S00/089	R0866	FT00	FT00		111	{LC}	PM	CNTR
+J00/090	S00/090	R0866	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/091	S00/090	R0866	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/097	S00/064	R0013	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/100	S00/044	R0374	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/103	S00/037	R0028	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/104	S00/044	R0374	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/107	S00/107	R0013	SC03	FT00		111	{LC,IS,SS}	PM	CNTR
+J00/108	S00/108	R0011	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/113	S00/113	R0374	FT00	FT00		111	{LC}	PM	CNTR
+J00/114	S00/114	R0974	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/115	S00/115	R0027	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/116	S00/116	R0026	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/117	S00/117	R0774	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/118	S00/118	R0010	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/122	S00/006	R0315	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/123	S00/006	R0315	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/125	S00/125	R0374	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/126	S00/126	R0010	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/127	S00/016	R0374	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/130	S00/003	R0023	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/131	S00/117	R0774	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/132	S00/006	R0315	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/134	S00/006	R0315	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/138	S00/005	R0015	SC03	SC03		111	{CC,SC}	PM	CNTR
+J00/139	S00/003	R0023	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/140	S00/140	G0010	FT00	FT00			{LC,SS}	PM	CNTR
+J00/141	S00/141	R0801	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J00/142	S00/142	R1030	SC03	SC03		111	{CC,SC}	PM	CNTR
+X00/502	S00/502	G0315	FT00	FT00			{LC}	PM	CNTR
+X00/505	S00/505	G1053	FT00	FT00			{LC}	PM	CNTR
+X00/506	S00/506	G0315	FT00	FT00			{LC}	PM	CNTR
+X00/509	S00/509	G0013	FT53	FT53			{CC,FT}	PM	CNTR
+X00/528	S00/528	G0292	FT00	FT00			{LC}	PM	CNTR
+X00/531	S00/531	G0314	FT00	FT00			{LC}	PM	CNTR
+X00/559	S00/559	G0015	FT00	FT00			{LC}	PM	CNTR
+X00/622	S00/622	G0315	FT00	FT00			{LC}	PM	CNTR
+X00/642	S00/642	G1030	FT00	FT00			{LC}	PM	CNTR
+J00/850	S00/850	R0290	FT52	FT52		111	{CC,FT}	PM	CNTR
+J01/001	S01/002	R0106	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/002	S01/002	R0106	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/003	S01/003	R0006	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/004	S01/002	R0106	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/005	S01/005	R0106	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/006	S01/052	R0006	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/007	S01/007	R0018	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/009	S01/009	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/010	S01/009	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/011	S01/011	R0421	SC18	SC18		111	{CC,SC,SI}	PM	CNTR
+J01/012	S01/012	R0421	SC18	SC18		111	{CC,SC,SI}	PM	CNTR
+J01/014	S01/014	R1051	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/016	S01/016	R0136	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/017	S01/016	R0136	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/018	S01/016	R0136	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/019	S01/019	R0807	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/020	S01/020	R0007	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/021	S01/021	R0007	SC03	SC03		111	{CC,SC,PR,LF}	PM	CNTR
+J01/022	S01/022	R0007	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/023	S01/023	R0007	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/024	S01/024	R0007	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/025	S01/025	R0007	SC11	SC11		111	{CC,SC,PR}	PM	CNTR
+J01/026	S01/026	R0807	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/027	S01/027	R0007	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/028	S01/028	R0007	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/030	S01/030	R0007	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/032	S01/032	R0007	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/033	S01/033	R0017	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/034	S01/034	R0017	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/035	S01/035	R0207	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/036	S01/036	R0050	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/037	S01/037	R0050	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/038	S01/038	R0050	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/039	S01/039	R0005	SC02	SC02		111	{CC,SC,PR}	PM	CNTR
+J01/040	S01/040	R0005	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/043	S01/043	R0306	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/044	S01/044	R0553	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/045	S01/044	R0553	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/046	S01/046	R0020	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/047	S01/046	R0020	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/048	S01/048	R0053	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/051	S01/051	R0006	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/052	S01/052	R0006	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/053	S01/052	R0006	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/054	S01/054	R0306	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/057	S01/057	R0121	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/058	S01/057	R0121	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/059	S01/059	R0706	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/062	S01/062	R0006	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/063	S01/063	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/064	S01/064	R0807	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/065	S01/064	R0807	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/066	S01/066	R0019	SC03	FT00		111	{LC,TB,FD-I06}	PM	CNTR
+J01/067	S01/067	R0019	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/068	S01/068	R0019	SC03	SC03		111	{CC,SC,FW}	PM	CNTR
+J01/069	S01/069	R0025	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/070	S01/070	R0025	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/071	S01/071	R0025	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/072	S01/072	R1025	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/073	S01/073	R1025	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/075	S01/075	R0850	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/076	S01/076	R0317	SC03	SC03		111	{CC,SC,PR,DF}	PM	CNTR
+J01/077	S01/077	R0850	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/078	S01/078	R0135	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/079	S01/079	R1035	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/080	S01/080	R0019	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/081	S01/081	R0135	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/082	S01/082	R0390	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/083	S01/083	R0891	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/084	S01/084	R0850	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/085	S01/085	R0850	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/086	S01/086	R0233	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/087	S01/087	R0030	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/088	S01/088	R0017	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/089	S01/089	R0024	FT53	FT53		111	{CC,FT}	PM	CNTR
+J01/090	S01/090	R0018	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/092	S01/092	R0922	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/093	S01/093	R0635	SC03	SC03		111	{CC,SC,PR,LF}	PM	CNTR
+J01/094	S01/094	R0053	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/095	S01/095	R0053	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/097	S01/097	R0000	FT00	FT00		111	{LC,TI}	PM	CNTR
+J01/098	S01/098	R0598	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/099	S01/099	R0850	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/102	S01/102	R0017	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/103	S01/103	R0822	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/105	S01/105	R0235	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/106	S01/106	R0235	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/107	S01/107	R0963	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/108	S01/108	R0963	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/109	S01/109	R0963	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/111	S01/112	R0033	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/112	S01/112	R0033	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/113	S01/113	R0033	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/122	S01/122	R0341	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/124	S01/124	R0033	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/125	S01/125	R0963	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/127	S01/127	R0201	SC09	SC09		111	{CC,SC}	PM	CNTR
+J01/128	S01/128	R0001	SC03	FT00		111	{LC,TB,TI}	PM	CNTR
+J01/129	S01/129	R0001	SC03	FT00		111	{LC,TB,FD-I05}	PM	CNTR
+J01/130	S01/130	R0132	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/131	S01/131	R0132	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/132	S01/132	R0536	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/133	S01/133	R0963	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/134	S01/134	R0963	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/139	S01/139	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/140	S01/139	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/141	S01/139	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/142	S01/142	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/143	S01/143	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/144	S01/144	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/146	S01/146	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/147	S01/146	R0003	SC03	FT23		111	{CC,FT,NW,DF}	PM	CNTR
+J01/148	S01/148	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/149	S01/148	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/150	S01/148	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/151	S01/151	R0203	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/152	S01/152	R0203	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/153	S01/153	R0203	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/154	S01/154	R0603	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/155	S01/155	R0603	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/156	S01/156	R0003	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/157	S01/157	R0564	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/158	S01/158	R0564	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/159	S01/159	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/160	S01/160	R0002	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/161	S01/161	R0002	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/162	S01/162	R0002	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/163	S01/163	R0002	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/164	S01/164	R0002	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/165	S01/165	R0002	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/166	S01/166	R0002	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/167	S01/167	R0399	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/168	S01/168	R0399	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/169	S01/169	R0399	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/170	S01/170	R0399	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/171	S01/171	R0922	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/172	S01/172	R0922	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/173	S01/173	R0923	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/174	S01/174	R0923	SC03	SC03		111	{CC,SC,PR,LF}	PM	CNTR
+J01/175	S01/175	R0922	SC03	SC03		111	{CC,SC,PR,RI}	PM	CNTR
+J01/176	S01/176	R0923	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/177	S01/177	R0022	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/178	S01/178	R0022	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/179	S01/179	R0022	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/180	S01/180	R0022	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/181	S01/180	R0022	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/182	S01/182	R0022	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/184	S01/184	R0005	SC02	SC02		111	{CC,SC,PR}	PM	CNTR
+J01/185	S01/185	R0005	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/186	S01/186	R0021	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/187	S01/187	R0021	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/188	S01/188	R0021	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/189	S01/189	R0021	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/190	S01/190	R0005	SC02	SC02		111	{CC,SC,PR}	PM	CNTR
+J01/192	S01/192	R0022	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/193	S01/193	R0923	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/194	S01/194	R0005	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/195	S01/195	R0016	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/196	S01/196	R0016	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/197	S01/197	R0016	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/198	S01/198	R0737	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/199	S01/199	R0016	SC03	FT00		111	{LC,TB,FD-I05}	PM	CNTR
+J01/200	S01/200	R0016	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/201	S01/201	R0016	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/202	S01/202	R0016	SC03	FT00		111	{LC,TB,TI}	PM	CNTR
+J01/203	S01/203	R0016	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/204	S01/139	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/205	S01/205	R0922	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/206	S01/206	R0922	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/207	S01/207	R0004	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/208	S01/208	R0004	SC02	SC02		111	{CC,SC,DF}	PM	CNTR
+J01/209	S01/209	R0004	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/210	S01/210	R0004	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/211	S01/211	R0515	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/212	S01/212	R0005	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/215	S01/215	R2121	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/216	S01/216	R2121	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/217	S01/217	R2121	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/218	S01/218	R2121	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/221	S01/221	R1616	SC03	SC03	547400	111	{CC,SC}	PM	CNTR
+J01/222	S01/222	R0002	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/231	S01/231	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/232	S01/232	R0564	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/239	S01/239	R0000	FT00	FT00		111	{LC}	PM	CNTR
+J01/241	S01/241	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/242	S01/242	G0515	FT00	FT00			{LC}	PM	CNTR
+J01/243	S01/243	R0515	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/246	S01/246	R0106	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/247	S01/247	R0515	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/248	S01/248	R1616	FT00	FT00		111	{LC}	PM	CNTR
+J01/249	S01/249	R0017	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/254	S01/254	R0635	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/256	S01/256	R0001	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/258	S01/258	R0025	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/259	S01/259	R0306	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/260	S01/260	R0106	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/261	S01/016	R0136	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/265	S01/024	R0007	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/272	S01/272	R0020	SC03	FT00		111	{LC,TB,FD-I05}	PM	CNTR
+J01/273	S01/393	R1053	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/277	S01/241	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/279	S01/279	R0132	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/280	S01/281	R0106	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/281	S01/281	R0106	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/282	S01/283	R0106	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/283	S01/283	R0106	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/284	S01/284	R0564	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/287	S01/287	R0207	SC03	SC03		111	{CC,SC,DF}	PM	CNTR
+J01/288	S01/288	R1119	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/292	S01/292	R0206	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/295	S01/296	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/296	S01/296	R0018	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/300	S01/300	R1033	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/302	S01/302	R0019	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/303	S01/302	R0019	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/304	S01/304	R0053	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/305	S01/304	R0053	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/306	S01/306	R1025	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/308	S01/308	R0024	FT53	FT00		111	{LC,TB,TI}	PM	CNTR
+J01/310	S01/310	R0055	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/311	S01/311	R0055	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/312	S01/312	R0055	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/313	S01/046	R0020	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/314	S01/046	R0020	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/315	S01/315	R0063	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/322	S01/146	R0003	SC03	FT23		111	{CC,FT,NW}	PM	CNTR
+J01/323	S01/323	R0006	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/324	S01/052	R0006	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/325	S01/325	R0535	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/332	S01/332	R0024	FT53	FT53		111	{CC,FT,LF}	PM	CNTR
+J01/333	S01/052	R0006	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/334	S01/334	R0030	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/346	S01/346	R0121	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/348	S01/348	R0730	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/349	S01/349	R0736	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/355	S01/355	R0019	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/356	S01/355	R0019	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/357	S01/068	R0019	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/358	S01/068	R0019	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/359	S01/360	R0126	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/360	S01/360	R0126	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/361	S01/360	R0126	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/362	S01/360	R0126	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/363	S01/360	R0126	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/364	S01/360	R0126	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/366	S01/366	R0132	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/367	S01/367	R0030	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/369	S01/369	R0007	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/370	S01/360	R0126	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/371	S01/366	R0132	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/372	S01/372	R0053	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/375	S01/372	R0053	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/376	S01/376	R0053	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/382	S01/148	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/386	S01/386	R2121	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/389	S01/279	R0132	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/390	S01/390	R0207	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/391	S01/390	R0207	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/392	S01/393	R1053	SC03	SC03		111	{CC,SC,DF}	PM	CNTR
+J01/393	S01/393	R1053	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/394	S01/095	R0053	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/402	S01/402	R0022	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/403	S01/139	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/405	S01/405	R0001	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/406	S01/406	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/408	S01/408	R0006	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/410	S01/211	R0515	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/416	S01/143	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/419	S01/142	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/424	S01/144	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/425	S01/146	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/426	S01/139	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/428	S01/139	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/429	S01/139	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/433	S01/139	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/434	S01/146	R0003	SC03	FT23		111	{CC,FT,NW}	PM	CNTR
+J01/436	S01/436	R0003	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/438	S01/438	R0002	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/450	S01/176	R0923	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/451	S01/048	R0053	SC03	SC03		111	{CC,SC,FW,LF}	PM	CNTR
+J01/452	S01/048	R0053	SC03	SC03		111	{CC,SC,FW}	PM	CNTR
+J01/453	S01/044	R0553	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/456	S01/036	R0050	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/461	S01/461	R0730	SC03	FT00		111	{LC,TB,FD-I05}	PM	CNTR
+J01/469	S01/469	R0055	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/473	S01/473	R0007	SC03	SC03		111	{CC,SC,LF}	PM	CNTR
+J01/474	S01/473	R0007	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/478	S01/478	R0007	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/480	S01/063	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/481	S01/063	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/483	S01/483	R0018	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/488	S01/488	R0736	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/490	S01/490	R0317	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/497	S01/497	R0007	SC12	SC12		111	{CC,SC}	PM	CNTR
+J01/498	S01/498	R0201	SC09	SC09		111	{CC,SC,PR}	PM	CNTR
+J01/500	S01/488	R0736	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/503	S01/109	R0963	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/507	S01/507	R0053	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/510	S01/510	R0017	FT00	FT00		111	{LC,SS}	PM	CNTR
+J01/511	S01/511	R0017	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+X01/516	S01/516	G0000	FT00	FT00			{LC}	PM	CNTR
+J01/523	S01/009	R0018	SC03	SC03		111	{CC,SC,FW}	PM	CNTR
+J01/524	S01/524	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/525	S01/524	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/527	S01/527	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/528	S01/528	R0018	SC03	SC03		111	{CC,SC,FW}	PM	CNTR
+J01/529	S01/009	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/530	S01/009	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/531	S01/009	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/532	S01/009	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/533	S01/009	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/534	S01/009	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/535	S01/009	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/537	S01/063	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/538	S01/538	R0024	FT53	FT00		111	{LC,TB,FD-I06}	PM	CNTR
+J01/541	S01/048	R0053	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/543	S01/543	R0024	FT53	FT53		111	{CC,FT}	PM	CNTR
+J01/544	S01/068	R0019	SC03	SC03		111	{CC,SC,FW}	PM	CNTR
+X01/546	S01/546	G0020	FT00	FT00			{LC}	PM	CNTR
+J01/551	S01/551	R1051	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/552	S01/067	R0019	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/558	S01/002	R0106	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/559	S01/016	R0136	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/561	S01/561	R0001	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/567	S01/360	R0126	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/568	S01/360	R0126	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/569	S01/360	R0126	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/570	S01/570	R0126	SC12	SC12		111	{CC,SC}	PM	CNTR
+J01/572	S01/038	R0050	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/573	S01/573	R1051	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/574	S01/574	R0421	SC18	SC18		111	{CC,SC,SI}	PM	CNTR
+J01/577	S01/577	R0019	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/579	S01/057	R0121	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/580	S01/093	R0635	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J01/583	S01/583	R0053	FT00	FT00		111	{LC,SS}	PM	CNTR
+J01/587	S01/040	R0005	SC02	SC02		111	{CC,SC}	PM	CNTR
+J01/588	S01/577	R0019	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/589	S01/589	G0770	FT53	FT53			{CC,FT}	PM	CNTR
+J01/590	S01/589	G0770	FT53	FT53			{CC,FT}	PM	CNTR
+J01/593	S01/593	R1035	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/595	S01/595	R0018	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/598	S01/598	R0963	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/599	S01/507	R0053	SC03	SC03		111	{CC,SC}	PM	CNTR
+X01/600	S01/300	G1033	FT00	FT00			{LC}	PM	CNTR
+J01/601	S01/601	R0053	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/602	S01/601	R0053	SC03	SC03		111	{CC,SC}	PM	CNTR
+X01/604	S01/604	G0106	FT00	FT00			{LC}	PM	CNTR
+J01/606	S01/606	R0019	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/607	S01/607	R1616	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/611	S01/611	R0963	SC03	SC03		111	{CC,SC}	PM	CNTR
+J01/621	S01/089	R0024	FT53	FT53		111	{CC,FT}	PM	CNTR
+X01/635	S01/635	G0207	FT00	FT00			{LC}	PM	CNTR
+X01/642	S01/642	G0003	FT00	FT00			{LC}	PM	CNTR
+X01/648	S01/648	G0053	FT00	FT00			{LC}	PM	CNTR
+X01/657	S01/657	G0564	FT00	FT00			{LC}	PM	CNTR
+X01/663	S01/663	G0018	FT00	FT00			{LC}	PM	CNTR
+X01/667	S01/667	G0019	FT00	FT00			{LC}	PM	CNTR
+X01/672	S01/672	G0053	FT00	FT00			{LC}	PM	CNTR
+X01/687	S01/687	G0016	FT00	FT00			{LC}	PM	CNTR
+X01/773	S01/773	G0207	FT00	FT00			{LC}	PM	CNTR
+X01/808	S01/808	G0024	FT00	FT00			{LC,TI}	PM	CNTR
+X01/832	S01/832	G0024	FT00	FT00			{LC}	PM	CNTR
+J01/850	S01/850	G0000	FT00	FT00			{LC,TI,FD-L05}	PM	CNTR
+J02/002	S02/224	R0149	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/012	S02/012	R0509	SC03	SC03		111	{CC,SC,LF}	PM	CNTR
+J02/013	S02/013	R0509	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/014	S02/014	R0008	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/015	S02/015	R0000	FT00	FT00		111	{LC,IS,TI,FD-L05}	PM	CNTR
+J02/016	S02/016	R1054	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/017	S02/017	R0008	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/018	S02/021	R0008	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/019	S02/019	R0379	FT52	FT52		111	{CC,FT}	PM	CNTR
+J02/020	S02/020	R0008	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/021	S02/021	R0008	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/025	S02/025	R1030	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/034	S02/034	R0379	FT52	FT52		111	{CC,FT}	PM	CNTR
+J02/038	S02/038	R0218	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/044	S02/044	R0149	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/045	S02/045	R0149	SC03	SC03		111	{CC,SC,PR,LF}	PM	CNTR
+J02/046	S02/046	R0218	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/047	S02/047	R0218	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/048	S02/048	R0218	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/049	S02/021	R0008	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/050	S02/050	R0452	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/052	S02/050	R0452	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/054	S02/054	R0218	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/055	S02/055	R0149	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/058	S02/058	R0009	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/059	S02/059	R0009	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/060	S02/060	R0009	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/062	S02/062	R0009	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/063	S02/063	R0052	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/064	S02/064	R0008	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/067	S02/067	R0642	FT03	FT03		111	{CC,FT}	PM	CNTR
+J02/068	S02/068	R0442	FT03	FT03		111	{CC,FT}	PM	CNTR
+J02/069	S02/021	R0008	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/070	S02/070	R0014	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/071	S02/071	R0014	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/072	S02/045	R0149	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/078	S02/078	R0244	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/080	S02/080	R0216	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/083	S02/083	R0218	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/085	S02/085	R0009	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/086	S02/086	R0054	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/087	S02/087	R0054	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/088	S02/088	R0054	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/089	S02/089	R0054	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/091	S02/091	R0052	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/103	S02/103	R0616	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/105	S02/105	R0052	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/123	S02/123	R0052	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/143	S02/143	R0008	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/144	S02/144	R0008	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/145	S02/014	R0008	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/164	S02/164	R0008	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/167	S02/167	R0509	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/170	S02/050	R0452	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/179	S02/179	R1054	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/188	S02/188	R0418	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/191	S02/191	R1030	SC03	SC03		111	{CC,SC,PR,FD-I14,SO,LF}	PM	CNTR
+J02/193	S02/021	R0008	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/207	S02/207	R0408	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/221	S02/221	R0418	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/223	S02/223	R0149	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/224	S02/224	R0149	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/227	S02/221	R0418	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/229	S02/229	R0149	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/235	S02/223	R0149	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/253	S02/253	R0149	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/254	S02/254	R1452	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/266	S02/266	R0506	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/267	S02/267	R0506	SC03	SC03		111	{CC,SC,PR,TI}	PM	CNTR
+J02/276	S02/062	R0009	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/280	S02/280	R0149	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/281	S02/045	R0149	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/283	S02/283	R0408	FT00	FT00		111	{LC,SS}	PM	CNTR
+J02/284	S02/283	R0408	FT00	FT00		111	{LC,SS}	PM	CNTR
+J02/286	S02/286	G0149	FT00	FT00			{LC}	PM	CNTR
+J02/293	S02/293	G0000	FT00	FT00			{LC,TI,SO}	PM	CNTR
+J02/294	S02/294	R0506	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/301	S02/080	R0216	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/303	S02/303	R0244	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/305	S02/078	R0244	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/306	S02/078	R0244	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/307	S02/223	R0149	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J02/308	S02/308	G0149	FT00	FT00			{LC}	PM	CNTR
+J02/314	S02/314	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/315	S02/314	R0003	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/326	S02/326	R0509	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/327	S02/327	G0408	FT00	FT00			{LC,SS}	PM	CNTR
+J02/328	S02/328	R0509	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/329	S02/179	R1054	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/330	S02/179	R1054	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/331	S03/032	R0344	SC03	SC03		111	{CC,SC}	PM	CNTR
+J02/334	S02/334	R0218	FT00	FT00		111	{LC}	PM	CNTR
+X02/513	S02/513	G0509	FT00	FT00			{LC}	PM	CNTR
+X02/517	S02/517	G0008	FT00	FT00			{LC}	PM	CNTR
+X02/519	S02/519	G0009	FT00	FT00			{LC}	PM	CNTR
+X02/525	S02/525	G1030	FT00	FT00			{LC}	PM	CNTR
+J02/855	S02/855	R0008	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/001	S03/001	R0240	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/002	S03/002	R0240	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/003	S03/003	R0059	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/004	S03/004	R0059	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/005	S03/005	R0142	SC03	FT00		111	{LC,TB,FD-I06}	PM	CNTR
+J03/006	S03/006	R0008	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/016	S03/016	R0000	FT00	FT00		111	{LC,TI,FD-L05}	PM	CNTR
+J03/027	S03/004	R0059	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/029	S03/029	R0013	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/031	S03/031	R0142	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/032	S03/032	R0344	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/033	S03/033	R0144	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/034	S03/034	R0343	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/035	S03/035	R0000	FT00	FT00		111	{LC,TI,FD-L05}	PM	CNTR
+J03/038	S03/038	R0144	SC03	SC03		111	{CC,SC,PR,DF}	PM	CNTR
+J03/039	S03/039	R0240	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/040	S03/040	R0853	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/043	S03/004	R0059	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/044	S03/044	R0159	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/052	S03/052	R0459	SC03	FT00		111	{LC,TB,FD-I05}	PM	CNTR
+J03/056	S03/056	R0345	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/057	S03/057	R0343	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/058	S03/057	R0343	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/069	S03/069	R0008	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/076	S03/076	R0240	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/081	S03/069	R0008	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/085	S03/057	R0343	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/086	S03/057	R0343	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/088	S03/088	R0569	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/089	S03/089	R0459	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/094	S03/094	R0345	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/096	S03/096	R0059	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/098	S03/098	R0059	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/099	S03/099	R0059	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/115	S03/158	R0059	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/131	S03/004	R0059	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/139	S03/139	R0343	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/158	S03/158	R0059	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/166	S03/158	R0059	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/167	S03/179	R0343	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/172	S03/172	R0008	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/177	S03/179	R0343	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/179	S03/179	R0343	SC03	SC03		111	{CC,SC,DF}	PM	CNTR
+J03/181	S03/179	R0343	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/184	S03/184	R0059	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/187	S03/187	R0418	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/190	S03/190	R0142	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/193	S03/193	R0059	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J03/200	S03/006	R0008	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/201	S03/006	R0008	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/306	S03/158	R0059	SC03	SC03		111	{CC,SC}	PM	CNTR
+J03/312	S03/312	R0344	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+X03/532	S03/532	G0344	FT00	FT00			{LC}	PM	CNTR
+X03/679	S03/679	G0000	FT00	FT00			{LC}	PM	CNTR
+X03/681	S03/681	G0000	FT00	FT00			{LC}	PM	CNTR
+X03/779	S03/779	G0000	FT00	FT00			{LC}	PM	CNTR
+J03/852	S03/852	G0144	FT53	FT53			{CC,FT,LF}	PM	CNTR
+J04/003	S04/003	R0143	SC02	SC02		111	{CC,SC,PR}	PM	CNTR
+J04/006	S04/006	R0291	SC03	SC03		111	{CC,SC}	PM	CNTR
+J04/030	S04/030	R0143	SC02	SC02		111	{CC,SC,PR}	PM	CNTR
+J04/031	S04/031	R1036	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J04/033	S04/033	R0143	SC02	SC02		111	{CC,SC,PR}	PM	CNTR
+J04/036	S04/036	R1043	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J04/044	S04/044	R0143	SC02	SC02		111	{CC,SC,PR}	PM	CNTR
+J04/045	S04/003	R0143	SC02	SC02		111	{CC,SC,PR}	PM	CNTR
+J04/090	S04/090	R0346	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J04/091	S04/091	G0346	FT00	FT00			{LC,SS}	PM	CNTR
+J04/127	S04/127	R0143	FT00	FT00		111	{LC}	PM	CNTR
+J04/128	S04/044	R0143	SC02	SC02		111	{CC,SC,PR}	PM	CNTR
+J04/184	S04/003	R0143	SC02	SC02		111	{CC,SC,PR}	PM	CNTR
+J04/196	S04/196	R0143	FT00	FT00		111	{LC}	PM	CNTR
+J04/197	S04/197	R0143	SC02	SC02		111	{CC,SC,PR}	PM	CNTR
+J04/198	S04/198	R0143	SC02	SC02		111	{CC,SC,PR}	PM	CNTR
+J04/199	S04/036	R1043	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J04/202	S04/202	G1037	FT00	FT00			{LC,TI}	PM	CNTR
+X04/536	S04/536	G1043	FT00	FT00			{LC}	PM	CNTR
+J05/014	S05/014	R0029	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J05/021	S05/021	R0028	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J05/028	S05/028	R0028	SC03	SC03		111	{CC,SC}	PM	CNTR
+J05/041	S05/041	R0028	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J05/095	S05/095	R0023	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J05/096	S05/096	R0023	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J05/097	S05/097	R0023	SC11	SC11		111	{CC,SC}	PM	CNTR
+J05/194	S05/194	R0028	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J05/195	S05/041	R0028	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J05/214	S05/214	R0023	SC03	SC03		111	{CC,SC}	PM	CNTR
+J05/215	S05/214	R0023	SC03	SC03		111	{CC,SC}	PM	CNTR
+J05/229	S05/229	R0028	SC03	SC03		111	{CC,SC}	PM	CNTR
+J05/230	S05/230	R0023	SC03	SC03		111	{CC,SC}	PM	CNTR
+J05/248	S05/248	R0610	SC03	SC03		111	{CC,SC}	PM	CNTR
+J05/259	S05/259	R0023	SC03	SC03		111	{CC,SC}	PM	CNTR
+J05/271	S05/259	R0023	SC03	SC03		111	{CC,SC}	PM	CNTR
+J05/272	S05/095	R0023	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J05/282	S05/194	R0028	SC03	SC03		111	{CC,SC}	PM	CNTR
+J05/284	S05/284	R0100	FT00	FT00		111	{LC}	PM	CNTR
+J05/298	S05/298	R0293	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J05/301	S05/301	G0023	FT00	FT00			{LC}	PM	CNTR
+J05/373	S05/373	R0028	SC03	SC03		111	{CC,SC}	PM	CNTR
+J05/423	S05/423	R0610	SC03	FT00		111	{LC,TB,TI}	PM	CNTR
+J05/430	S05/041	R0028	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J05/431	S05/041	R0028	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J05/439	S05/229	R0028	SC03	SC03		111	{CC,SC}	PM	CNTR
+X05/541	S05/541	G0028	FT00	FT00			{LC}	PM	CNTR
+X05/595	S05/595	G0023	FT00	FT00			{LC}	PM	CNTR
+X05/694	S05/694	G0029	FT00	FT00			{LC}	PM	CNTR
+J08/003	S08/003	R0161	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/004	S08/004	R0361	FT53	FT53		111	{CC,FT,TI}	PM	CNTR
+J08/005	S08/005	R0261	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/008	S08/008	R0161	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/027	S08/027	R0315	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/028	S08/028	R0612	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/029	S08/029	R0612	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/030	S08/030	R0812	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/031	S08/031	R0832	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/032	S08/032	R0202	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/033	S08/033	R0202	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/034	S08/034	R0738	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/035	S08/035	R0530	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/036	S08/036	R0888	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/038	S08/038	R0238	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/042	S08/042	R0000	FT00	FT00		111	{LC,TI,FD-L05}	PM	CNTR
+J08/045	S08/045	R0202	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/051	S08/051	R0012	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/052	S08/052	R0012	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/054	S08/054	R0261	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/055	S08/055	R0012	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/056	S08/056	R0012	SC03	SC03		111	{CC,SC,LF}	PM	CNTR
+J08/078	S08/078	R0579	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/092	S08/092	R0162	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/094	S08/094	R0162	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/103	S08/103	R0162	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/104	S08/104	R0162	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/127	S08/127	R0888	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/140	S08/140	G0200	FT00	FT00			{LC}	PM	CNTR
+J08/142	S08/142	G0012	FT00	FT00			{LC}	PM	CNTR
+J08/143	S08/143	R1010	FT00	FT00		111	{LC,SS}	PM	CNTR
+J08/153	S08/153	R2202	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/159	S08/159	R0202	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/208	S08/208	R2202	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/210	S08/210	R2202	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/215	S08/215	R0315	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/217	S08/032	R0202	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/218	S08/218	R0202	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/234	S08/003	R0161	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/235	S08/235	R0161	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/236	S08/005	R0261	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/239	S08/027	R0315	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/251	S08/251	R0962	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/257	S08/257	R0238	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/258	S08/051	R0012	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/265	S08/265	R0833	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/274	S08/274	R0833	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/280	S08/280	R0252	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/284	S08/284	R0888	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/287	S08/380	R1021	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/289	S08/289	R0468	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/306	S08/309	R0367	SC03	SC03		111	{CC,SC,TI}	PM	CNTR
+J08/307	S08/309	R0367	SC03	SC03		111	{CC,SC,TI}	PM	CNTR
+J08/308	S08/309	R0367	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/309	S08/309	R0367	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/310	S08/309	R0367	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/311	S08/309	R0367	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/312	S08/309	R0367	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/313	S08/309	R0367	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/319	S08/309	R0367	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/320	S08/309	R0367	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/323	S08/323	R0200	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/335	S08/380	R1021	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/336	S08/380	R1021	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/346	S08/346	R0162	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/356	S08/346	R0162	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/357	S08/346	R0162	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/358	S08/358	G0162	FT00	FT00			{LC}	PM	CNTR
+J08/359	S08/359	G0162	FT00	FT00			{LC}	PM	CNTR
+J08/360	S08/360	G0162	FT00	FT00			{LC}	PM	CNTR
+J08/376	S08/094	R0162	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/377	S08/094	R0162	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/378	S08/094	R0162	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/379	S08/094	R0162	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/380	S08/380	R1021	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/381	S08/380	R1021	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/382	S08/036	R0888	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J08/383	S08/380	R1021	SC03	SC03		111	{CC,SC}	PM	CNTR
+J08/389	S08/389	R0000	FT00	FT00		111	{LC,TI,SO}	PM	CNTR
+J08/390	S08/390	R0000	FT00	FT00		111	{LC,TI,SO}	PM	CNTR
+J08/393	S08/257	R0238	SC03	SC03		111	{CC,SC}	PM	CNTR
+X08/503	S08/503	G0000	FT00	FT00			{LC,FD-L05}	PM	CNTR
+X08/527	S08/527	G0315	FT00	FT00			{LC}	PM	CNTR
+X08/528	S08/528	G0612	FT00	FT00			{LC}	PM	CNTR
+X08/529	S08/529	G0000	FT00	FT00			{LC}	PM	CNTR
+X08/578	S08/578	G0579	FT00	FT00			{LC}	PM	CNTR
+X08/580	S08/580	G1021	FT00	FT00			{LC}	PM	CNTR
+X08/628	S08/628	G0000	FT00	FT00			{LC}	PM	CNTR
+X08/684	S08/684	G0000	FT00	FT00			{LC}	PM	CNTR
+J09/035	S09/035	R0935	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J09/036	S09/036	R0263	SC03	FT00		111	{LC,IS,FD-L05}	PM	CNTR
+J09/037	S09/037	R0277	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J09/051	S09/051	R0164	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J09/070	S09/070	R0468	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J09/071	S09/071	R0277	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J09/076	S09/076	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/086	S09/086	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/088	S09/076	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/090	S09/086	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/091	S09/086	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/112	S09/112	R0269	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J09/120	S09/120	R0368	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/125	S09/125	R0269	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/160	S09/160	R0269	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/198	S09/198	R2164	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J09/199	S09/199	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/203	S09/203	R0262	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J09/235	S09/120	R0368	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/236	S09/120	R0368	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/239	S09/239	R1077	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J09/250	S09/250	R1068	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/254	S09/254	R0262	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J09/270	S09/324	R0373	SC03	FT00		111	{LC,TB,FD-A06}	PM	CNTR
+J09/285	S09/285	R0269	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/290	S09/285	R0269	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/296	S09/296	R0164	SC07	SC07		111	{CC,SC}	PM	CNTR
+J09/301	S09/120	R0368	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/302	S09/120	R0368	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/303	S09/120	R0368	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/304	S09/120	R0368	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/305	S09/120	R0368	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/308	S09/308	R0262	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J09/313	S09/313	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/317	S09/198	R2164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/320	S09/320	R1263	FT53	FT53		111	{CC,FT}	PM	CNTR
+J09/321	S09/321	R1263	FT53	FT53		111	{CC,FT}	PM	CNTR
+J09/324	S09/324	R0373	SC03	FT00		111	{LC,TB,FD-A06}	PM	CNTR
+J09/325	S09/324	R0373	SC03	FT00		111	{LC,TB,FD-I06}	PM	CNTR
+J09/326	S09/324	R0373	SC03	FT00		111	{LC,TB,FD-A06}	PM	CNTR
+J09/327	S09/327	R0373	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/334	S09/076	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/335	S09/076	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/336	S09/076	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/338	S09/086	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/340	S09/086	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/341	S09/086	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/342	S09/313	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/373	S09/373	R0973	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J09/386	S09/386	R0468	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/394	S09/313	R0164	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/398	S09/398	R0269	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/399	S09/398	R0269	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/400	S09/400	R0269	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/401	S09/400	R0269	SC03	SC03		111	{CC,SC}	PM	CNTR
+J09/402	S09/070	R0468	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+X09/576	S09/576	G0164	FT00	FT00			{LC}	PM	CNTR
+X09/588	S09/088	G0164	FT00	FT00			{LC}	PM	CNTR
+X09/590	S09/590	G0164	FT00	FT00			{LC}	PM	CNTR
+X09/658	S09/658	G0277	FT00	FT00			{LC}	PM	CNTR
+X09/676	S09/676	G0164	FT00	FT00			{LC}	PM	CNTR
+J09/851	S09/851	G1263	FT53	FT53			{CC,FT}	PM	CNTR
+J11/011	S11/011	R0319	SC03	SC03		111	{CC,SC,PR,TI}	PM	CNTR
+J11/016	S11/016	R0220	SC03	SC03		111	{CC,SC}	PM	CNTR
+J11/017	S11/017	R0220	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J11/019	S11/019	R0324	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J11/020	S11/020	R0324	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J11/022	S11/022	R0122	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J11/023	S11/023	R0321	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J11/024	S11/024	R0326	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J11/025	S11/025	R0327	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J11/033	S11/033	R0000	FT00	FT00		111	{LC,TI}	PM	CNTR
+J11/041	S11/041	R0321	SC03	SC03		111	{CC,SC}	PM	CNTR
+J11/045	S11/045	R0147	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J11/049	S11/049	R0319	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J11/050	S11/049	R0319	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J11/082	S11/017	R0220	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J11/137	S11/017	R0220	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J11/144	S11/144	R0319	SC03	SC03		111	{CC,SC}	PM	CNTR
+J11/146	S11/023	R0321	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J11/156	S11/156	R0122	SC03	SC03		111	{CC,SC}	PM	CNTR
+J11/157	S11/156	R0122	SC03	SC03		111	{CC,SC}	PM	CNTR
+J11/159	S11/159	R0422	SC03	SC03		111	{CC,SC}	PM	CNTR
+J11/166	S11/166	R1111	FT53	FT53		111	{CC,FT}	PM	CNTR
+X11/516	S11/516	G0220	FT00	FT00			{LC}	PM	CNTR
+X11/517	S11/517	G0220	FT00	FT00			{LC}	PM	CNTR
+J12/002	S12/002	R0523	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/003	S12/003	R2523	FT53	FT53		111	{CC,FT}	PM	CNTR
+J12/004	S12/004	R0421	SC18	SC18		111	{CC,SC,SI,PR}	PM	CNTR
+J12/005	S12/005	R0523	FT22	FT22		111	{CC,FT}	PM	CNTR
+J12/006	S12/006	R0120	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/008	S12/012	R0420	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/009	S12/009	R0320	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/010	S12/010	R0120	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/011	S12/012	R0420	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/012	S12/012	R0420	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/013	S12/013	R0120	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/016	S12/016	R0323	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/017	S12/017	R0120	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/018	S12/018	R0123	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/019	S12/019	R0123	SC03	FT00		111	{LC,TB,FD-I05}	PM	CNTR
+J12/020	S12/020	R0524	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/021	S12/021	R0524	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/022	S12/022	R0123	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/023	S12/023	R0524	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/025	S12/025	R0124	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/033	S12/033	R0219	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/037	S12/037	R0219	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/040	S12/040	R0119	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/041	S12/041	R0119	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/048	S12/048	R0223	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/049	S12/049	R0123	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/050	S12/050	R0223	SC03	FT00		111	{LC,TB,FD-I05}	PM	CNTR
+J12/051	S12/051	R0223	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/052	S12/052	R0123	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/057	S12/057	R0030	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/061	S12/061	R0124	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/062	S12/062	R0124	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/063	S12/063	R0898	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/064	S12/064	R0124	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/066	S12/066	R0233	SC03	SC03		111	{CC,SC,PR,FD-I14,SO,LF}	PM	CNTR
+J12/067	S12/067	R0614	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/068	S12/068	R0421	SC18	SC18		111	{CC,SC,SI,PR}	PM	CNTR
+J12/069	S12/017	R0120	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/070	S12/070	R0233	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/071	S12/071	R0119	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/072	S12/073	R0898	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/073	S12/073	R0898	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/074	S12/074	R0220	SC12	SC12		111	{CC,SC,PR}	PM	CNTR
+J12/076	S12/076	R0220	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/077	S12/077	R0124	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/078	S12/078	R0000	FT00	FT00		111	{LC,TI,FD-L05}	PM	CNTR
+J12/082	S12/082	R0220	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/083	S12/082	R0220	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/091	S12/067	R0614	SC03	SC03		111	{CC,SC,TI}	PM	CNTR
+J12/094	S12/017	R0120	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/118	S12/004	R0421	SC18	SC18		111	{CC,SC,SI}	PM	CNTR
+J12/121	S12/121	R0219	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/125	S12/125	R0392	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/133	S12/133	R0323	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/134	S12/134	G1134	FT00	FT00			{LC}	PM	CNTR
+J12/135	S12/135	R0320	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/136	S12/136	R0421	SC18	SC18		111	{CC,SC,SI}	PM	CNTR
+J12/146	S12/146	R0219	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/147	S12/040	R0119	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/156	S12/156	R0898	FT00	FT00		111	{LC}	PM	CNTR
+J12/158	S12/158	R0119	FT00	FT00		111	{LC,LF}	PM	CNTR
+J12/160	S12/160	R0323	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/171	S12/076	R0220	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/173	S12/173	G0900	FT00	FT00			{LC,TB}	PM	CNTR
+J12/175	S12/002	R0523	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/177	S12/017	R0120	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/184	S12/184	R0223	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/185	S12/186	R0119	FT00	FT00		111	{LC}	PM	CNTR
+J12/186	S12/186	R0119	FT00	FT00		111	{LC}	PM	CNTR
+J12/190	S12/190	R0123	SC03	FT00		111	{LC,TB,FD-I05}	PM	CNTR
+J12/191	S12/191	R0030	FT00	FT00		111	{LC,TB,FD-I08}	PM	CNTR
+J12/194	S12/194	R0900	FT00	FT00		111	{LC,SS}	PM	CNTR
+J12/199	S12/199	G0900	FT00	FT00			{LC,SS}	PM	CNTR
+J12/207	S12/207	G0900	FT00	FT00			{LC,TB}	PM	CNTR
+J12/208	S12/194	R0900	FT00	FT00		111	{LC,SS}	PM	CNTR
+J12/209	S12/002	R0523	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/210	S12/002	R0523	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/211	S12/211	R0392	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/215	S12/215	R0614	SC03	SC03		111	{CC,SC}	PM	CNTR
+J12/221	S12/006	R0120	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/222	S12/006	R0120	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/224	S12/224	R0898	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/225	S12/040	R0119	SC03	SC03		111	{CC,SC,PR}	PM	CNTR
+J12/227	S12/199	G0900	FT00	FT00			{LC,SS}	PM	CNTR
+J12/228	S12/199	G0900	FT00	FT00			{LC,SS}	PM	CNTR
+J12/232	S12/194	R0900	FT00	FT00		111	{LC,SS}	PM	CNTR
+X12/537	S12/537	G0219	FT00	FT00			{LC}	PM	CNTR
+X12/612	S12/612	G0421	FT00	FT00			{LC}	PM	CNTR
+P00/047	S00/116	R0026	SC03	SC03		111	{cc,sc,fw}	PM	CNTR
+P00/050	S00/031	R0314	SC03	SC03		111	{cc,sc}	PM	CNTR
+P00/062	S00/062	R0026	FT00	FT00		111	{lc}	PM	CNTR
+P00/063	S00/102	R0026	FT00	FT00		111	{lc}	PM	CNTR
+P00/069	S00/102	R0026	FT00	FT00		111	{lc}	PM	CNTR
+P00/073	S00/076	R0011	SC03	SC03		111	{cc,sc}	PM	CNTR
+P00/074	S00/076	R0011	SC03	SC03		111	{cc,sc}	PM	CNTR
+P00/075	S00/076	R0011	SC03	SC03		111	{cc,sc}	PM	CNTR
+P00/076	S00/076	R0011	SC03	SC03		111	{cc,sc}	PM	CNTR
+P00/101	S00/101	R0028	SC03	SC03		111	{cc,sc}	PM	CNTR
+P00/102	S00/102	R0026	FT00	FT00		111	{lc}	PM	CNTR
+P00/110	S00/035	R0928	SC03	SC03		111	{cc,sc}	PM	CNTR
+P00/111	S00/019	R0827	SC03	SC03		111	{cc,sc,pr}	PM	CNTR
+P00/119	S00/119	R0026	FT00	FT00		111	{lc}	PM	CNTR
+P00/120	S00/120	R0974	SC03	SC03		111	{cc,sc}	PM	CNTR
+P00/121	S00/121	R0026	FT00	FT00		111	{lc}	PM	CNTR
+P00/135	S00/004	R0886	SC03	SC03		111	{cc,sc,pr}	PM	CNTR
+P00/136	S00/004	R0886	SC03	SC03		111	{cc,sc,pr}	PM	CNTR
+P00/137	S00/004	R0886	SC03	SC03		111	{cc,sc,pr}	PM	CNTR
+P01/031	S01/024	R0007	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/061	S01/061	R0006	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/183	S01/182	R0022	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/274	S01/274	R0020	SC03	SC03		111	{cc,sc,xc}	PM	CNTR
+P01/307	S01/307	R0002	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/319	S01/319	R0020	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/320	S01/319	R0020	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/335	S01/021	R0007	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/343	S01/343	R0033	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/347	S01/112	R0033	SC03	SC03		111	{cc,sc,fw}	PM	CNTR
+P01/350	S01/349	R0736	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/353	S01/162	R0002	SC03	SC03		111	{cc,sc,df,lf,fw,pn}	PM	CNTR
+P01/373	S01/373	G0235	FT00	MO			{lc}	PM	CNTR
+P01/378	S01/206	R0922	SC03	SC03		111	{cc,sc,fw}	PM	CNTR
+P01/379	S01/207	R0004	SC02	SC02		111	{cc,sc}	PM	CNTR
+P01/383	S01/360	R0126	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/385	S01/131	R0132	SC03	SC03		111	{cc,sc,pr}	PM	CNTR
+P01/387	S01/209	R0004	SC02	SC02		111	{cc,sc}	PM	CNTR
+P01/388	S01/388	R0000	FT00	FT00		111	{lc,ri,fd-L05,fw}	PM	CNTR
+P01/404	S01/404	R0100	FT00	FT00		111	{lc}	PM	CNTR
+P01/409	S01/210	R0004	SC02	SC02		111	{cc,sc}	PM	CNTR
+P01/412	S01/412	R0822	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/413	S01/413	R0822	SC03	FT00		111	{lc,tb}	PM	CNTR
+P01/427	S01/406	R0003	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/430	S01/430	G0003	FT00	FT00			{lc}	PM	CNTR
+P01/445	S01/445	R0007	SC03	FT00		111	{lc,ti,xc}	PM	CNTR
+P01/459	S01/461	R0730	SC03	FT00		111	{lc,tb,ri,fd-A05,pa,pn}	PM	CNTR
+P01/460	S01/461	R0730	SC03	FT00		111	{lc,tb,ri,fd-A05,pa,pn}	PM	CNTR
+P01/467	S01/467	G0000	FT00	MO			{lc}	PM	CNTR
+P01/472	S01/312	R0055	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/479	S01/023	R0007	SC03	SC03		111	{cc,sc,xc}	PM	CNTR
+P01/489	S01/489	R0317	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/496	S01/496	R0019	SC03	SC03		111	{cc,sc,fw}	PM	CNTR
+P01/548	S01/548	G0900	FT00	FT00			{lc}	PM	CNTR
+P01/549	S01/549	G0900	FT00	FT00			{lc}	PM	CNTR
+P01/556	S01/157	R0564	SC03	SC03		111	{cc,sc,fw}	PM	CNTR
+P01/594	S01/002	R0106	SC03	SC03		111	{cc,sc}	PM	CNTR
+P01/608	S01/608	R0001	SC03	SC03		111	{cc,sc}	PM	CNTR
+P02/061	S02/058	R0009	SC03	SC03		111	{cc,sc,pn,xc}	PM	CNTR
+P02/141	S02/141	R0149	SC03	SC03		111	{cc,sc}	PM	CNTR
+P02/142	S02/142	R0149	SC03	SC03		111	{cc,sc}	PM	CNTR
+P02/157	S02/044	R0149	SC03	SC03		111	{cc,sc}	PM	CNTR
+P02/158	S02/044	R0149	SC03	SC03		111	{cc,sc}	PM	CNTR
+P02/169	S02/169	R0452	SC03	SC03		111	{cc,sc}	PM	CNTR
+P02/178	S02/143	R0008	SC03	SC03		111	{cc,sc}	PM	CNTR
+P02/202	S02/064	R0008	SC03	SC03		111	{cc,sc,xc}	PM	CNTR
+P02/215	S02/045	R0149	SC03	SC03		111	{cc,sc}	PM	CNTR
+P02/250	S02/059	R0009	SC03	SC03		111	{cc,sc,xc}	PM	CNTR
+P02/252	S02/252	R0008	SC03	SC03		111	{cc,sc,pn}	PM	CNTR
+P03/070	S03/070	R0144	SC03	SC03		111	{cc,sc}	PM	CNTR
+P03/083	S03/099	R0059	SC03	SC03		111	{cc,sc,pa,pn}	PM	CNTR
+P03/113	S03/113	R0345	FT00	FT00		111	{lc}	PM	CNTR
+P03/114	S03/113	R0345	FT00	FT00		111	{lc}	PM	CNTR
+P03/116	S03/116	R0159	FT00	FT00		111	{lc}	PM	CNTR
+P03/117	S03/116	R0159	FT00	FT00		111	{lc}	PM	CNTR
+P03/118	S03/003	R0059	SC03	SC03		111	{cc,sc}	PM	CNTR
+P03/119	S03/003	R0059	SC03	SC03		111	{cc,sc}	PM	CNTR
+P03/142	S03/142	R0345	FT00	FT00		111	{lc}	PM	CNTR
+P03/149	S03/032	R0344	SC03	SC03		111	{cc,sc,pr}	PM	CNTR
+P03/170	S03/170	R0008	SC03	SC03		111	{cc,sc}	PM	CNTR
+P03/175	S03/158	R0059	SC03	SC03		111	{cc,sc,fw}	PM	CNTR
+P03/188	S02/021	R0008	SC03	SC03		111	{cc,sc,fw,xc}	PM	CNTR
+P04/004	S04/003	R0143	SC02	SC02		111	{cc,sc,pr}	PM	CNTR
+P04/034	S04/034	R0143	FT00	FT00		111	{lc,xc}	PM	CNTR
+P04/125	S04/125	R0343	SC03	SC03		111	{cc,sc}	PM	CNTR
+P04/126	S04/125	R0343	SC03	SC03		111	{cc,sc}	PM	CNTR
+P04/194	S04/194	R0143	FT00	FT00		111	{lc}	PM	CNTR
+P04/195	S04/195	R0143	FT00	FT00		111	{lc}	PM	CNTR
+P04/201	S04/202	G1037	FT00	FT00			{lc,ti}	PM	CNTR
+P05/051	S05/051	R0028	SC03	SC03		111	{cc,sc,fw,pn}	PM	CNTR
+P05/065	S05/065	R0023	SC03	SC03		111	{cc,sc}	PM	CNTR
+P05/105	S05/105	R0029	SC03	SC03		111	{cc,sc}	PM	CNTR
+P05/106	S05/105	R0029	SC03	SC03		111	{cc,sc}	PM	CNTR
+P05/192	S05/192	R0293	SC03	SC03		111	{cc,sc}	PM	CNTR
+P05/252	S05/252	R0293	SC03	SC03		111	{cc,sc}	PM	CNTR
+P05/311	S05/311	R0293	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/079	S08/079	R0579	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/083	S08/083	R0612	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/090	S08/090	R0579	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/091	S08/090	R0579	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/093	S08/093	R0162	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/156	S08/027	R0315	SC03	SC03		111	{cc,sc,pr}	PM	CNTR
+P08/216	S08/032	R0202	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/248	S08/248	R0000	FT00	MO		111	{lc}	PM	CNTR
+P08/256	S09/035	R0935	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/293	S08/323	R0200	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/294	S08/323	R0200	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/326	S08/326	R0261	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/328	S08/328	R0832	FT00	FT00		111	{lc}	PM	CNTR
+P08/330	S08/330	R0812	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/331	S08/030	R0812	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/332	S08/332	R0832	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/333	S08/031	R0832	SC03	SC03		111	{cc,sc}	PM	CNTR
+P08/364	S08/364	G0012	FT00	FT00			{lc}	PM	CNTR
+P08/408	S08/408	R0579	SC03	SC03		111	{cc,sc,xc}	PM	CNTR
+P08/409	S08/409	R0833	FT00	FT00		111	{lc}	PM	CNTR
+P09/102	S09/076	R0164	SC03	SC03		111	{cc,sc,fw}	PM	CNTR
+P09/127	S09/127	R0468	SC03	SC03		111	{cc,sc}	PM	CNTR
+P09/132	S09/132	R0269	SC03	SC03		111	{cc,sc}	PM	CNTR
+P09/168	S09/168	R0164	SC03	SC03		111	{cc,sc,pn}	PM	CNTR
+P09/169	S09/169	R0373	SC03	FT00		111	{lc,tb,ri,fd-I05}	PM	CNTR
+P09/197	S09/197	R0164	SC03	SC03		111	{cc,sc,pn}	PM	CNTR
+P09/200	S09/200	R0238	SC03	SC03		111	{cc,sc}	PM	CNTR
+P09/201	S09/201	R0238	SC03	SC03		111	{cc,sc}	PM	CNTR
+P09/206	S09/206	R0262	SC03	SC03		111	{cc,sc}	PM	CNTR
+P09/237	S09/237	R0269	SC03	SC03		111	{cc,sc}	PM	CNTR
+P09/257	S09/257	R0277	SC03	SC03		111	{cc,sc}	PM	CNTR
+P09/258	S09/258	R0277	SC03	SC03		111	{cc,sc}	PM	CNTR
+P09/259	S09/259	R0277	SC03	SC03		111	{cc,sc}	PM	CNTR
+P09/286	S09/286	G0269	FT00	MO			{lc}	PM	CNTR
+P09/287	S09/286	G0269	FT00	MO			{lc}	PM	CNTR
+P09/322	S09/308	R0262	SC03	SC03		111	{cc,sc}	PM	CNTR
+P09/410	S09/198	R2164	SC03	SC03		111	{cc,sc,pn}	PM	CNTR
+P11/031	S11/031	R0319	SC03	SC03		111	{cc,sc,pn,xc}	PM	CNTR
+P11/032	S11/031	R0319	SC03	SC03		111	{cc,sc,pn,xc}	PM	CNTR
+P11/036	S11/036	R0122	SC03	SC03		111	{cc,sc}	PM	CNTR
+P11/037	S11/022	R0122	SC03	SC03		111	{cc,sc}	PM	CNTR
+P11/060	S11/023	R0321	SC03	SC03		111	{cc,sc,fw,xc}	PM	CNTR
+P11/081	S11/081	R0122	SC03	SC03		111	{cc,sc}	PM	CNTR
+P11/145	S11/150	R0220	SC03	SC03		111	{cc,sc,xc}	PM	CNTR
+P11/150	S11/150	R0220	SC03	SC03		111	{cc,sc}	PM	CNTR
+P11/184	S11/041	R0321	SC03	SC03		111	{cc,sc}	PM	CNTR
+P12/014	S12/014	R0323	SC03	SC03		111	{cc,sc,xc}	PM	CNTR
+P12/015	S12/015	R0323	SC03	SC03		111	{cc,sc}	PM	CNTR
+P12/024	S12/010	R0120	SC03	SC03		111	{cc,sc,pr}	PM	CNTR
+P12/038	S12/038	R0219	SC03	SC03		111	{cc,sc}	PM	CNTR
+P12/039	S12/039	R0119	FT00	FT00		111	{lc,pn}	PM	CNTR
+P12/080	S12/080	R0123	FT00	FT00		111	{lc}	PM	CNTR
+P12/084	S12/084	G0900	FT00	MO			{lc}	PM	CNTR
+P12/088	S12/184	R0223	SC03	SC03		111	{cc,sc,pr}	PM	CNTR
+P12/089	S12/089	R0421	SC18	SC18		111	{cc,sc,si}	PM	CNTR
+P12/090	S12/089	R0421	SC18	SC18		111	{cc,sc,si}	PM	CNTR
+P12/093	S12/093	R0123	FT00	FT00		111	{lc}	PM	CNTR
+P12/098	S12/098	R0219	SC03	SC03		111	{cc,sc}	PM	CNTR
+P12/099	S12/098	R0219	SC03	SC03		111	{cc,sc}	PM	CNTR
+P12/100	S12/100	R0119	FT00	FT00		111	{lc}	PM	CNTR
+P12/101	S12/100	R0119	FT00	FT00		111	{lc}	PM	CNTR
+P12/104	S12/104	R0235	SC03	SC03		111	{cc,sc}	PM	CNTR
+P12/105	S12/104	R0235	SC03	SC03		111	{cc,sc}	PM	CNTR
+P12/106	S01/105	R0235	SC03	SC03		111	{cc,sc}	PM	CNTR
+P12/107	S01/105	R0235	SC03	SC03		111	{cc,sc}	PM	CNTR
+P12/108	S12/146	R0219	SC03	SC03		111	{cc,sc}	PM	CNTR
+P12/109	S12/146	R0219	SC03	SC03		111	{cc,sc}	PM	CNTR
+P12/110	S12/110	R0421	SC18	SC18		111	{cc,sc,si}	PM	CNTR
+P12/111	S12/110	R0421	SC18	SC18		111	{cc,sc,si}	PM	CNTR
+P12/112	S12/112	R0421	SC18	SC18		111	{cc,sc,si}	PM	CNTR
+P12/114	S12/114	R0421	SC18	SC18		111	{cc,sc,si}	PM	CNTR
+P12/119	S12/119	R0220	FT00	FT00		111	{lc}	PM	CNTR
+P12/120	S12/121	R0219	SC03	SC03		111	{cc,sc,xc}	PM	CNTR
+P12/126	S12/125	R0392	SC03	SC03		111	{cc,sc}	PM	CNTR
+P12/129	S12/110	R0421	SC18	SC18		111	{cc,sc,si}	PM	CNTR
+P12/130	S12/110	R0421	SC18	SC18		111	{cc,sc,si}	PM	CNTR
+P12/137	S12/137	R0219	FT00	FT00		111	{lc}	PM	CNTR
+P12/138	S12/135	R0320	SC03	SC03		111	{cc,sc}	PM	CNTR
+P12/144	S12/012	R0420	SC03	SC03		111	{cc,sc,pr}	PM	CNTR
+P12/145	S12/012	R0420	SC03	SC03		111	{cc,sc,pr}	PM	CNTR
+P12/159	S12/158	R0119	FT00	FT00		111	{lc,pn}	PM	CNTR
+P12/170	S12/170	G0900	FT00	MO			{lc}	PM	CNTR
+P12/178	S12/178	G0900	FT00	MO			{lc,is}	PM	CNTR
+P12/179	S12/179	G0900	FT00	MO			{lc,is}	PM	CNTR
+P12/180	S12/180	G0900	FT00	MO			{lc,is}	PM	CNTR
+P12/181	S12/181	G0900	FT00	MO			{lc,is}	PM	CNTR
+P12/187	S12/184	R0223	SC03	SC03		111	{cc,sc,pr}	PM	CNTR
+P12/189	S12/189	G0223	FT00	FT00			{lc}	PM	CNTR
+P12/195	S12/195	G0100	FT00	FT00			{lc,ri,fd-L05}	PM	CNTR
+P12/198	S12/198	G0900	FT00	MO			{lc}	PM	CNTR
+P12/200	S12/200	G0900	FT00	MO			{lc,ri}	PM	CNTR
+P12/201	S12/051	R0223	SC03	SC03		111	{cc,sc}	PM	CNTR
+P12/202	S12/202	R0030	FT00	FT00		111	{lc,xc}	PM	CNTR
+P12/203	S12/203	R0123	FT00	FT00		111	{lc}	PM	CNTR
+P12/204	S12/121	R0219	SC03	SC03		111	{cc,sc,xc}	PM	CNTR
+P12/205	S12/121	R0219	SC03	SC03		111	{cc,sc,xc}	PM	CNTR
+P12/206	S12/206	G0900	FT00	FT00			{lc}	PM	CNTR
+P12/220	S12/220	G0900	FT00	FT00			{lc}	PM	CNTR
+P12/223	S12/223	G0900	FT00	MO			{lc}	PM	CNTR
+P12/234	S12/234	G0900	FT00	FT00			{lc}	PM	CNTR
+F00/002	S00/002	G0315	MO	MO			{SIGNS,-SSOFF,lc}	PM	CNTR
+F00/004	S00/004	G0886	MO	MO			{STREAM-ON,lc}	PM	CNTR
+F00/028	S00/028	G0292	MO	MO			{LOOP,-CLR,lc}	PM	CNTR
+F00/089	S00/089	G0866	MO	MO			{LIMR,-LIMIT,lc}	PM	CNTR
+F00/107	S00/107	G0100	MO	MO			{LIMIT,-CLR,lc,is}	PM	CNTR
+F00/113	S00/113	G0374	MO	MO			{LIMR,-LIMIT,lc}	PM	CNTR
+F00/115	S00/115	G0027	MO	MO			{LIMR,-CLR,lc}	PM	CNTR
+F00/117	S00/117	G0774	MO	MO			{LAMPS,-ON,lc}	PM	CNTR
+F00/130	S00/003	G0023	MO	MO			{LAMPS,-ON,lc}	PM	CNTR
+F01/009	S01/009	G0018	MO	MO			{-,lc}	PM	CNTR
+F01/010	S01/009	G0018	MO	MO			{-,lc}	PM	CNTR
+F01/016	S01/016	G0136	MO	MO			{SIGS,-ON,lc}	PM	CNTR
+F01/044	S01/044	G0553	MO	MO			{SS,-SSON,lc}	PM	CNTR
+F01/048	S01/048	G0053	MO	MO			{SSIGN,-ON,lc}	PM	CNTR
+F01/066	S01/066	G0019	MO	MO			{SIGN,-ON,lc,fd-A06}	PM	CNTR
+F01/142	S01/142	G0003	MO	MO			{PHASE,-G,lc}	PM	CNTR
+F01/144	S01/144	G0003	MO	MO	547365		{PARK,-OPEN,lc}	PM	CNTR
+F01/147	S01/144	G0003	MO	MO	547365		{PARK,-OPEN,lc}	PM	CNTR
+F01/148	S01/148	G0003	MO	MO	547365		{PARK,-OPEN,lc}	PM	CNTR
+F01/198	S01/198	G0737					{SIGN,lc,tb}	PM	CNTR
+F01/204	S01/204	G0003					{STAGE4,lc,tb}	PM	CNTR
+F01/205	S01/205	G0922	ON				{SSIGN,lc,tb}	PM	CNTR
+F01/206	S01/206	G0922	ON		041290		{SIGN,lc,tb}	PM	CNTR
+F01/242	S01/242	G0515	MO	MO			{LIMR,-CLR,lc}	PM	CNTR
+F01/273	S01/393	G1053	MO	MO	111111		{PTMI,-PTOFF,lc}	PM	CNTR
+F01/312	S01/312	G0055					{STG8,lc,tb}	PM	CNTR
+F01/346	S01/346	G0121	MO	MO			{LIMR,-CLR,lc}	PM	CNTR
+F01/359	S01/359	G0126					{SWITCH,lc,is}	PM	CNTR
+F01/360	S01/360	G0126					{SWITCH,lc,tb}	PM	CNTR
+F01/361	S01/361	G0126		ON			{SWITCH-ON,nw,tb}	PM	CNTR
+F01/362	S01/360	G0126			546501		{SWITCH,lc,tb}	PM	CNTR
+F01/364	S01/364	G0126					{STAGE,lc,tb}	PM	CNTR
+F01/372	S01/372	G0053					{SIGNS,lc,tb}	PM	CNTR
+F01/376	S01/376	G0053					{CLF,lc,tb}	PM	CNTR
+F01/390	S01/390	G0207	MO	MO			{STREAM-ON,lc}	PM	CNTR
+F01/391	S01/390	G0207	MO	MO			{STREAM-ON,lc}	PM	CNTR
+F01/392	S01/393	G1053	MO	MO	111111		{PTMI,-PTOFF,lc}	PM	CNTR
+F01/393	S01/393	G1053	MO	MO	111111		{PTMI,-PTOFF,lc}	PM	CNTR
+F01/469	S01/469	G0055	MO	MO	054212		{KEY,-OFF,lc}	PM	CNTR
+F01/480	S01/063	G0018	MO	MO			{LIGHTS-ON,lc}	PM	CNTR
+F01/510	S01/510	G0017	MO	MO			{LIMR,-CLR,lc}	PM	CNTR
+F01/531	S01/009	G0018	MO	MO			{-,lc}	PM	CNTR
+F01/535	S01/009	G0018	MO	MO			{-,lc}	PM	CNTR
+F01/574	S01/574	G0421	MO	MO			{GATE,-OPEN,lc}	PM	CNTR
+F02/019	S02/019	G0379					{SIGNS,lc,tb}	PM	CNTR
+F02/020	S02/020	G0008					{OVRD,lc,tb}	PM	CNTR
+F02/058	S02/058	G0009	MO	MO			{SIGNS,-ON,lc}	PM	CNTR
+F02/060	S02/060	G0009	MO	MO			{SS,-ON,lc}	PM	CNTR
+F02/207	S02/207	G0408	MO	MO			{LAMPS,-ON,lc}	PM	CNTR
+F02/276	S02/062	G0009	MO	MO			{SIGNS,-OFF,lc,is}	PM	CNTR
+F02/328	S02/328	G0509					{lc,tb}	PM	CNTR
+F04/036	S04/036	G1043					{HC,lc,tb}	PM	CNTR
+F05/014	S05/014	G0029					{HCO,lc,tb}	PM	CNTR
+F05/051	S05/051	G0028	MO	MO			{DETECT-FAULT,lc}	PM	CNTR
+F05/097	S05/097	G0023	MO	MO			{SIGS,-ON,lc}	PM	CNTR
+F05/194	S05/194	G0028	MO	MO			{HC,-ZERO,lc}	PM	CNTR
+F08/004	S08/004	G0000	MO	MO			{wigwag-waggle,lc,ti}	PM	CNTR
+F08/140	S08/140	G0200	MO	MO			{LIMR,-LIMIT,lc}	PM	CNTR
+F08/142	S08/142	G0012	MO	MO			{LIMR,-LIMIT,lc}	PM	CNTR
+F08/143	S08/143	G1010	MO	MO			{LIMR,-CLR,lc}	PM	CNTR
+F08/389	S08/389	G0000	MO	MO			{LIMR,-limit,lc,ti}	PM	CNTR
+F08/390	S08/390	G0000	MO	MO			{LIMR,-limit,lc,ti}	PM	CNTR
+F09/086	S09/086	G0164	MO	MO			{SIGOFF-ON,lc}	PM	CNTR
+F09/250	S09/250	G1068			054253		{HCO,lc,tb}	PM	CNTR
+F09/302	S09/120	G0368	MO	MO	054227		{QDET,-CLR,lc}	PM	CNTR
+F09/313	S09/313	G0164	MO	MO			{STREAM-ON,lc}	PM	CNTR
+F09/335	S09/076	G0164	MO	MO			{Demand-S1_no,lc}	PM	CNTR
+F09/386	S09/386	G0468					{Ovrde,lc,tb}	PM	CNTR
+F11/166	S11/166	G1111	MO	MO			{LIMR,-CLR,lc}	PM	CNTR
+F12/020	S12/020	G0524	MO	MO			{SIGN,-ON,lc}	PM	CNTR
+F12/040	S12/040	G0119	MO	MO			{BARR,-UP,lc}	PM	CNTR
+F12/050	S12/050	G0223		off			{HCO,-off,nw,tb,fd-A05}	PM	CNTR
+F12/051	S12/051	G0223					{HCO,lc,tb}	PM	CNTR
+F12/134	S12/134	G1134	MO	MO			{LIMR,-LIMIT,lc}	PM	CNTR
+\.
+
+
+--
+-- Data for Name: plans; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.plans (site_id, plan_number, name, cycle_time, timeout) FROM stdin;
+J00/002	1	WAT AM **RUNS STAGE 9 NO RIGHT TURN**	120	0
+J00/002	2	WAT OP **RUNS STAGE 9 NO RIGHT TURN**	120	0
+J00/002	3	WAT PM **RUNS STAGE 9 NO RIGHT TURN**	120	0
+J00/002	5	WAT 112 **RUNS STAGE 3 RIGHT TURN ALLOWED**D2 bit on all stages only on plan 5	112	0
+J00/002	6	WAT WEEKEND **RUNS STAGE 9 NO RIGHT TURN**	112	0
+J00/002	8	WAT 112 **RUNS STAGE 9 NO RIGHT TURN**	112	0
+J00/002	21	NB ASSIST R315 **RUNS STAGE 9 NO RIGHT TURN**	120	60
+J00/002	22	HEAVY NB ASSIST R315 **RUNS STAGE 9 NO RIGHT TURN**	120	30
+J00/002	32	MINS CHECK	120	0
+J00/002	61	ASSIST LUDGATE & FLEET @ 00/002 **RUNS STAGE 9 NO RIGHT TURN**	120	60
+J00/002	62	HVY ASSIST LUDGATE & FLEET @ 00/002 **RUNS STAGE 9 NO RIGHT TURN**	120	30
+J00/002	63	ASSIST SB RT @ 00/002 **RUNS STAGE 9 NO RIGHT TURN**	120	60
+J00/002	64	ASSIST NB LT @ 00/002 (RED CYC GRN) **RUNS STAGE 9 NO RIGHT TURN**	120	30
+J00/002	65	SPLIT PHASE NORTH & SOUTH MOVMNTS @ 00/002 - USE WITH CAUTION e.g. S/B lne clsre	120	60
+J00/002	66	SPLIT PHASE CYCLE LANE & TRAFFIC @ 00/002 - USE WITH CAUTION - ASSIST N/B	120	0
+J00/002	68	SPLIT PHASE CYCLE LANE & TRAFFIC @ 00/002 - USE WITH CAUTION - OVERNIGHT	112	60
+J00/002	69	SPLIT PHASE CYCLE LANE & TRAFFIC @ 00/002 - USE WITH CAUTION - ASSIST CYCLES	120	60
+J00/002	70	SPLIT PHASE CYCLE LANE & TRAFFIC @ 00/002 - USE WITH CAUTION - ASSIST EAST-WEST	120	60
+J00/003	1	AM PEAK - WAT	96	0
+J00/003	2	OFF PEAK - WAT	96	0
+J00/003	3	PM PEAK - WAT	96	0
+J00/003	5	OVERNIGHT - WAT	88	0
+J00/003	8	EVENING -  WAT	96	0
+J00/003	11	ATM LEVEL 1	96	0
+J00/003	12	ATM LEVEL 2	96	0
+J00/003	13	ATM LEVEL 3	96	0
+J00/003	19	ASSIST TOWER BRIDGE N/B & HEAVY HOLD HIGHWAY W/B AT J5/97 (EQUIV TO ATM LEVEL 3)	96	0
+J00/003	22	ASSIST TOWER HILL EASTBOUND	96	0
+J00/003	23	N/B Tower Bridge Assist	96	0
+J00/003	32	MINS CHECK	80	0
+J00/004	1	WAT AM PEAK	80	0
+J00/004	2	WAT OFF PEAK	80	0
+J00/004	3	WAT PM PEAK	80	0
+J00/004	5	WAT OVERNIGHT	64	0
+J00/004	8	WAT LATE EVENING	72	0
+J00/004	32	MINS CHECK	80	0
+J00/005	1	WAT - AM	112	0
+J00/005	2	WAT - OP	104	0
+J00/005	3	WAT - PM	104	0
+J00/005	5	WAT - NIGHT	96	0
+J00/005	8	WAT - EVENING	104	0
+J00/005	32	MINS CHECK	40	0
+J00/006	1	WAT AM	120	0
+J00/006	2	WAT OP	120	0
+J00/006	3	WAT PM	120	0
+J00/006	4	ASSIST NB RGT TURN	120	0
+J00/006	5	WAT ON	112	0
+J00/006	6	WAT WKEND	112	0
+J00/006	8	WAT LE	112	0
+J00/006	21	NORTHBOUND ASSIST R315	120	60
+J00/006	22	HEAVY NORTHBOUND ASSIST R315	120	60
+J00/006	23	SOUTHBOUND ASSIST @ 00/006	120	30
+J00/006	24	HEAVY SOUTHBOUND ASSIST @ 00/006	120	30
+J00/006	25	ASSIST NTHBND AND NTHBND RIGHT TURN INTO QVS (GATES S/B) @ 00/006	120	60
+J00/006	26	ASSIST QUEEN VICTORIA STREET @ 00/006	120	60
+J00/006	27	ASSIST EMBANKMENT @ 00/006	120	60
+J00/006	28	RIDE LONDON FREE CYCLE - CAUTION	120	0
+J00/006	29	HEAVY ASSIST EMBANKMENT @ 00/006	120	60
+J00/006	30	RideLondon 2022	120	0
+J00/006	32	MINS CHECK	80	0
+J00/006	60	SPLIT NORTH-SOUTH (5234) AND ASSIST QVS	112	0
+J00/006	61	SPLIT NORTH-SOUTH (5234)	112	0
+J00/006	62	ASSIST VIC.EMK E/B SLIP & Q.VIC ST W/B	112	60
+J00/006	68	SEVERE ASSIST EMBANKMENT - UTS EB CLOSURE	120	0
+J00/007	1	AM - WAT	72	0
+J00/007	2	OP WAT	72	0
+J00/007	3	PM WAT	72	0
+J00/007	5	OVERNIGHT - WAT	64	0
+J00/007	6	Assist Puddle Dock N/B (stage 3)	80	0
+J00/007	8	EVENING - WAT	72	0
+J00/007	21	ASSIST E/B Q/VICTORIA ST + R/TURN INTO PUDDLE DOCK	80	0
+J00/007	22	Assist E/B Q/Vic St & R/T into Puddle Dock, more than plan 21	88	0
+J00/007	24	ASSIST N/B PUDDLE DOCK	88	0
+J00/007	25	HEAVY ASSIST N/B PUDDLE DOCK	88	0
+J00/007	26	SEVERE ASSIST N/B PUDDLE DOCK	96	0
+J00/007	32	MINS CHECK	80	0
+J00/008	1	AM WAT	80	0
+J00/008	2	OP WAT	80	0
+J00/008	3	PM WAT	80	0
+J00/008	5	OVERNIGHT WAT	72	0
+J00/008	8	EVENING WAT	72	0
+J00/008	32	MINS CHECK	60	0
+J00/009	1	WAT AM	96	0
+J00/009	2	WAT OP	88	0
+J00/009	3	WAT PM	96	0
+J00/009	5	WAT ON	80	0
+J00/009	8	WAT LE	80	0
+J00/009	21	ASSIST MOORGATE NORTH/SOUTHBOUND	96	0
+J00/009	22	ASSIST MOORGATE SOUTHBOUND R/T	96	0
+J00/009	23	ASSIST LONDON WALL	96	0
+J00/009	24	ASSIST LONDON WALL R/T INTO MOORGATE	96	0
+J00/009	25	HEAVY ASSIST MOORGATE NORTH/SOUTHBOUND	104	0
+J00/009	26	HEAVY ASSIST LONDON WALL	104	0
+J00/009	27	HEAVY ASSIST LONDON WALL E/B	104	0
+J00/009	28	HEAVY R/T ASSIST (LONDON WALL W/B CLOSURE)	104	0
+J00/009	32	MINS CHECK	100	0
+J00/010	1	AM WAT	88	0
+J00/010	2	OP WAT	88	0
+J00/010	3	PM WAT	88	0
+J00/010	5	ON WAT	88	0
+J00/010	8	LE WAT	88	0
+J00/010	21	ASSIST Northbound Princes Street and Southbound Moorgate	96	60
+J00/010	22	ASSIST GRESHAM STREET AND LOTHBURY	96	60
+J00/010	32	MINS CHECK	60	0
+J00/011	1	WAT AM	88	0
+J00/011	2	WAT OP	88	0
+J00/011	3	WAT PM	88	0
+J00/011	5	WAT ON	88	0
+J00/011	8	WAT LE	88	0
+J00/011	32	MINS CHECK	80	0
+J00/070	1	WAT AM	96	0
+J00/070	2	WAT OP	88	0
+J00/070	3	WAT PM	96	0
+J00/070	5	WAT ON	80	0
+J00/070	8	WAT LE	80	0
+J00/070	21	ASSIST MOORGATE NORTH/SOUTHBOUND	96	0
+J00/070	22	ASSIST MOORGATE SOUTHBOUND R/T	96	0
+J00/070	23	ASSIST LONDON WALL	96	0
+J00/070	24	ASSIST LONDON WALL R/T INTO MOORGATE	96	0
+J00/070	25	HEAVY ASSIST MOORGATE NORTH/SOUTHBOUND	104	0
+J00/070	26	HEAVY ASSIST LONDON WALL	104	0
+J00/070	27	HEAVY ASSIST LONDON WALL E/B	104	0
+J00/070	28	HEAVY R/T ASSIST (LONDON WALL W/B CLOSURE)	104	0
+J00/070	32	MINS CHECK	40	0
+J00/122	1	WAT AM	120	0
+J00/122	2	WAT OP	120	0
+J00/122	3	WAT PM	120	0
+J00/122	4	ASSIST NB RGT TURN	120	0
+J00/122	5	WAT ON	112	0
+J00/122	6	WAT WKEND	112	0
+J00/122	8	WAT LE	112	0
+J00/122	21	NORTHBOUND ASSIST R315	120	60
+J00/122	22	HEAVY NORTHBOUND ASSIST R315	120	60
+J00/122	23	SOUTHBOUND ASSIST @ 00/006	120	30
+J00/122	24	HEAVY SOUTHBOUND ASSIST @ 00/006	120	30
+J00/122	25	ASSIST NTHBND AND NTHBND RIGHT TURN INTO QVS (GATES S/B) @ 00/006	120	60
+J00/122	26	ASSIST QUEEN VICTORIA STREET @ 00/006	120	60
+J00/122	27	ASSIST EMBANKMENT @ 00/006	120	60
+J00/122	28	RIDE LONDON FREE CYCLE - CAUTION	120	0
+J00/122	29	HEAVY ASSIST EMBANKMENT @ 00/006	120	60
+J00/122	30	RideLondon 2022	120	0
+J00/122	32	MINS CHECK	80	0
+J00/122	60	SPLIT NORTH-SOUTH (5234) AND ASSIST QVS	112	0
+J00/122	61	SPLIT NORTH-SOUTH (5234)	112	0
+J00/122	62	ASSIST VIC.EMK E/B SLIP & Q.VIC ST W/B	112	60
+J00/122	68	SEVERE ASSIST EMBANKMENT - UTS EB CLOSURE	120	60
+J00/123	1	WAT AM	120	0
+J00/123	2	WAT OP	120	0
+J00/123	3	WAT PM	120	0
+J00/123	4	ASSIST NB RGT TURN	120	0
+J00/123	5	WAT ON	112	0
+J00/123	6	WAT WKEND	112	0
+J00/123	8	WAT LE	112	0
+J00/123	21	NORTHBOUND ASSIST R315	120	60
+J00/123	22	HEAVY NORTHBOUND ASSIST R315	120	60
+J00/123	23	SOUTHBOUND ASSIST @ 00/006	120	30
+J00/123	24	HEAVY SOUTHBOUND ASSIST @ 00/006	120	30
+J00/123	25	ASSIST NTHBND AND NTHBND RIGHT TURN INTO QVS (GATES S/B) @ 00/006	120	60
+J00/123	26	ASSIST QUEEN VICTORIA STREET @ 00/006	120	60
+J00/123	27	ASSIST EMBANKMENT @ 00/006	120	60
+J00/123	28	RIDE LONDON FREE CYCLE - CAUTION	120	0
+J00/123	29	HEAVY ASSIST EMBANKMENT @ 00/006	120	60
+J00/123	30	RideLondon 2022	120	0
+J00/123	32	MINS CHECK	50	0
+J00/123	60	SPLIT NORTH-SOUTH (5234) AND ASSIST QVS	112	0
+J00/123	61	SPLIT NORTH-SOUTH (5234)	112	0
+J00/123	62	ASSIST VIC.EMK E/B SLIP & Q.VIC ST W/B	112	60
+J00/123	68	SEVERE ASSIST EMBANKMENT - UTS EB CLOSURE	120	60
+J00/130	1	AM PEAK - WAT	96	0
+J00/130	2	OFF PEAK - WAT	96	0
+J00/130	3	PM PEAK - WAT	96	0
+J00/130	5	OVERNIGHT - WAT	88	0
+J00/130	8	HEAVY ASSIST GUNTER GROVE NB	96	0
+J00/130	11	ATM LEVEL 1	96	0
+J00/130	12	ATM LEVEL 2	96	0
+J00/130	13	ATM LEVEL 3	96	0
+J00/130	19	ASSIST TOWER BRIDGE N/B & HEAVY HOLD HIGHWAY W/B AT J5/97 (EQUIV TO ATM LEVEL 3)	96	0
+J00/130	22	ASSIST TOWER HILL EASTBOUND	96	0
+J00/130	23	N/B Tower Bridge Assist	96	0
+J00/130	32	MINS CHECK	40	0
+J00/134	1	WAT AM	120	0
+J00/134	2	WAT OP	120	0
+J00/134	3	WAT PM	120	0
+J00/134	4	ASSIST NB RGT TURN	120	0
+J00/134	5	WAT ON	112	0
+J00/134	6	WAT WKEND	112	0
+J00/134	8	WAT LE	112	0
+J00/134	21	NORTHBOUND ASSIST R315	120	60
+J00/134	22	HEAVY NORTHBOUND ASSIST R315	120	60
+J00/134	23	SOUTHBOUND ASSIST @ 00/006	120	30
+J00/134	24	HEAVY SOUTHBOUND ASSIST @ 00/006	120	30
+J00/134	25	ASSIST NTHBND AND NTHBND RIGHT TURN INTO QVS (GATES S/B) @ 00/006	120	60
+J00/134	26	ASSIST QUEEN VICTORIA STREET @ 00/006	120	60
+J00/134	27	ASSIST EMBANKMENT @ 00/006	120	60
+J00/134	28	RIDE LONDON FREE CYCLE - CAUTION	120	0
+J00/134	29	HEAVY ASSIST EMBANKMENT @ 00/006	120	60
+J00/134	30	RideLondon 2022	120	0
+J00/134	32	MINS CHECK	80	0
+J00/134	60	SPLIT NORTH-SOUTH (5234) AND ASSIST QVS	112	0
+J00/134	61	SPLIT NORTH-SOUTH (5234)	112	0
+J00/134	62	ASSIST VIC.EMK E/B SLIP & Q.VIC ST W/B	112	60
+J00/134	68	SEVERE ASSIST EMBANKMENT - UTS EB CLOSURE	120	60
+J00/135	1	WAT AM PEAK	80	0
+J00/135	2	WAT OFF PEAK	80	0
+J00/135	3	WAT PM PEAK	80	0
+J00/135	5	WAT OVERNIGHT	64	0
+J00/135	8	WAT LATE EVENING	72	0
+J00/136	1	WAT AM PEAK	80	0
+J00/136	2	WAT OFF PEAK	80	0
+J00/136	3	WAT PM PEAK	80	0
+J00/136	5	WAT OVERNIGHT	64	0
+J00/136	8	WAT LATE EVENING	72	0
+J00/137	1	WAT AM PEAK	80	0
+J00/137	2	WAT OFF PEAK	80	0
+J00/137	3	WAT PM PEAK	80	0
+J00/137	5	WAT OVERNIGHT	64	0
+J00/137	8	WAT LATE EVENING	72	0
+J00/138	1	WAT - AM	112	0
+J00/138	2	WAT - OP	104	0
+J00/138	3	WAT - PM	104	0
+J00/138	5	WAT - NIGHT	96	0
+J00/138	8	WAT - EVENING	104	0
+J00/138	32	MINS CHECK	40	0
+J00/139	1	AM PEAK - WAT	96	0
+J00/139	2	OFF PEAK - WAT	96	0
+J00/139	3	PM PEAK - WAT	96	0
+J00/139	5	OVERNIGHT - WAT	88	0
+J00/139	8	HEAVY ASSIST GUNTER GROVE NB	96	0
+J00/139	11	ATM LEVEL 1	96	0
+J00/139	12	ATM LEVEL 2	96	0
+J00/139	13	ATM LEVEL 3	96	0
+J00/139	19	ASSIST TOWER BRIDGE N/B & HEAVY HOLD HIGHWAY W/B AT J5/97 (EQUIV TO ATM LEVEL 3)	96	0
+J00/139	22	ASSIST TOWER HILL EASTBOUND	96	0
+J00/139	23	N/B Tower Bridge Assist	96	0
+J00/139	32	MINS CHECK	40	0
+\.
+
+
+--
+-- Data for Name: prohibited_stage_moves; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.prohibited_stage_moves (controller_key, end_stage_key, start_stage_key, via_stage_key, prohibited, ignore) FROM stdin;
+J00/002	1	0	2	f	f
+J00/002	1	3	2	f	f
+J00/002	1	4	2	f	f
+J00/002	1	5	2	f	f
+J00/002	1	6	2	f	f
+J00/002	1	7	2	f	f
+J00/002	1	8	2	f	f
+J00/002	1	9	2	f	f
+J00/002	2	0	4	f	f
+J00/002	2	1	4	f	f
+J00/002	2	3	4	f	f
+J00/002	2	5	4	f	f
+J00/002	2	6	4	f	f
+J00/002	2	7	4	f	f
+J00/002	2	8	4	f	f
+J00/002	2	9	4	f	f
+J00/002	3	9	0	f	f
+J00/002	4	1	0	f	f
+J00/002	4	2	0	f	f
+J00/002	6	0	7	f	f
+J00/002	6	3	7	f	f
+J00/002	6	4	7	f	f
+J00/002	6	5	7	f	f
+J00/002	6	8	7	f	f
+J00/002	6	9	7	f	f
+J00/002	7	1	0	f	f
+J00/002	7	6	0	f	f
+J00/002	8	1	0	f	f
+J00/002	8	6	0	f	f
+J00/002	9	3	0	f	f
+J00/003	1	6	0	f	f
+J00/003	5	1	0	f	f
+J00/004	1	4	0	f	f
+J00/004	2	1	0	f	f
+J00/004	4	1	0	f	f
+J00/004	5	3	0	f	f
+J00/004	5	6	0	f	f
+J00/004	6	3	0	f	f
+J00/004	6	5	0	f	f
+J00/007	1	5	0	f	f
+J00/007	2	1	0	f	f
+J00/008	4	1	0	f	f
+J00/008	4	5	0	f	f
+J00/008	5	1	0	f	f
+J00/008	5	4	0	f	f
+J00/009	0	4	3	f	f
+J00/009	1	4	3	f	f
+J00/009	1	6	0	f	f
+J00/009	2	1	0	f	f
+J00/009	2	4	3	f	f
+J00/009	2	6	0	f	f
+J00/009	4	3	0	f	f
+J00/009	5	4	3	f	f
+J00/009	6	4	3	f	f
+J00/010	4	1	0	f	f
+J00/010	5	1	0	f	f
+J00/011	5	3	0	f	f
+J00/011	6	2	0	f	f
+J00/011	7	3	0	f	f
+\.
+
+
+--
+-- Data for Name: signal_plan_stages; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.signal_plan_stages (controller_key, signal_plan_number, stream_number, site_id, signal_plan_sequence_number, stage_number, total_length, interstage_length, green_length, pulse_point, either_or, fixed_length) FROM stdin;
+J00/002	1	1	J00/002	0	5	17	11	6	21	f	f
+J00/002	1	1	J00/002	1	6	23	17	6	38	f	f
+J00/002	1	1	J00/002	2	1	22	2	20	61	f	f
+J00/002	1	1	J00/002	3	2	15	5	10	83	f	f
+J00/002	1	1	J00/002	4	4	12	5	7	98	f	f
+J00/002	1	1	J00/002	5	3	31	9	22	110	f	f
+J00/002	2	1	J00/002	0	5	17	11	6	21	f	f
+J00/002	2	1	J00/002	1	6	22	18	4	38	f	f
+J00/002	2	1	J00/002	2	1	13	2	11	60	f	f
+J00/002	2	1	J00/002	3	2	21	5	16	73	f	f
+J00/002	2	1	J00/002	4	4	12	5	7	94	f	f
+J00/002	2	1	J00/002	5	3	35	9	26	106	f	f
+J00/002	3	1	J00/002	0	5	18	11	7	20	f	f
+J00/002	3	1	J00/002	1	6	23	18	5	38	f	f
+J00/002	3	1	J00/002	2	1	22	2	20	61	f	f
+J00/002	3	1	J00/002	3	2	15	5	10	83	f	f
+J00/002	3	1	J00/002	4	4	12	5	7	98	f	f
+J00/002	3	1	J00/002	5	3	30	9	21	110	f	f
+J00/003	1	1	J00/003	0	4	15	7	8	3	f	f
+J00/003	1	1	J00/003	1	1	39	10	29	18	f	f
+J00/003	1	1	J00/003	2	2	22	6	16	57	f	f
+J00/003	1	1	J00/003	3	3	20	6	14	79	f	f
+J00/003	2	1	J00/003	0	4	15	9	6	3	f	f
+J00/003	2	1	J00/003	1	1	39	10	29	18	f	f
+J00/003	2	1	J00/003	2	2	22	6	16	57	f	f
+J00/003	2	1	J00/003	3	3	20	6	14	79	f	f
+J00/003	3	1	J00/003	0	4	15	9	6	9	f	f
+J00/003	3	1	J00/003	1	1	39	10	29	24	f	f
+J00/003	3	1	J00/003	2	2	20	6	14	63	f	f
+J00/003	3	1	J00/003	3	3	22	6	16	83	f	f
+J00/004	1	1	J00/004	0	1	20	9	11	2	f	f
+J00/004	1	1	J00/004	1	2	17	10	7	22	f	f
+J00/004	1	1	J00/004	2	3	34	10	24	39	f	f
+J00/004	1	1	J00/004	3	5	9	7	2	73	f	f
+J00/004	1	2	J00/135	0	9	1	5	-4	46	f	f
+J00/004	1	2	J00/135	1	8	79	8	71	47	f	f
+J00/004	1	3	J00/136	0	12	1	5	-4	9	f	f
+J00/004	1	3	J00/136	1	11	79	8	71	10	f	f
+J00/004	1	4	J00/137	0	15	1	5	-4	9	f	f
+J00/004	1	4	J00/137	1	14	79	8	71	10	f	f
+J00/004	2	1	J00/004	0	1	20	9	11	2	f	f
+J00/004	2	1	J00/004	1	2	18	10	8	22	f	f
+J00/004	2	1	J00/004	2	3	33	10	23	40	f	f
+J00/004	2	1	J00/004	3	5	9	7	2	73	f	f
+J00/004	2	2	J00/135	0	9	1	5	-4	46	f	f
+J00/004	2	2	J00/135	1	8	79	8	71	47	f	f
+J00/004	2	3	J00/136	0	12	1	5	-4	9	f	f
+J00/004	2	3	J00/136	1	11	79	8	71	10	f	f
+J00/004	2	4	J00/137	0	15	1	5	-4	9	f	f
+J00/004	2	4	J00/137	1	14	79	8	71	10	f	f
+J00/004	3	1	J00/004	0	1	22	9	13	2	f	f
+J00/004	3	1	J00/004	1	2	16	10	6	24	f	f
+J00/004	3	1	J00/004	2	3	33	10	23	40	f	f
+J00/004	3	1	J00/004	3	5	9	7	2	73	f	f
+J00/004	3	2	J00/135	0	9	1	5	-4	47	f	f
+J00/004	3	2	J00/135	1	8	79	8	71	48	f	f
+J00/004	3	3	J00/136	0	12	1	5	-4	9	f	f
+J00/004	3	3	J00/136	1	11	79	8	71	10	f	f
+J00/004	3	4	J00/137	0	15	1	5	-4	9	f	f
+J00/004	3	4	J00/137	1	14	79	8	71	10	f	f
+J00/005	1	1	J00/005	0	2	36	15	21	33	f	f
+J00/005	1	1	J00/005	1	6	15	3	12	69	f	f
+J00/005	1	1	J00/005	2	1	61	5	56	84	f	f
+J00/005	1	2	J00/138	0	11	1	3	-2	25	f	f
+J00/005	1	2	J00/138	1	10	67	4	63	26	f	f
+J00/005	1	2	J00/138	2	11	2	3	-1	93	f	f
+J00/005	1	2	J00/138	3	10	42	4	38	95	f	f
+J00/005	2	1	J00/005	0	2	36	15	21	33	f	f
+J00/005	2	1	J00/005	1	6	15	3	12	69	f	f
+J00/005	2	1	J00/005	2	1	61	5	56	84	f	f
+J00/005	2	2	J00/138	0	11	1	5	-4	25	f	f
+J00/005	2	2	J00/138	1	10	67	8	59	26	f	f
+J00/005	2	2	J00/138	2	11	2	5	-3	93	f	f
+J00/005	2	2	J00/138	3	10	42	8	34	95	f	f
+J00/005	3	1	J00/005	0	2	36	15	21	33	f	f
+J00/005	3	1	J00/005	1	6	15	3	12	69	f	f
+J00/005	3	1	J00/005	2	1	53	5	48	84	f	f
+J00/005	3	2	J00/138	0	11	1	5	-4	25	f	f
+J00/005	3	2	J00/138	1	10	67	8	59	26	f	f
+J00/005	3	2	J00/138	2	11	2	5	-3	93	f	f
+J00/005	3	2	J00/138	3	10	34	8	26	95	f	f
+J00/006	1	1	J00/006	0	1	41	8	33	2	f	f
+J00/006	1	1	J00/006	1	2	15	6	9	43	f	f
+J00/006	1	1	J00/006	2	3	18	7	11	58	f	f
+J00/006	1	1	J00/006	3	4	46	5	41	76	f	f
+J00/006	1	2	J00/134	0	8	23	1	22	9	f	f
+J00/006	1	2	J00/134	1	12	30	3	27	32	f	f
+J00/006	1	2	J00/134	2	10	49	3	46	62	f	f
+J00/006	1	2	J00/134	3	12	18	8	10	111	f	f
+J00/006	2	1	J00/006	0	1	43	9	34	2	f	f
+J00/006	2	1	J00/006	1	2	13	6	7	45	f	f
+J00/006	2	1	J00/006	2	3	18	7	11	58	f	f
+J00/006	2	1	J00/006	3	4	46	5	41	76	f	f
+J00/006	2	2	J00/134	0	8	21	2	19	13	f	f
+J00/006	2	2	J00/134	1	12	28	3	25	34	f	f
+J00/006	2	2	J00/134	2	10	49	6	43	62	f	f
+J00/006	2	2	J00/134	3	12	22	13	9	111	f	f
+J00/006	3	1	J00/006	0	1	43	9	34	2	f	f
+J00/006	3	1	J00/006	1	2	13	6	7	45	f	f
+J00/006	3	1	J00/006	2	3	18	7	11	58	f	f
+J00/006	3	1	J00/006	3	4	46	5	41	76	f	f
+J00/006	3	2	J00/134	0	8	23	2	21	11	f	f
+J00/006	3	2	J00/134	1	12	28	3	25	34	f	f
+J00/006	3	2	J00/134	2	10	49	6	43	62	f	f
+J00/006	3	2	J00/134	3	12	20	13	7	111	f	f
+J00/007	1	1	J00/007	0	1	28	15	13	1	f	f
+J00/007	1	1	J00/007	1	3	19	9	10	43	f	f
+J00/007	1	1	J00/007	2	4	11	10	1	62	f	f
+J00/007	2	1	J00/007	0	2	10	6	4	25	f	f
+J00/007	2	1	J00/007	1	3	19	9	10	35	f	f
+J00/007	2	1	J00/007	2	4	16	10	6	54	f	f
+J00/007	2	1	J00/007	3	1	27	16	11	70	f	f
+J00/007	3	1	J00/007	0	2	10	6	4	23	f	f
+J00/007	3	1	J00/007	1	3	22	9	13	33	f	f
+J00/007	3	1	J00/007	2	4	16	10	6	55	f	f
+J00/007	3	1	J00/007	3	1	24	16	8	71	f	f
+J00/008	1	1	J00/008	0	3	21	14	7	9	f	f
+J00/008	1	1	J00/008	1	1	42	7	35	30	f	f
+J00/008	1	1	J00/008	2	2	17	11	6	72	f	f
+J00/008	2	1	J00/008	0	3	21	14	7	9	f	f
+J00/008	2	1	J00/008	1	1	42	7	35	30	f	f
+J00/008	2	1	J00/008	2	2	17	11	6	72	f	f
+J00/008	3	1	J00/008	0	3	21	14	7	9	f	f
+J00/008	3	1	J00/008	1	1	42	7	35	30	f	f
+J00/008	3	1	J00/008	2	2	17	11	6	72	f	f
+J00/009	1	1	J00/009	0	2	11	5	6	27	f	f
+J00/009	1	1	J00/009	1	3	25	8	17	38	f	f
+J00/009	1	1	J00/009	2	4	13	4	9	63	f	f
+J00/009	1	1	J00/009	3	5	16	10	6	76	f	f
+J00/009	1	1	J00/009	4	1	31	16	15	92	f	f
+J00/009	1	2	J00/070	0	9	1	6	-5	83	f	f
+J00/009	1	2	J00/070	1	8	95	16	79	84	f	f
+J00/009	2	1	J00/009	0	1	27	17	10	11	f	f
+J00/009	2	1	J00/009	1	2	7	5	2	38	f	f
+J00/009	2	1	J00/009	2	3	29	8	21	45	f	f
+J00/009	2	1	J00/009	3	4	9	5	4	74	f	f
+J00/009	2	1	J00/009	4	5	16	10	6	83	f	f
+J00/009	2	2	J00/070	0	9	1	6	-5	2	f	f
+J00/009	2	2	J00/070	1	8	87	16	71	3	f	f
+J00/009	3	1	J00/009	0	2	8	5	3	18	f	f
+J00/009	3	1	J00/009	1	3	32	8	24	26	f	f
+J00/009	3	1	J00/009	2	4	9	5	4	58	f	f
+J00/009	3	1	J00/009	3	5	16	10	6	67	f	f
+J00/009	3	1	J00/009	4	1	31	17	14	83	f	f
+J00/009	3	2	J00/070	0	9	1	6	-5	74	f	f
+J00/009	3	2	J00/070	1	8	95	16	79	75	f	f
+J00/010	1	1	J00/010	0	2	36	6	30	15	f	f
+J00/010	1	1	J00/010	1	3	16	9	7	51	f	f
+J00/010	1	1	J00/010	2	1	36	17	19	67	f	f
+J00/010	2	1	J00/010	0	2	36	6	30	15	f	f
+J00/010	2	1	J00/010	1	3	16	10	6	51	f	f
+J00/010	2	1	J00/010	2	1	36	20	16	67	f	f
+J00/010	3	1	J00/010	0	2	36	6	30	15	f	f
+J00/010	3	1	J00/010	1	3	16	10	6	51	f	f
+J00/010	3	1	J00/010	2	1	36	20	16	67	f	f
+J00/011	1	1	J00/011	0	1	21	13	8	11	f	f
+J00/011	1	1	J00/011	1	2	28	7	21	32	f	f
+J00/011	1	1	J00/011	2	3	19	8	11	60	f	f
+J00/011	1	1	J00/011	3	4	20	14	6	79	f	f
+J00/011	2	1	J00/011	0	1	21	13	8	11	f	f
+J00/011	2	1	J00/011	1	2	28	7	21	32	f	f
+J00/011	2	1	J00/011	2	3	19	8	11	60	f	f
+J00/011	2	1	J00/011	3	4	20	14	6	79	f	f
+J00/011	3	1	J00/011	0	1	21	13	8	11	f	f
+J00/011	3	1	J00/011	1	2	28	7	21	32	f	f
+J00/011	3	1	J00/011	2	3	19	8	11	60	f	f
+J00/011	3	1	J00/011	3	4	20	14	6	79	f	f
+J00/007	1	1	J00/007	1	2	10	6	4	29	f	f
+J00/007	1	1	J00/007	2	3	18	9	9	39	f	f
+J00/007	1	1	J00/007	3	4	16	6	10	57	f	f
+\.
+
+
+--
+-- Data for Name: signal_plan_streams; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.signal_plan_streams (controller_key, site_id, signal_plan_number, stream_number, first_stage_time, cycle_time, single_double_triple, is_va) FROM stdin;
+J00/002	J00/002	1	1	21	120	1	f
+J00/002	J00/002	2	1	21	120	1	f
+J00/002	J00/002	3	1	20	120	1	f
+J00/003	J00/003	1	1	3	96	1	f
+J00/003	J00/003	2	1	3	96	1	f
+J00/003	J00/003	3	1	9	96	1	f
+J00/004	J00/004	1	1	2	80	1	f
+J00/004	J00/135	1	2	46	80	1	f
+J00/004	J00/136	1	3	9	80	1	f
+J00/004	J00/137	1	4	9	80	1	f
+J00/004	J00/004	2	1	2	80	1	f
+J00/004	J00/135	2	2	46	80	1	f
+J00/004	J00/136	2	3	9	80	1	f
+J00/004	J00/137	2	4	9	80	1	f
+J00/004	J00/004	3	1	2	80	1	f
+J00/004	J00/135	3	2	47	80	1	f
+J00/004	J00/136	3	3	9	80	1	f
+J00/004	J00/137	3	4	9	80	1	f
+J00/005	J00/005	1	1	33	112	1	f
+J00/005	J00/138	1	2	25	112	1	f
+J00/005	J00/005	2	1	33	112	1	f
+J00/005	J00/138	2	2	25	112	1	f
+J00/005	J00/005	3	1	33	104	1	f
+J00/005	J00/138	3	2	25	104	1	f
+J00/006	J00/006	1	1	2	120	1	f
+J00/006	J00/134	1	2	9	120	1	f
+J00/006	J00/006	2	1	2	120	1	f
+J00/006	J00/134	2	2	13	120	1	f
+J00/006	J00/006	3	1	2	120	1	f
+J00/006	J00/134	3	2	11	120	1	f
+J00/007	J00/007	1	1	1	72	1	f
+J00/007	J00/007	2	1	25	72	1	f
+J00/007	J00/007	3	1	23	72	1	f
+J00/008	J00/008	1	1	9	80	1	f
+J00/008	J00/008	2	1	9	80	1	f
+J00/008	J00/008	3	1	9	80	1	f
+J00/009	J00/009	1	1	27	96	1	f
+J00/009	J00/070	1	2	83	96	1	f
+J00/009	J00/009	2	1	11	88	1	f
+J00/009	J00/070	2	2	2	88	1	f
+J00/009	J00/009	3	1	18	96	1	f
+J00/009	J00/070	3	2	74	96	1	f
+J00/010	J00/010	1	1	15	88	1	f
+J00/010	J00/010	2	1	15	88	1	f
+J00/010	J00/010	3	1	15	88	1	f
+J00/011	J00/011	1	1	11	88	1	f
+J00/011	J00/011	2	1	11	88	1	f
+J00/011	J00/011	3	1	11	88	1	f
+\.
+
+
+--
+-- Data for Name: signal_plans; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.signal_plans (controller_key, signal_plan_number, cycle_time, name, time_period_id) FROM stdin;
+J00/002	1	120	WAT AM **RUNS STAGE 9 NO RIGHT TURN**	AM
+J00/002	2	120	WAT OP **RUNS STAGE 9 NO RIGHT TURN**	OP
+J00/002	3	120	WAT PM **RUNS STAGE 9 NO RIGHT TURN**	PM
+J00/003	1	96	AM PEAK - WAT	AM
+J00/003	2	96	OFF PEAK - WAT	OP
+J00/003	3	96	PM PEAK - WAT	PM
+J00/004	1	80	WAT AM PEAK	AM
+J00/004	2	80	WAT OFF PEAK	OP
+J00/004	3	80	WAT PM PEAK	PM
+J00/005	1	112	WAT - AM	AM
+J00/005	2	112	WAT - AM	OP
+J00/005	3	104	WAT - PM	PM
+J00/006	1	120	WAT AM	AM
+J00/006	2	120	WAT OP	OP
+J00/006	3	120	WAT PM	PM
+J00/007	1	72	AM - WAT	AM
+J00/007	2	72	OP WAT	OP
+J00/007	3	72	PM WAT	PM
+J00/008	1	80	AM WAT	AM
+J00/008	2	80	OP WAT	OP
+J00/008	3	80	PM WAT	PM
+J00/009	1	96	WAT AM	AM
+J00/009	2	88	WAT OP	OP
+J00/009	3	96	WAT PM	PM
+J00/010	1	88	OP WAT	AM
+J00/010	2	88	OP WAT	OP
+J00/010	3	88	OP WAT	PM
+J00/011	1	88	WAT AM	AM
+J00/011	2	88	WAT OP	OP
+J00/011	3	88	WAT PM	PM
+\.
+
+
+--
+-- Data for Name: stages; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.stages (controller_key, stage_number, stage_name, stream_number, stream_stage_number, phase_keys_in_stage) FROM stdin;
+J00/002	0	Stage 0	0	0	{S}
+J00/002	1	Stage 1	0	1	{A,C,I,J}
+J00/002	2	Stage 2	0	2	{B,C}
+J00/002	3	Stage 3	0	3	{E,F,G,H,K,O}
+J00/002	4	Stage 4	0	4	{D}
+J00/002	5	Stage 5	0	5	{L,M}
+J00/002	6	Stage 6	0	6	{A,I,J,P}
+J00/002	7	Stage 7	0	7	{B,Q}
+J00/002	8	Stage 8	0	8	{I,J,R}
+J00/002	9	Stage 9	0	9	{E,F,G,H,K,M,N}
+J00/003	0	00	0	0	{F}
+J00/003	1	01	0	1	{A,D}
+J00/003	2	02	0	2	{B}
+J00/003	3	03	0	3	{C}
+J00/003	4	04	0	4	{E}
+J00/003	5	05	0	5	{A,G}
+J00/003	6	06	0	6	{D,H}
+J00/004	0	All Red Dummy Stage	0	0	{Q}
+J00/004	5	Chaterhouse Street	0	5	{D,F,H,I,V}
+J00/004	3	Chaterhouse Street & New Fetter Lane	0	3	{D,E,F,H}
+J00/004	1	Holborn & Holborn Viaduct	0	1	{A,B,G,I}
+J00/004	4	Holborn Viaduct	0	4	{B,F,G,I,U}
+J00/004	2	Holborn With RIght Turn Filter	0	2	{A,C,G,H,I,J}
+J00/004	6	New Fetter Lane	0	6	{E,F,G,H,W}
+J00/004	7	All Red Stream 1	1	0	{R}
+J00/004	9	Exit Ped Stream Crossing	1	2	{N}
+J00/004	8	Exit Ped Stream E Bound	1	1	{M}
+J00/004	10	All Red Stream 2	2	0	{S}
+J00/004	12	Exit Ped Stream Crossing	2	2	{L}
+J00/004	11	Exit Ped Stream N Bound	2	1	{K}
+J00/004	13	All Red Stream 3	3	0	{T}
+J00/004	15	Exit Ped Stream Crossing	3	2	{P}
+J00/004	14	Exit Ped Stream S Bound	3	1	{O}
+J00/005	0	0	0	0	{N}
+J00/005	1	1	0	1	{A,B,G,H}
+J00/005	2	2	0	2	{C,D,E,I,J,P}
+J00/005	3	3	0	3	{A,B,G,Q}
+J00/005	4	4	0	4	{B,G,H,R}
+J00/005	5	5	0	5	{B,G,S}
+J00/005	6	6	0	6	{C,I,T}
+J00/005	7	7	0	7	{C,D,I,U}
+J00/005	8	8	0	8	{C,I,J,V}
+J00/005	10	10	1	1	{K,L}
+J00/005	11	11	1	2	{M}
+J00/005	12	12	1	3	{L,W}
+J00/005	13	13	1	4	{K,X}
+J00/005	9	9	1	0	{O}
+J00/006	0	STAGE 0	0	0	{P}
+J00/006	1	STAGE 1	0	1	{B,D,E,F}
+J00/006	2	STAGE 2	0	2	{A,B,D}
+J00/006	3	STAGE 3	0	3	{C,D}
+J00/006	4	STAGE 4	0	4	{G}
+J00/006	5	STAGE 5	0	5	{D,E,F,S}
+J00/006	6	STAGE 6	0	6	{A,D,V}
+J00/006	10	STAGE 10	1	3	{I,L}
+J00/006	11	STAGE 11	1	4	{K,U}
+J00/006	12	STAGE 12	1	5	{J,K,W}
+J00/006	13	STAGE 13	1	6	{H,X}
+J00/006	7	STAGE 7	1	0	{Q}
+J00/006	8	STAGE 8	1	1	{H,J,K}
+J00/006	9	STAGE 9	1	2	{H,K,T}
+J00/006	14	STAGE 14	2	0	{R}
+J00/006	15	STAGE 15	2	1	{M}
+J00/006	16	STAGE 16	2	2	{N,O}
+J00/007	0	00	0	0	{J}
+J00/007	1	01	0	1	{A,B,F}
+J00/007	2	02	0	2	{B,C,F}
+J00/007	3	03	0	3	{D,E,G}
+J00/007	4	04	0	4	{F,G,H,I}
+J00/007	5	05	0	5	{A,K}
+J00/008	0	00	0	0	{G}
+J00/008	1	01	0	1	{C,D}
+J00/008	2	02	0	2	{E,F}
+J00/008	3	03	0	3	{A,B}
+J00/008	4	04	0	4	{C,H}
+J00/008	5	05	0	5	{D,I}
+J00/009	0	All Red - Stream 0	0	0	{R}
+J00/009	5	All Round Pedestrians	0	5	{F,G,H,I}
+J00/009	3	London Wall	0	3	{C,D,H}
+J00/009	4	London Wall Westbound and Right Turn	0	4	{C,E,H}
+J00/009	1	Moorgate	0	1	{A,B,G}
+J00/009	6	Moorgate Northbound	0	6	{B,G,T}
+J00/009	2	Moorgate Southbound and Right Turn	0	2	{A,P}
+J00/009	7	All Red - 00/070 Stream 1	1	0	{S}
+J00/009	9	Peds - 00/070 Stream 1	1	2	{M,O}
+J00/009	8	Vehicles - 00/070 Stream 1	1	1	{L,N}
+J00/010	0	CONTROLLER ALL RED	0	0	{I}
+J00/010	2	GRESHAM STREET - LOTHBURY	0	2	{C,D}
+J00/010	1	MOORGATE - PRINCES STREET	0	1	{A,B}
+J00/010	3	PEDESTRIANS	0	3	{E,F,G,H}
+J00/010	4	UTC DUMMY - MOORGATE	0	4	{A,J}
+J00/010	5	UTC DUMMY - PRINCES STREET	0	5	{B,K}
+J00/011	0	00	0	0	{M}
+J00/011	1	01	0	1	{F,G}
+J00/011	2	02	0	2	{A,C,G}
+J00/011	3	03	0	3	{D,E,G}
+J00/011	4	04	0	4	{H,I,J,K,L}
+J00/011	5	05	0	5	{D,G,N}
+J00/011	6	06	0	6	{A,G,O}
+J00/011	7	07	0	7	{E,G,P}
+\.
+
+
+--
+-- Data for Name: streams; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.streams (controller_key, stream_number, site_number, stage_keys_in_stream) FROM stdin;
+J00/002	0	J00/002	{0,1,2,3,4,5,6,7,8,9}
+J00/003	0	J00/003	{0,1,2,3,4,5,6}
+J00/004	0	J00/004	{0,5,3,1,4,2,6}
+J00/004	1	J00/135	{7,9,8}
+J00/004	2	J00/136	{10,12,11}
+J00/004	3	J00/137	{13,15,14}
+J00/005	0	J00/005	{0,1,2,3,4,5,6,7,8}
+J00/005	1	J00/138	{10,11,12,13,9}
+J00/006	0	J00/006	{0,1,2,3,4,5,6}
+J00/006	1	J00/134	{10,11,12,13,7,8,9}
+J00/006	2	J00/125	{14,15,16}
+J00/007	0	J00/007	{0,1,2,3,4,5}
+J00/008	0	J00/008	{0,1,2,3,4,5}
+J00/009	0	J00/009	{0,5,3,4,1,6,2}
+J00/009	1	J00/070	{7,9,8}
+J00/010	0	J00/010	{0,2,1,3,4,5}
+J00/011	0	J00/011	{0,1,2,3,4,5,6,7}
+\.
+
+
+--
+-- Data for Name: time_periods; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.time_periods (name, index, start_time_str, end_time_str) FROM stdin;
+AM	1	08:00:00	09:00:00
+OP	2	10:00:00	16:00:00
+PM	3	16:00:00	19:00:00
+\.
+
+
+--
+-- Data for Name: visum_signal_controllers; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.visum_signal_controllers (signal_controller_number, cycle_time, time_period_id, signalisation_type) FROM stdin;
+2	120	AM	SIGNALIZATIONVISSIG
+2	120	OP	SIGNALIZATIONVISSIG
+2	120	PM	SIGNALIZATIONVISSIG
+3	96	AM	SIGNALIZATIONVISSIG
+3	96	OP	SIGNALIZATIONVISSIG
+3	96	PM	SIGNALIZATIONVISSIG
+4	80	AM	SIGNALIZATIONVISSIG
+135	80	AM	SIGNALIZATIONVISSIG
+136	80	AM	SIGNALIZATIONVISSIG
+137	80	AM	SIGNALIZATIONVISSIG
+4	80	OP	SIGNALIZATIONVISSIG
+135	80	OP	SIGNALIZATIONVISSIG
+136	80	OP	SIGNALIZATIONVISSIG
+137	80	OP	SIGNALIZATIONVISSIG
+4	80	PM	SIGNALIZATIONVISSIG
+135	80	PM	SIGNALIZATIONVISSIG
+136	80	PM	SIGNALIZATIONVISSIG
+137	80	PM	SIGNALIZATIONVISSIG
+5	112	AM	SIGNALIZATIONVISSIG
+138	112	AM	SIGNALIZATIONVISSIG
+5	112	OP	SIGNALIZATIONVISSIG
+138	112	OP	SIGNALIZATIONVISSIG
+5	104	PM	SIGNALIZATIONVISSIG
+138	104	PM	SIGNALIZATIONVISSIG
+6	120	AM	SIGNALIZATIONVISSIG
+134	120	AM	SIGNALIZATIONVISSIG
+6	120	OP	SIGNALIZATIONVISSIG
+134	120	OP	SIGNALIZATIONVISSIG
+6	120	PM	SIGNALIZATIONVISSIG
+134	120	PM	SIGNALIZATIONVISSIG
+7	72	AM	SIGNALIZATIONVISSIG
+7	72	OP	SIGNALIZATIONVISSIG
+7	72	PM	SIGNALIZATIONVISSIG
+8	80	AM	SIGNALIZATIONVISSIG
+8	80	OP	SIGNALIZATIONVISSIG
+8	80	PM	SIGNALIZATIONVISSIG
+9	96	AM	SIGNALIZATIONVISSIG
+70	96	AM	SIGNALIZATIONVISSIG
+9	88	OP	SIGNALIZATIONVISSIG
+70	88	OP	SIGNALIZATIONVISSIG
+9	96	PM	SIGNALIZATIONVISSIG
+70	96	PM	SIGNALIZATIONVISSIG
+10	88	AM	SIGNALIZATIONVISSIG
+10	88	OP	SIGNALIZATIONVISSIG
+10	88	PM	SIGNALIZATIONVISSIG
+11	88	AM	SIGNALIZATIONVISSIG
+11	88	OP	SIGNALIZATIONVISSIG
+11	88	PM	SIGNALIZATIONVISSIG
+\.
+
+
+--
+-- Data for Name: visum_signal_groups; Type: TABLE DATA; Schema: v1; Owner: postgres
+--
+
+COPY v1.visum_signal_groups (signal_controller_number, phase_number, phase_name, green_time_start, green_time_end, time_period_id) FROM stdin;
+2	12	L	32	38	AM
+2	13	M	32	39	AM
+2	9	I	55	83	AM
+2	1	A	55	88	AM
+2	10	J	55	83	AM
+2	16	P	55	61	AM
+2	3	C	63	103	AM
+2	2	B	88	98	AM
+2	4	D	103	110	AM
+2	7	G	119	21	AM
+2	5	E	119	21	AM
+2	15	O	115	21	AM
+2	6	F	115	21	AM
+2	8	H	115	21	AM
+2	11	K	115	21	AM
+2	12	L	32	38	OP
+2	13	M	32	39	OP
+2	9	I	56	73	OP
+2	1	A	56	78	OP
+2	10	J	56	73	OP
+2	16	P	56	60	OP
+2	3	C	62	99	OP
+2	2	B	78	94	OP
+2	4	D	99	106	OP
+2	7	G	115	21	OP
+2	5	E	115	21	OP
+2	15	O	111	21	OP
+2	6	F	111	21	OP
+2	8	H	111	21	OP
+2	11	K	111	21	OP
+2	12	L	31	38	PM
+2	13	M	31	39	PM
+2	9	I	56	83	PM
+2	1	A	56	88	PM
+2	10	J	56	83	PM
+2	16	P	56	61	PM
+2	3	C	63	103	PM
+2	2	B	88	98	PM
+2	4	D	103	110	PM
+2	7	G	119	20	PM
+2	5	E	119	20	PM
+2	15	O	115	20	PM
+2	6	F	115	20	PM
+2	8	H	115	20	PM
+2	11	K	115	20	PM
+3	5	E	10	18	AM
+3	4	D	28	57	AM
+3	1	A	28	57	AM
+3	2	B	63	79	AM
+3	3	C	85	3	AM
+3	5	E	12	18	OP
+3	4	D	28	57	OP
+3	1	A	28	57	OP
+3	2	B	63	79	OP
+3	3	C	85	3	OP
+3	5	E	18	24	PM
+3	4	D	34	63	PM
+3	1	A	34	63	PM
+3	2	B	69	83	PM
+3	3	C	89	9	PM
+4	2	B	11	22	AM
+4	1	A	11	41	AM
+4	7	G	10	39	AM
+4	10	J	32	40	AM
+4	8	H	28	2	AM
+4	3	C	28	41	AM
+4	9	I	0	41	AM
+4	5	E	49	73	AM
+4	4	D	49	4	AM
+4	6	F	47	2	AM
+4	22	V	0	2	AM
+4	14	N	51	47	AM
+4	13	M	55	46	AM
+4	12	L	14	10	AM
+4	11	K	18	9	AM
+4	16	P	14	10	AM
+4	15	O	18	9	AM
+4	2	B	11	22	OP
+4	1	A	11	42	OP
+4	7	G	10	40	OP
+4	10	J	32	41	OP
+4	8	H	28	2	OP
+4	3	C	28	42	OP
+4	9	I	0	42	OP
+4	5	E	50	73	OP
+4	4	D	50	4	OP
+4	6	F	48	2	OP
+4	22	V	0	2	OP
+4	14	N	51	47	OP
+4	13	M	55	46	OP
+4	12	L	14	10	OP
+4	11	K	18	9	OP
+4	16	P	14	10	OP
+4	15	O	18	9	OP
+4	2	B	11	24	PM
+4	1	A	11	42	PM
+4	7	G	10	40	PM
+4	10	J	34	41	PM
+4	8	H	30	2	PM
+4	3	C	30	42	PM
+4	9	I	0	42	PM
+4	5	E	50	73	PM
+4	4	D	50	4	PM
+4	6	F	48	2	PM
+4	22	V	0	2	PM
+4	14	N	52	48	PM
+4	13	M	56	47	PM
+4	12	L	14	10	PM
+4	11	K	18	9	PM
+4	16	P	14	10	PM
+4	15	O	18	9	PM
+5	10	J	48	69	AM
+5	4	D	48	69	AM
+5	16	P	45	69	AM
+5	9	I	48	84	AM
+5	3	C	48	84	AM
+5	5	E	48	69	AM
+5	20	T	72	84	AM
+5	2	B	89	41	AM
+5	1	A	89	37	AM
+5	7	G	89	43	AM
+5	8	H	89	33	AM
+5	13	M1	28	26	AM
+5	12	L1	30	93	AM
+5	11	K1	30	93	AM
+5	36	M2	96	95	AM
+5	35	L2	99	25	AM
+5	34	K2	99	25	AM
+5	10	J	48	69	OP
+5	4	D	48	69	OP
+5	16	P	45	69	OP
+5	9	I	48	84	OP
+5	3	C	48	84	OP
+5	5	E	48	69	OP
+5	20	T	72	84	OP
+5	2	B	89	41	OP
+5	1	A	89	37	OP
+5	7	G	89	43	OP
+5	8	H	89	33	OP
+5	13	M1	30	26	OP
+5	12	L1	34	93	OP
+5	11	K1	34	93	OP
+5	36	M2	98	95	OP
+5	35	L2	103	25	OP
+5	34	K2	103	25	OP
+5	10	J	48	69	PM
+5	4	D	48	69	PM
+5	16	P	45	69	PM
+5	9	I	48	84	PM
+5	3	C	48	84	PM
+5	5	E	48	69	PM
+5	20	T	72	84	PM
+5	2	B	89	41	PM
+5	1	A	89	37	PM
+5	7	G	89	43	PM
+5	8	H	89	33	PM
+5	13	M1	30	26	PM
+5	12	L1	34	93	PM
+5	11	K1	34	93	PM
+5	36	M2	98	95	PM
+5	35	L2	103	25	PM
+5	34	K2	103	25	PM
+6	2	B	2	58	AM
+6	4	D	10	76	AM
+6	5	E	10	43	AM
+6	6	F	10	43	AM
+6	1	A	49	58	AM
+6	3	C	65	76	AM
+6	7	G	81	2	AM
+6	8	H	10	32	AM
+6	23	W1	35	62	AM
+6	11	K	119	62	AM
+6	10	J	119	62	AM
+6	9	I	65	119	AM
+6	12	L	65	111	AM
+6	47	W2	119	9	AM
+6	2	B	2	58	OP
+6	4	D	11	76	OP
+6	5	E	11	45	OP
+6	6	F	11	45	OP
+6	1	A	51	58	OP
+6	3	C	65	76	OP
+6	7	G	81	2	OP
+6	8	H	15	34	OP
+6	23	W1	37	62	OP
+6	11	K	4	62	OP
+6	10	J	4	62	OP
+6	9	I	68	119	OP
+6	12	L	67	111	OP
+6	47	W2	2	13	OP
+6	2	B	2	58	PM
+6	4	D	11	76	PM
+6	5	E	11	45	PM
+6	6	F	11	45	PM
+6	1	A	51	58	PM
+6	3	C	65	76	PM
+6	7	G	81	2	PM
+6	8	H	13	34	PM
+6	23	W1	37	62	PM
+6	11	K	4	62	PM
+6	10	J	4	62	PM
+6	9	I	68	119	PM
+6	12	L	67	111	PM
+6	47	W2	2	11	PM
+7	1	A	16	29	AM
+7	2	B	16	42	AM
+7	3	C	35	42	AM
+7	6	F	63	39	AM
+7	4	D	48	61	AM
+7	7	G	48	3	AM
+7	5	E	47	57	AM
+7	9	I	63	1	AM
+7	8	H	63	2	AM
+7	3	C	31	38	OP
+7	2	B	14	38	OP
+7	6	F	64	35	OP
+7	4	D	44	58	OP
+7	7	G	44	0	OP
+7	5	E	43	54	OP
+7	9	I	61	70	OP
+7	8	H	64	71	OP
+7	1	A	14	25	OP
+7	3	C	29	36	PM
+7	2	B	15	36	PM
+7	6	F	65	33	PM
+7	4	D	42	59	PM
+7	7	G	42	1	PM
+7	5	E	41	55	PM
+7	9	I	62	71	PM
+7	8	H	65	0	PM
+7	1	A	15	23	PM
+8	1	A	23	30	AM
+8	2	B	23	30	AM
+8	3	C	37	72	AM
+8	4	D	37	72	AM
+8	5	E	3	9	AM
+8	6	F	3	9	AM
+8	1	A	23	30	OP
+8	2	B	23	30	OP
+8	3	C	37	72	OP
+8	4	D	37	72	OP
+8	5	E	3	9	OP
+8	6	F	3	9	OP
+8	1	A	23	30	PM
+8	2	B	23	30	PM
+8	3	C	37	72	PM
+8	4	D	37	72	PM
+8	5	E	3	9	PM
+8	6	F	3	9	PM
+9	16	P	32	38	AM
+9	1	A	12	38	AM
+9	4	D	45	63	AM
+9	8	H	46	1	AM
+9	3	C	45	76	AM
+9	5	E	67	76	AM
+9	7	G	82	27	AM
+9	9	I	84	92	AM
+9	6	F	86	94	AM
+9	2	B	12	27	AM
+9	13	M	89	84	AM
+9	15	O	89	84	AM
+9	12	L	4	83	AM
+9	14	N	4	83	AM
+9	1	A	28	45	OP
+9	2	B	28	38	OP
+9	7	G	1	38	OP
+9	16	P	43	45	OP
+9	4	D	52	74	OP
+9	8	H	53	16	OP
+9	3	C	52	83	OP
+9	5	E	79	83	OP
+9	9	I	3	11	OP
+9	6	F	5	13	OP
+9	13	M	8	3	OP
+9	15	O	8	3	OP
+9	12	L	19	2	OP
+9	14	N	19	2	OP
+9	16	P	23	26	PM
+9	1	A	4	26	PM
+9	4	D	33	58	PM
+9	8	H	34	88	PM
+9	3	C	33	67	PM
+9	5	E	63	67	PM
+9	7	G	73	18	PM
+9	9	I	75	83	PM
+9	6	F	77	85	PM
+9	2	B	4	18	PM
+9	13	M	80	75	PM
+9	15	O	80	75	PM
+9	12	L	91	74	PM
+9	14	N	91	74	PM
+10	3	C	21	51	AM
+10	4	D	21	51	AM
+10	6	F	60	67	AM
+10	5	E	60	67	AM
+10	8	H	60	67	AM
+10	7	G	60	67	AM
+10	2	B	84	15	AM
+10	1	A	84	15	AM
+10	3	C	21	51	OP
+10	4	D	21	51	OP
+10	6	F	61	67	OP
+10	5	E	61	67	OP
+10	8	H	61	67	OP
+10	7	G	61	67	OP
+10	2	B	87	15	OP
+10	1	A	87	15	OP
+10	3	C	21	51	PM
+10	4	D	21	51	PM
+10	6	F	61	67	PM
+10	5	E	61	67	PM
+10	8	H	61	67	PM
+10	7	G	61	67	PM
+10	2	B	87	15	PM
+10	1	A	87	15	PM
+11	6	F	24	32	AM
+11	7	G	24	86	AM
+11	3	C	39	60	AM
+11	1	A	39	60	AM
+11	4	D	68	79	AM
+11	5	E	68	79	AM
+11	9	I	5	13	AM
+11	10	J	1	12	AM
+11	11	K	3	12	AM
+11	8	H	5	11	AM
+11	12	L	3	14	AM
+11	6	F	24	32	OP
+11	7	G	24	86	OP
+11	3	C	39	60	OP
+11	1	A	39	60	OP
+11	4	D	68	79	OP
+11	5	E	68	79	OP
+11	9	I	5	13	OP
+11	10	J	1	12	OP
+11	11	K	3	12	OP
+11	8	H	5	11	OP
+11	12	L	3	14	OP
+11	6	F	24	32	PM
+11	7	G	24	86	PM
+11	3	C	39	60	PM
+11	1	A	39	60	PM
+11	4	D	68	79	PM
+11	5	E	68	79	PM
+11	9	I	5	13	PM
+11	10	J	1	12	PM
+11	11	K	3	12	PM
+11	8	H	5	11	PM
+11	12	L	3	14	PM
+\.
+
+
+--
+-- PostgreSQL database dump complete
+--
+

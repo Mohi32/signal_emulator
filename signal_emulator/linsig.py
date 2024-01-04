@@ -11,7 +11,7 @@ class Linsig:
         "SVERS": "SVERS2, 3, 6, 0",
         "USRHD": "USRHDTCU1U78637TCU1U78638    1",
     }
-    PROBABLYZERO = "0"
+    PROBABLY_ZERO = "0"
     LAST_STREAM_NUMBER = "0"
 
     def __init__(self, signal_emulator, output_directory):
@@ -51,7 +51,7 @@ class Linsig:
                 "   0    1   -1    0         0         0         0         0",
             ]
         )
-        output_data.append(self.get_cntlr_line(signal_plan))
+        output_data.append(self.get_controller_line(signal_plan))
         for phase in sorted(signal_plan.controller.phases, key=lambda x: x.phase_number):
             output_data.append(self.get_phase_line_1(phase))
             output_data.append(self.get_phase_line_2(phase))
@@ -74,9 +74,8 @@ class Linsig:
             ):
                 output_data.append(self.get_phase_delay_line(phase_delay))
 
-        #for signal_plan in signal_plan.controller.signal_plans:
         output_data.append(self.get_signal_plan_line(signal_plan))
-        output_data.append(self.get_signal_plan_name_line(signal_plan))
+        output_data.append(self.get_signal_plan_name_line())
         for stream_plan in signal_plan.signal_plan_streams:
             output_data.append(self.get_stream_plan_line_1(stream_plan))
             output_data.append("PDTMN   90    0    1")
@@ -94,15 +93,9 @@ class Linsig:
         output_data.append("FGRFS    0")
 
         # scenarios
-        # for signal_plan in controller.signal_plans:
+        # changed this to only handle one time period scenario
         output_data.append(
-            # f"TIMPD{str(signal_plan.time_period.number).rjust(5)}"
-            f"TIMPD{'1'.rjust(5)}"
-            f"{'1'.rjust(5)}"
-            # f"{str(signal_plan.time_period.number).rjust(5)}"
-            f"{'1'.rjust(5)}"
-            f"{'1'.rjust(5)}¬"
-            #f"{str(signal_plan.signal_plan_number).rjust(5)}¬"
+            f"TIMPD{'1'.rjust(5)}" f"{'1'.rjust(5)}" f"{'1'.rjust(5)}" f"{'1'.rjust(5)}¬"
         )
         output_data.append("REPDS    0    5    0")
         output_data.append("SELEC    0")
@@ -130,51 +123,49 @@ class Linsig:
         output_data.append("FITGR27650    0    0")
         list_to_txt(output_data, self.get_linsig_filepath(signal_plan))
 
-    def get_linsig_filename(self, signal_plan):
+    @staticmethod
+    def get_linsig_filename(signal_plan):
         return f"{signal_plan.controller.site_number_filename}_{signal_plan.time_period_id}.lsg"
 
     def get_linsig_filepath(self, signal_plan):
         return os.path.join(self.output_directory, f"{self.get_linsig_filename(signal_plan)}")
 
-    def get_streams_num_line_1(self, signal_plan):
+    @staticmethod
+    def get_streams_num_line_1(signal_plan):
         return f"SSLES{str(len(signal_plan.signal_plan_streams)).rjust(5)}"
 
-    def get_stream_plan_line_2(self, stream_plan):
+    @staticmethod
+    def get_stream_plan_line_2(stream_plan):
         return (
             f"STSLE{str(stream_plan.stream_number).rjust(5)}"
             f"{str(stream_plan.stream_number).rjust(5)}"
-            # f"{str(stream_plan.signal_plan.time_period.number).rjust(5)}"
             f"{'1'.rjust(5)}"
             f"{'1'.rjust(5)}"
         )
 
     def get_stream_plan_line_1(self, stream_plan):
         return (
-            #f"STSEQ{str(stream_plan.signal_plan.signal_plan_number).rjust(5)}"
             f"STSEQ{'1'.rjust(5)}"
             f"{str(stream_plan.stream_number).rjust(5)}"
             f"{str(stream_plan.first_stage_time).rjust(5)}"
             f"{str(stream_plan.cycle_time).rjust(5)}"
             f"{str(len(stream_plan.signal_plan_stages)).rjust(5)}"
-            #f"{''.join([self.get_signal_plan_stage_line(sps) for sps in stream_plan.signal_plan_stages if sps.signal_plan_sequence_number > 0])}"
-            #f"{self.get_signal_plan_stage_line(stream_plan.signal_plan_stages[0]) if len(stream_plan.signal_plan_stages) > 0 else ''}"
-            
             f"{''.join([self.get_signal_plan_stage_line(sps) for sps in stream_plan.signal_plan_stages])}"
-            
             f"{str(stream_plan.PROBABLY_ZERO).rjust(5)}"
             f"{str(stream_plan.single_double_triple).rjust(5)}"
             f"{str(len(stream_plan.signal_plan_stages)).rjust(5)}"
         )
 
-    def get_signal_plan_stage_line(self, signal_plan_stage):
+    @staticmethod
+    def get_signal_plan_stage_line(signal_plan_stage):
         return (
             f"{str(signal_plan_stage.stage_number).rjust(5)}"
             f"{str(signal_plan_stage.green_length).rjust(5)}"
         )
 
-    def get_signal_plan_line(self, signal_plan):
+    @staticmethod
+    def get_signal_plan_line(signal_plan):
         return (
-            # f"SGPLN{str(signal_plan.time_period.number).rjust(5)}"
             f"SGPLN{'1'.rjust(5)}"
             f"{str(len(signal_plan.signal_plan_streams)).rjust(5)}"
             f"{str(signal_plan.PROBABLY_ZERO).rjust(5)}"
@@ -182,9 +173,10 @@ class Linsig:
             f"{str(signal_plan.cycle_time).rjust(5)}"
         )
 
-    def get_signal_plan_name_line(self, signal_plan):
+    @staticmethod
+    def get_signal_plan_name_line():
+        # signal plan number always 1, as we only include 1 signal plan per file
         return f"SGPLD{'1'.rjust(50)}"
-        #return f"SGPLD{str(signal_plan.signal_plan_number).rjust(50)}"
 
     def get_phase_delay_line(self, phase_delay):
         return (
@@ -219,13 +211,14 @@ class Linsig:
         return (
             f"SSTRM{str(stream.stream_number_linsig).rjust(5)}"
             f"{str(stream.num_stages_in_stream_linsig).rjust(5)}"
-            f"{self.PROBABLYZERO.rjust(5)}"
-            f"{str(stream.num_phases_in_stream_linisg).rjust(5)}"
+            f"{self.PROBABLY_ZERO.rjust(5)}"
+            f"{str(stream.num_phases_in_stream_linsig).rjust(5)}"
             f"{''.join([str(phase.phase_number).rjust(5) for phase in stream.phases_in_stream])}"
             f"{self.LAST_STREAM_NUMBER.rjust(5)}"
         )
 
-    def get_cntlr_line(self, signal_plan):
+    @staticmethod
+    def get_controller_line(signal_plan):
         phase_delay_count = len(
             [
                 p

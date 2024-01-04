@@ -256,7 +256,7 @@ class SADParser:
         out_data = []
         m37_fields = fields(self.m37s[0])
         out_data.append([field.name for field in m37_fields])
-        sorted_m37s = sorted(self.m37s, key=lambda x: (x.timestamp, x.site_id))
+        sorted_m37s = sorted(self.m37s, key=lambda x: (x.timestamp, x.site_number))
 
         for m37 in sorted_m37s:
             out_data.append([getattr(m37, field.name) for field in m37_fields])
