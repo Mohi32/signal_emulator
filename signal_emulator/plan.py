@@ -671,12 +671,14 @@ class PlanSequenceItem:
                 stream.controller_key, stream.stream_number, stage.stream_stage_number
             )
         ]
-        # sort the stages so that demand dependent stages get the option to be called first
-        existing_stages_sorted = sorted(
-            existing_stages,
-            key=lambda x: (not bool(x.phase_stage_demand_dependencies), x.stage_number),
-        )
-        return existing_stages_sorted
+        existing_sorted = sorted(existing_stages, key=lambda x: x.stage_number)
+        if stream.active_stage:
+            low = [a for a in existing_sorted if a.stage_number < stream.active_stage.stage_number]
+            high = [a for a in existing_sorted if a.stage_number > stream.active_stage.stage_number]
+            existing_stages_cyclic = high + low
+        else:
+            existing_stages_cyclic = existing_stages
+        return existing_stages_cyclic
 
 
 class PlanSequenceItems(BaseCollection):
