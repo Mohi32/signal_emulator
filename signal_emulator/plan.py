@@ -309,7 +309,6 @@ class Plan:
         if stream.active_stage.stage_number in plan_sequence_item.stage_numbers:
             new_stage = stream.active_stage
         else:
-           # new_stage = self.get_next_foreced_stage_in_cyclic_order()
             for stage in plan_sequence_item.stages_existing_in_stream(stream):  # pass stream
                 if stage.m37_exists(self.site_id) or not m37_check:
                     new_stage = stage
