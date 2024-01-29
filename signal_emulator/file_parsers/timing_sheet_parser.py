@@ -463,20 +463,17 @@ class TimingSheetParser:
         return intergreen_records
 
     def phase_stage_demand_dependency_data_factory(self, section_data, stage_data, controller_key):
-        stage_name_to_number = {stage["stage_name"]: int(stage["stage_number"]) for stage in stage_data}
+        stage_name_to_number = {clean_stage_name(stage["stage_name"]): int(stage["stage_number"]) for stage in stage_data}
         phase_stage_demand_dependency = []
         for section_record in section_data:
-            if section_record["stream_number"] != "X":
-                print(section_record["stream_number"])
             phase_stage_demand_dependency.append(
                 {
                     "controller_key": controller_key,
-                    "stage_number": stage_name_to_number[section_record["stage_name"]],
+                    "stage_number": stage_name_to_number[clean_stage_name(section_record["stage_name"])],
                     "phase_ref": section_record["phase_ref"],
                     "type": section_record["stream_number"],
                 }
             )
-
         return phase_stage_demand_dependency
 
 

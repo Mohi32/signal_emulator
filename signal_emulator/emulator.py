@@ -111,7 +111,6 @@ class SignalEmulator:
             signal_emulator=self, saturn_lookup_file=config.get("saturn_lookup_file", None)
         )
         self.linsig = Linsig(self, config.get("output_directory_linsig", None))
-        self.phase_to_saturn_turns = PhaseToSaturnTurns([], self)
         self.run_datestamp = f'signal emulator run {datetime.now().strftime("%Y-%m-%d")}'
 
     @staticmethod
