@@ -1,4 +1,5 @@
 import csv
+import glob
 import json
 from datetime import datetime, timedelta
 
@@ -199,3 +200,15 @@ def filter_pja_file(data, search_string, column_index=0) -> list:
     """
     filtered_data = filter_lines_after(data, search_string, column_index)
     return [a for a in filtered_data if a[1] != ""]
+
+
+def find_files_with_extension(directory, extension):
+    """
+    function return all files in subdirectories with extension
+    :param directory: base directory
+    :param extension: extension
+    :return: list of file paths
+    """
+    pattern = f"{directory}/**/*.{extension}"
+    files = glob.glob(pattern, recursive=True)
+    return files

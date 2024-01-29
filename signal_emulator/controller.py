@@ -297,6 +297,10 @@ class Controller(BaseItem):
             and self.controller_type != "Parallel Stage Stream Site"
         )
 
+    @property
+    def visum_controller_name(self):
+        return f"{self.site_number_int} - {self.address}"
+
 
 class Controllers(BaseCollection):
     ITEM_CLASS = Controller
@@ -1185,7 +1189,10 @@ class PhaseStageDemandDependency(BaseItem):
     signal_emulator: object
 
     def __post_init__(self):
-        self.stage.phase_stage_demand_dependencies.append(self)
+        if self.stage:
+            self.stage.phase_stage_demand_dependencies.append(self)
+        else:
+            self.signal_emulator.logger.warning(f"Stage: {self.controller_key} {self.stage_number} does not exist")
 
     @property
     def stage(self):
