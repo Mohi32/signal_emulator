@@ -6,7 +6,7 @@ import pandas as pd
 from signal_emulator.controller import BaseCollection
 from signal_emulator.enums import M37StageToStageNumber
 from signal_emulator.time_period import TimePeriods
-from signal_emulator.utilities.utility_functions import clean_site_number
+from signal_emulator.utilities.utility_functions import clean_site_number, find_files_with_extension
 
 
 @dataclass(eq=False)
@@ -287,16 +287,13 @@ class M37Averages(BaseCollection):
         :return: DataFrame of M37 data
         """
         m37_all_df = pd.DataFrame()
-        for filename in os.listdir(directory_path):
-            file_path = os.path.join(directory_path, filename)
-            if filename.endswith("csv") and os.path.isfile(file_path):
-                m37_df = pd.read_csv(file_path)
-                m37_df.rename(columns=self.CSV_COLUMN_RENAME)
-                m37_all_df = pd.concat([m37_all_df, m37_df], ignore_index=True)
-            elif filename.endswith("lsg") and os.path.isfile(file_path):
-                m37_df = self.read_m37_lsg_file_to_df(file_path)
-                m37_all_df = pd.concat([m37_all_df, m37_df], ignore_index=True)
-
+        for file_path in find_files_with_extension(directory_path, "csv"):
+            m37_df = pd.read_csv(file_path)
+            m37_df.rename(columns=self.CSV_COLUMN_RENAME)
+            m37_all_df = pd.concat([m37_all_df, m37_df], ignore_index=True)
+        for file_path in find_files_with_extension(directory_path, "lsg"):
+            m37_df = self.read_m37_lsg_file_to_df(file_path)
+            m37_all_df = pd.concat([m37_all_df, m37_df], ignore_index=True)
         m37_all_df["timestamp"] = pd.to_datetime(m37_all_df["timestamp"])
         m37_all_df.set_index("timestamp", inplace=True)
         return m37_all_df

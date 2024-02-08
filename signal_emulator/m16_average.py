@@ -1,10 +1,10 @@
-import os
 from dataclasses import dataclass
 from datetime import datetime
 
 import pandas as pd
 
 from signal_emulator.controller import BaseCollection, BaseItem
+from signal_emulator.utilities.utility_functions import find_files_with_extension
 
 
 @dataclass(eq=False)
@@ -206,20 +206,18 @@ class M16Averages(BaseCollection):
         :return: DataFrame of M16 data
         """
         m16_all_df = pd.DataFrame()
-        for filename in os.listdir(directory_path):
-            file_path = os.path.join(directory_path, filename)
-            if filename.endswith("lsg") and os.path.isfile(file_path):
-                date = self.get_m16_file_date(file_path)
-                m16_df = pd.read_fwf(
-                    file_path,
-                    colspecs=self.COLUMN_LIMITS,
-                    skiprows=self.HEADER_ROWS,
-                    names=self.COLUMN_NAMES,
-                    dtypes=self.COLUMN_DTYPES,
-                )
-                m16_df = m16_df[m16_df["message_type"] == "M16"]
-                m16_df["timestamp"] = pd.to_timedelta(m16_df["timestamp"]) + date
-                m16_all_df = pd.concat([m16_all_df, m16_df], ignore_index=True)
+        for file_path in find_files_with_extension(directory_path, "lsg"):
+            date = self.get_m16_file_date(file_path)
+            m16_df = pd.read_fwf(
+                file_path,
+                colspecs=self.COLUMN_LIMITS,
+                skiprows=self.HEADER_ROWS,
+                names=self.COLUMN_NAMES,
+                dtypes=self.COLUMN_DTYPES,
+            )
+            m16_df = m16_df[m16_df["message_type"] == "M16"]
+            m16_df["timestamp"] = pd.to_timedelta(m16_df["timestamp"]) + date
+            m16_all_df = pd.concat([m16_all_df, m16_df], ignore_index=True)
         return m16_all_df
 
 

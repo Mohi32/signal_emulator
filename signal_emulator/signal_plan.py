@@ -30,7 +30,7 @@ class SignalPlan(BaseItem):
 
     def emulate(self):
         self.signal_emulator.visum_signal_controllers.add_visum_signal_controller(
-            self.controller_key, self.controller.address, self.cycle_time, self.time_period_id, self.signal_emulator.run_datestamp
+            self.controller_key, self.controller.visum_controller_name, self.cycle_time, self.time_period_id, self.signal_emulator.run_datestamp
         )
         #self.controller_key, self.controller.address, cycle_time, self.signal_plan.time_period_id, self.signal_emulator.run_datestamp
         for signal_plan_stream in self.signal_plan_streams:
@@ -52,14 +52,7 @@ class SignalPlans(BaseCollection):
     def add_from_stream_plan_dict(self, streams_and_plans, period, signal_plan_number):
         first_plan = next(iter(streams_and_plans.values()))
         first_stream = next(iter(streams_and_plans.keys()))
-        # max_cycle_time = max(plan.cycle_time for plan in streams_and_plans.values())
-        # max_cycle_time = self.signal_emulator.m16s.get_by_key(
-        #     (first_stream.controller_key.replace("J", "N"), period.get_key())
-        # ).node_cycle_time
-        cycle_times = [self.get_cycle_time(stream, plan) for stream, plan in streams_and_plans.items()]
-        print(first_stream.controller_key, period.get_key(), cycle_times)
         max_cycle_time = self.get_cycle_time(first_stream, first_plan)
-
         signal_plan = SignalPlan(
             controller_key=first_stream.controller.controller_key,
             signal_emulator=self.signal_emulator,

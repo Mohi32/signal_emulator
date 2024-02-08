@@ -4,21 +4,21 @@
         "database": "tfl_signal_timings",
         "user": "postgres",
         "port": 5432,
-        "schema": "v1_boroughs_3_4"
+        "schema": "v0_0_2_b234"
     },
     "load_from_postgres": false,
     "M37": {
-        "m37_path": "signal_emulator/resources/M37/averaged/m37_averaged_231207.csv",
+        "m37_path": "signal_emulator/resources/M37/averaged/m37_averaged_240125.csv",
         "source_type": "averaged",
         "export_to_csv_path": false
     },
     "M16": {
-        "m16_path": "signal_emulator/resources/M16/averaged/m16_averaged.csv",
+        "m16_path": "signal_emulator/resources/M16/averaged/m16_averaged_240125.csv",
         "source_type": "averaged",
         "export_to_csv_path": false
     },
     "timing_sheet_directory": "signal_emulator/resources/timing_sheets",
-    "borough_codes": [3,4],
+    "borough_codes": [2,3,4],
     "timing_sheet_column_config": "signal_emulator/resources/timing_sheet_column_lookup.json",
     "plan_directory": "signal_emulator/resources/plans_231130",
     "PJA_directory": "signal_emulator/resources/PJA",

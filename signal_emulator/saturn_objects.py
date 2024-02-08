@@ -1,13 +1,12 @@
 import csv
 import os
-
 from dataclasses import dataclass
-from signal_emulator.controller import BaseCollection, BaseItem
-from copy import copy
-from pathlib import Path
-from typing import Optional
-from signal_emulator.utilities.utility_functions import list_to_csv
 from datetime import date
+from pathlib import Path
+
+import pandas as pd
+
+from signal_emulator.controller import BaseCollection, BaseItem
 
 
 @dataclass(eq=False)
@@ -42,6 +41,25 @@ class PhaseToSaturnTurns(BaseCollection):
             self.signal_emulator.logger.warning(
                 f"SATURN lookup file: {saturn_lookup_file} does not exist"
             )
+
+    def load_from_att_file(self, signal_groups_att_path):
+        df = pd.read_csv(signal_groups_att_path, skiprows=28, delimiter=";")
+        df.rename(
+            columns={
+            "$SIGNALGROUP:SCNO": "SCNO",
+            "CONCATENATE:LANETURNS\TURN\FROMLINK\LOHAM_FROM_NODE_NO": "FROM_LINK_FROM_NODE",
+            "CONCATENATE:LANETURNS\TURN\FROMLINK\LOHAM_TO_NODE_NO": "FROM_LINK_TO_NODE",
+            "CONCATENATE:LANETURNS\TURN\TOLINK\LOHAM_FROM_NODE_NO": "TO_LINK_FROM_NODE",
+            "CONCATENATE:LANETURNS\TURN\TOLINK\LOHAM_TO_NODE_NO": "TO_LINK_TO_NODE"
+        }, inplace=True
+        )
+        node_str_to_list = lambda x: [] if pd.isnull(x) else x.split("|")
+        df["FROM_LINK_FROM_NODE"] = df["FROM_LINK_FROM_NODE"].apply(node_str_to_list)
+        df["FROM_LINK_TO_NODE"] = df["FROM_LINK_TO_NODE"].apply(node_str_to_list)
+        df["TO_LINK_FROM_NODE"] = df["TO_LINK_FROM_NODE"].apply(node_str_to_list)
+        df["TO_LINK_TO_NODE"] = df["TO_LINK_TO_NODE"].apply(node_str_to_list)
+        for row in df.to_dict(orient="records"):
+            self.add_item(row, signal_emulator=self.signal_emulator)
 
     def init_from_saturn_file(self, saturn_lookup_file):
         with open(saturn_lookup_file, "r") as csvfile:
