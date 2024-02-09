@@ -4,7 +4,7 @@
         "database": "tfl_signal_timings",
         "user": "postgres",
         "port": 5432,
-        "schema": "v0_0_2_b234"
+        "schema": "v0_0_3_b234"
     },
     "load_from_postgres": false,
     "M37": {
@@ -23,7 +23,7 @@
     "plan_directory": "signal_emulator/resources/plans_231130",
     "PJA_directory": "signal_emulator/resources/PJA",
     "saturn_lookup_file": "signal_emulator/resources/phase_to_saturn_turns/phase_to_saturn_turns.csv",
-    "output_directory_visum": "signal_emulator/output/VISUM",
-    "output_directory_linsig": "signal_emulator/output/LINSIG",
-    "output_directory_saturn": "signal_emulator/output/SATURN"
+    "output_directory_visum": "signal_emulator/output/VISUM/v0_0_2_b234",
+    "output_directory_linsig": "signal_emulator/output/LINSIG/v0_0_2_b234",
+    "output_directory_saturn": "signal_emulator/output/SATURN/v0_0_2_b234"
 }

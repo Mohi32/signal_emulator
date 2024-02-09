@@ -1185,7 +1185,6 @@ class PhaseStageDemandDependency(BaseItem):
     controller_key: str
     stage_number: int
     phase_ref: str
-    type: str
     signal_emulator: object
 
     def __post_init__(self):

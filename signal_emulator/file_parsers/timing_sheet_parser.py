@@ -146,12 +146,16 @@ class TimingSheetParser:
         return phase_records
 
     def controller_data_factory(self, controller_data, details_data):
+        if "/" in controller_data["grid_ref"]:
+            x_coord, y_coord = controller_data["grid_ref"].split("/")
+        else:
+            x_coord, y_coord = 0, 0
         controller_records = [
             {
                 "controller_key": clean_site_number(controller_data["code"]),
                 "controller_type": controller_data["controller_name"],
-                "x_coord": int(controller_data["grid_ref"].split("/")[0]),
-                "y_coord": int(controller_data["grid_ref"].split("/")[1]),
+                "x_coord": int(x_coord),
+                "y_coord": int(y_coord),
                 "address": self.get_from_site_details(details_data, "Address"),
                 "spec_issue_no": self.get_from_site_details(details_data, "Issue"),
             }
@@ -186,17 +190,28 @@ class TimingSheetParser:
         stage_name_and_stream_to_number = {}
         for stage in stage_data:
             stage_name = clean_stage_name(stage["stage_name"])
+            stage_number = stage["stage_number"]
             if stage_name in stages_names_in_streams:
                 stream_number = str_to_int(stage_name_to_stream_numbers[stage_name].pop(0))
                 stage_name_and_stream_to_number[stage_name, stream_number] = str_to_int(
                     stage["stage_number"]
                 )
+            elif stage_number in stages_names_in_streams:
+                stream_number = str_to_int(stage_name_to_stream_numbers[stage_number].pop(0))
+                stage_name_and_stream_to_number[stage_number, stream_number] = str_to_int(
+                    stage["stage_number"]
+                )
+
 
         stream_no_stage_name_list = list(stage_name_and_stream_to_number.keys())
+        if "0" not in {a["stage_number"] for a in stage_data}:
+            stream_stage_no = 1
+        else:
+            stream_stage_no = 0
         stage_name_to_stream_stage_number = {
-            (stream_no_stage_name_list[0][0], stream_no_stage_name_list[0][1]): 0
+            (stream_no_stage_name_list[0][0], stream_no_stage_name_list[0][1]): stream_stage_no
         }
-        stream_stage_no = 1
+        stream_stage_no += 1
         for (this_stage_name, this_stream), (next_stage_name, next_stream) in zip(
             stream_no_stage_name_list, stream_no_stage_name_list[1:]
         ):
@@ -464,14 +479,20 @@ class TimingSheetParser:
 
     def phase_stage_demand_dependency_data_factory(self, section_data, stage_data, controller_key):
         stage_name_to_number = {clean_stage_name(stage["stage_name"]): int(stage["stage_number"]) for stage in stage_data}
+        stage_number_to_number = {stage["stage_number"]: int(stage["stage_number"]) for stage in stage_data}
         phase_stage_demand_dependency = []
+
         for section_record in section_data:
+            stage_name = clean_stage_name(section_record["stage_name"])
+            if stage_name in stage_name_to_number:
+                stage_number = stage_name_to_number[stage_name]
+            else:
+                stage_number = stage_number_to_number[stage_name]
             phase_stage_demand_dependency.append(
                 {
                     "controller_key": controller_key,
-                    "stage_number": stage_name_to_number[clean_stage_name(section_record["stage_name"])],
+                    "stage_number": stage_number,
                     "phase_ref": section_record["phase_ref"],
-                    "type": section_record["stream_number"],
                 }
             )
         return phase_stage_demand_dependency
