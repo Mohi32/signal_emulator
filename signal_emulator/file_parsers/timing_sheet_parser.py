@@ -53,8 +53,6 @@ class TimingSheetParser:
         controller_key = clean_site_number(data_dict["Controller"][0]["code"])
         self.signal_emulator.logger.info(f"Processing timing sheet for site: {controller_key}")
         processed_args = {}
-        if "0" not in {a["stage_number"] for a in data_dict["Stages"]} and "Timings" not in data_dict:
-            print(controller_key)
         for section, section_data in data_dict.items():
             if section == "Controller":
                 processed_args["controllers"] = self.controller_data_factory(
