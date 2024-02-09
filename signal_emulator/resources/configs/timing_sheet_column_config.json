@@ -97,7 +97,7 @@
   "Phase Stage Demand Dependency": {
     "1": "stage_name",
     "2": "phase_ref",
-    "3": "stream_number"
+    "3": "value"
   },
   "Linked Sites": {
     "1": "link_number",
