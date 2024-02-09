@@ -111,6 +111,10 @@ class SignalEmulator:
             signal_emulator=self, saturn_lookup_file=config.get("saturn_lookup_file", None)
         )
         self.linsig = Linsig(self, config.get("output_directory_linsig", None))
+        if config.get("timing_sheet_directory"):
+            self.load_timing_sheets_from_directory(config["timing_sheet_directory"])
+        if config.get("plan_directory"):
+            self.load_plans_from_cell_directories(config["plan_directory"])
         self.run_datestamp = f'signal emulator run {datetime.now().strftime("%Y-%m-%d")}'
 
     @staticmethod

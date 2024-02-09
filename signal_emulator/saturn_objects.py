@@ -297,7 +297,7 @@ class SaturnCollection(BaseCollection):
     # Retrieve the VISUM calculated controller time period
     def _get_cycle_time(self, controller_number, time_period):
         for key, value in self.signal_emulator.visum_signal_controllers.data.items():
-            if key[0] == controller_number and key[1] == time_period:
+            if value.signal_controller_number == controller_number and key[1] == time_period:
                 return value.cycle_time
 
     # Test if a a given phase name/controller/node-b exists in the SATURN node mapping
@@ -305,7 +305,7 @@ class SaturnCollection(BaseCollection):
         saturn_in_phase = []
         for key in self.signal_emulator.phase_to_saturn_turns.data.keys():
             if (
-                int(key[0].split("/")[1]) == controller_number
+                int(key[0].replace("/","")) == controller_number
                 and key[2] == node_b
                 and key[1] == phase_name
             ):
@@ -320,7 +320,7 @@ class SaturnCollection(BaseCollection):
     def _get_controller_saturn_nodes(self, controller_number):
         nodes = []
         for key in self.signal_emulator.phase_to_saturn_turns.data.keys():
-            if int(key[0].split("/")[1]) == controller_number:
+            if int(key[0].replace("/","")) == controller_number:
                 record = self.signal_emulator.phase_to_saturn_turns.data[key]
                 if record.saturn_b_node not in nodes:
                     nodes.append(record.saturn_b_node)
