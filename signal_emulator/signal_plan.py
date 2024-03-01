@@ -32,7 +32,6 @@ class SignalPlan(BaseItem):
         self.signal_emulator.visum_signal_controllers.add_visum_signal_controller(
             self.controller_key, self.controller.visum_controller_name, self.cycle_time, self.time_period_id, self.signal_emulator.run_datestamp
         )
-        #self.controller_key, self.controller.address, cycle_time, self.signal_plan.time_period_id, self.signal_emulator.run_datestamp
         for signal_plan_stream in self.signal_plan_streams:
             self.signal_emulator.logger.info(
                 f"Emulating Signal Plan Stream: {signal_plan_stream.site_id}"

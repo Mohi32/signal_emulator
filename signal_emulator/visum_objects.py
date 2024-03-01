@@ -151,6 +151,7 @@ class VisumSignalController:
     cycle_time: int
     time_period_id: str
     source_data: str
+    signal_emulator: object
     signalisation_type: Optional[str] = DEFAULT_SIGNALISATION_TYPE
 
     def get_key(self):
@@ -168,6 +169,14 @@ class VisumSignalController:
             parts[0] = parts[0][1:]
         return int(parts[0]) * 1000 + int(parts[1])
 
+    @property
+    def controller(self):
+        return self.signal_emulator.controllers.get_by_key(self.controller_key)
+
+    @property
+    def google_maps_url(self):
+        return f"https://www.google.com/maps/place/{self.controller.latitude},{self.controller.longitude}"
+
 
 class VisumSignalControllers(VisumCollection):
     COLUMNS = {
@@ -176,7 +185,8 @@ class VisumSignalControllers(VisumCollection):
         "SIGNALIZATIONTYPE": "signalisation_type",
         "SOURCE_DATA": "source_data",
         "CODE": "code",
-        "NAME": "name"
+        "NAME": "name",
+        "GOOGLE_MAPS_URL": "google_maps_url"
     }
     ITEM_CLASS = VisumSignalController
     TABLE_NAME = "visum_signal_controllers"
@@ -192,5 +202,5 @@ class VisumSignalControllers(VisumCollection):
         self.signal_emulator = signal_emulator
 
     def add_visum_signal_controller(self, controller_key, name, cycle_time, time_period_id, source_data):
-        signal_controller = VisumSignalController(controller_key, name, cycle_time, time_period_id, source_data)
+        signal_controller = VisumSignalController(controller_key, name, cycle_time, time_period_id, source_data, signal_emulator=self.signal_emulator)
         self.data[signal_controller.get_key()] = signal_controller

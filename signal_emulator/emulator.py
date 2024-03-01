@@ -30,6 +30,7 @@ from signal_emulator.time_period import TimePeriods
 from signal_emulator.utilities.postgres_connection import PostgresConnection
 from signal_emulator.utilities.utility_functions import load_json_to_dict
 from signal_emulator.visum_objects import VisumSignalGroups, VisumSignalControllers
+from signal_emulator.coordinate_transformer import CoordinateTransformer
 
 
 class SignalEmulator:
@@ -46,6 +47,7 @@ class SignalEmulator:
             self.postgres_connection = None
             self.load_from_postgres = False
         self.timing_sheet_parser = TimingSheetParser(self)
+        self.osgb36_to_wgs84 = CoordinateTransformer(source_epsg_code=27700, target_epsg_code=4326)
         self.plan_parser = PlanParser()
         self.time_periods = TimePeriods(
             config.get(
