@@ -301,6 +301,14 @@ class Controller(BaseItem):
     def visum_controller_name(self):
         return f"{self.site_number_int} - {self.address}"
 
+    @property
+    def latitude(self):
+        return self.signal_emulator.osgb36_to_wgs84.transform(self.x_coord, self.y_coord)[1]
+
+    @property
+    def longitude(self):
+        return self.signal_emulator.osgb36_to_wgs84.transform(self.x_coord, self.y_coord)[0]
+
 
 class Controllers(BaseCollection):
     ITEM_CLASS = Controller
