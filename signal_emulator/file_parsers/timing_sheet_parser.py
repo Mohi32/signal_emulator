@@ -25,7 +25,7 @@ class TimingSheetParser:
         ("Red Man", "Flashing Amber", "A-B IG"),
         ("Red Man", "Red (Max/Gap)", "A-B IG"),
     }
-    # Traffic to ped ig is red man,Amber and red man/red PED_TO_TRAFFIC_IG_KEYS TRAFFIC_TO_PED_IG_KEYS
+    # Traffic to ped ig is red man,Amber and red man/red
     PED_TO_TRAFFIC_IG_KEYS = {
         ("Flashing Green Man", "Flashing Amber", "B-A IG"),
         ("Flashing Green Man", "Red", "B-A IG"),
@@ -38,6 +38,33 @@ class TimingSheetParser:
         ("Red Man", "Flashing Amber", "B-A IG"),
         ("Flashing Green Man", "Red", "A-B IG"),
     }
+    PED_TIMING_KEY_TO_ATTRIBUTE = {
+        ("Flashing Green Man", "Flashing Amber"): "",
+        ("Flashing Green Man", "Red"): "",
+
+        ("Blackout", "Red", "min_time"): "blackout_min_red_veh_time",
+        ("Extended Blackout", "Red", "max_time"): "blackout_max_red_veh_time",
+        ("Max Blackout", "Ext Red"): "",
+        ("Red Man", "Red"): "",
+        ("Red Man", "Red + Amber"): "",
+        ("Red + Amber", "", "B-A IG"): "red_man_red_amber_veh_time",
+        ("Red Man", "Flashing Amber"): "",
+        ("Flashing Green Man", "Red"): "",
+        ("Red Man", "Amber"): "",
+        ("Red Man", "Red (Max/Gap)"): "red_man_red_veh_max_time",
+        ("Red Man", "Green (UTC/Local)"): "red_man_green_veh_time"
+    }
+    """
+    : int # Blackout,Red,B-A IG,8
+    : int # Extended Blackout,Red,B-A IG,
+    : int # Red + Amber,B-A IG,2
+    : int # Red Man,Red (Max/Gap),A-B IG,3
+    : int # Red Man,Green (UTC/Local),A,10,30
+    green_man_red_veh_time: int # Green Man,Red,B,6
+    red_man_red_veh_time: int # Red Man,Red,B-A IG,
+    red_man_amber_veh_time: int # Red Man,Amber,A-B IG,3
+    max_black_ext_red_veh_time: int # Max Blackout,Ext Red,B-A IG,
+    """
 
     def __init__(self, signal_emulator=None):
         self.signal_emulator = signal_emulator
@@ -56,7 +83,7 @@ class TimingSheetParser:
         for section, section_data in data_dict.items():
             if section == "Controller":
                 processed_args["controllers"] = self.controller_data_factory(
-                    section_data[0], data_dict["Site Details"]
+                    section_data[0], data_dict["Site Details"], data_dict.get("Timings")
                 )
             elif section == "Streams":
                 processed_args["streams"] = self.stream_data_factory(section_data, controller_key)
@@ -87,6 +114,7 @@ class TimingSheetParser:
                 processed_args["intergreens"] = self.ped_intergreen_data_factory(
                     section_data, controller_key
                 )
+                processed_args["ped_timings"] = self.ped_timings_factory(section_data, controller_key)
             elif section == "Stages" and "Timings" in data_dict:
                 processed_args["stages"] = self.ped_stage_data_factory(section_data, controller_key)
             elif section == "Phase Stage Demand Dependency":
@@ -145,7 +173,7 @@ class TimingSheetParser:
                 )
         return phase_records
 
-    def controller_data_factory(self, controller_data, details_data):
+    def controller_data_factory(self, controller_data, details_data, timings_data):
         if "/" in controller_data["grid_ref"]:
             x_coord, y_coord = controller_data["grid_ref"].split("/")
         else:
@@ -158,6 +186,7 @@ class TimingSheetParser:
                 "y_coord": int(y_coord),
                 "address": self.get_from_site_details(details_data, "Address"),
                 "spec_issue_no": self.get_from_site_details(details_data, "Issue"),
+                "is_pedestrian_controller": bool(timings_data)
             }
         ]
         return controller_records
@@ -496,6 +525,35 @@ class TimingSheetParser:
                 }
             )
         return phase_stage_demand_dependency
+
+    def ped_timings_factory(self, section_data, controller_key):
+        ped_timings = []
+        for section_record in section_data:
+            ped_timings.append(
+                {
+                    "controller_key": controller_key,
+                    "ped_aspect": section_record["ped_aspect"],
+                    "road_aspect": section_record["road_aspect"],
+                    "period_change_key": section_record["period_change_key"],
+                    "minimum_time": int(section_record["min_time"] or 0),
+                    "maximum_time": int(section_record["max_time"] or 0),
+                }
+            )
+        return ped_timings
+        """
+        controller_key: str
+        blackout_min_red_veh_time: int # Blackout,Red,B-A IG,8
+        blackout_max_red_veh_time: int # Extended Blackout,Red,B-A IG,
+        red_man_red_amber_veh_time: int # Red + Amber,B-A IG,2
+        red_man_red_veh_max_time: int # Red Man,Red (Max/Gap),A-B IG,3
+        red_man_green_veh_time: int # Red Man,Green (UTC/Local),A,10,30
+        green_man_red_veh_time: int # Green Man,Red,B,6
+        red_man_red_veh_time: int # Red Man,Red,B-A IG,
+        red_man_amber_veh_time: int # Red Man,Amber,A-B IG,3
+        max_black_ext_red_veh_time: int # Max Blackout,Ext Red,B-A IG,
+        signal_emulator: object
+        """
+
 
 
 if __name__ == "__main__":

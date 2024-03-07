@@ -155,6 +155,7 @@ class Controller(BaseItem):
     y_coord: int
     address: str
     spec_issue_no: str
+    is_pedestrian_controller: bool
     signal_emulator: object
 
     TIMING_SHEET_COLUMN_LOOKUP_PATH = os.path.join(
@@ -592,6 +593,7 @@ class Stream(BaseItem):
     site_number: str
     signal_emulator: object
     stage_keys_in_stream: Optional[List[int]] = None
+    is_pv_px_mode: bool = False
 
     def __init__(self, controller_key, stream_number, site_number, signal_emulator, stage_keys_in_stream=None):
         super().__init__(signal_emulator=signal_emulator)
@@ -1219,6 +1221,35 @@ class PhaseStageDemandDependency(BaseItem):
 class PhaseStageDemandDependencies(BaseCollection):
     ITEM_CLASS = PhaseStageDemandDependency
     TABLE_NAME = "phase_stage_demand_dependencies"
+    WRITE_TO_DATABASE = True
+
+    def __init__(self, item_data, signal_emulator):
+        super().__init__(item_data=item_data, signal_emulator=signal_emulator)
+
+
+@dataclass(eq=False)
+class PedestrianCrossingTiming(BaseItem):
+    controller_key: str
+    blackout_min_red_veh_time: int # Blackout,Red,B-A IG,8
+    blackout_max_red_veh_time: int # Extended Blackout,Red,B-A IG,
+    red_man_red_amber_veh_time: int # Red + Amber,B-A IG,2
+    red_man_red_veh_max_time: int # Red Man,Red (Max/Gap),A-B IG,3
+    red_man_green_veh_time: int # Red Man,Green (UTC/Local),A,10,30
+    green_man_red_veh_time: int # Green Man,Red,B,6
+    red_man_red_veh_time: int # Red Man,Red,B-A IG,
+    red_man_amber_veh_time: int # Red Man,Amber,A-B IG,3
+    max_black_ext_red_veh_time: int # Max Blackout,Ext Red,B-A IG,
+    signal_emulator: object
+
+"""
+Timings - start
+Pre Timed Max,Y
+Timings - end
+"""
+
+class PedestrianCrossingTimings(BaseCollection):
+    ITEM_CLASS = PedestrianCrossingTiming
+    TABLE_NAME = "pedestrian_crossing_timings"
     WRITE_TO_DATABASE = True
 
     def __init__(self, item_data, signal_emulator):
