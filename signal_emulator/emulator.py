@@ -14,8 +14,7 @@ from signal_emulator.controller import (
     PhaseTimings,
     ModifiedIntergreens,
     ModifiedPhaseDelays,
-    PhaseStageDemandDependencies,
-    PedestrianCrossingTimings
+    PhaseStageDemandDependencies
 )
 from signal_emulator.enums import Cell
 from signal_emulator.file_parsers.plan_parser import PlanParser
@@ -61,7 +60,6 @@ class SignalEmulator:
         self.streams = Streams([], self)
         self.stages = Stages([], self)
         self.phases = Phases([], self)
-        self.ped_timings = PedestrianCrossingTimings([], self)
         self.phase_stage_demand_dependencies = PhaseStageDemandDependencies([], self)
         self.phases.set_indicative_arrow_phases(self.phases)
         self.intergreens = Intergreens([], self)
@@ -226,9 +224,6 @@ class SignalEmulator:
 
     def load_timing_sheet_csv(self, csv_filepath):
         attrs_dict = self.timing_sheet_parser.parse_timing_sheet_csv(csv_filepath)
-        for a in attrs_dict.get("ped_timings", []):
-            if a["ped_aspect"] == "Max Blackout" and a["minimum_time"] > 0:
-                aa=66
         self.controllers.add_items(attrs_dict["controllers"], self)
         self.streams.add_items(attrs_dict["streams"], self)
         self.stages.add_items(attrs_dict["stages"], self)
@@ -240,7 +235,6 @@ class SignalEmulator:
         self.phase_stage_demand_dependencies.add_items(attrs_dict.get("phase_stage_demand_dependencies", []), self)
         controller = self.controllers.get_by_key(attrs_dict["controllers"][0]["controller_key"])
         self.phases.set_indicative_arrow_phases(controller.phases)
-        # self.ped_timings.add_items(attrs_dict.get("ped_timings", []), self)
 
     def load_plans_from_cell_directories(self, base_directory):
         for cell in Cell:

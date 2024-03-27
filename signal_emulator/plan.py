@@ -152,15 +152,6 @@ class Plan:
     def validate(self):
         return any(psi.has_f_bits() or psi.has_p_bits() for psi in self.plan_sequence_items)
 
-    # def get_interstage_time(self, end_phases, start_phases, end_stage_key, start_stage_key):
-    #     max_interstage_time = 0
-    #     for start_phase in start_phases:
-    #         interstage_time = self.get_max_start_time(
-    #             end_phases, start_phase, end_stage_key, start_stage_key
-    #         )
-    #         max_interstage_time = max(max_interstage_time, interstage_time)
-    #     return max_interstage_time
-
     def get_interstage_time(self, end_stage, start_stage):
         end_phases = self.signal_emulator.stages.get_end_phases(end_stage, start_stage)
         start_phases = self.signal_emulator.stages.get_start_phases(end_stage, start_stage)
@@ -201,32 +192,6 @@ class Plan:
             )
             time_delta = max(time_delta, max(end_phase_delay + intergreen, start_phase_delay))
         return time_delta
-
-
-    # def get_max_start_time(self, end_phases, start_phase, end_stage_key, start_stage_key):
-    #     time_delta = 0
-    #     for end_phase in end_phases:
-    #         end_phase_delay = (
-    #             self.signal_emulator.controller.phase_delays.get_delay_time_by_stage_and_phase_keys(
-    #                 end_stage_key=end_stage_key,
-    #                 start_stage_key=start_stage_key,
-    #                 phase_key=end_phase.phase_ref,
-    #             )
-    #         )
-    #         intergreen = (
-    #             self.signal_emulator.controller.intergreens.get_intergreen_time_by_phase_keys(
-    #                 end_phase_key=end_phase.phase_ref, start_phase_key=start_phase.phase_ref
-    #             )
-    #         )
-    #         start_phase_delay = (
-    #             self.signal_emulator.controller.phase_delays.get_delay_time_by_stage_and_phase_keys(
-    #                 end_stage_key=end_stage_key,
-    #                 start_stage_key=start_stage_key,
-    #                 phase_key=start_phase.phase_ref,
-    #             )
-    #         )
-    #         time_delta = max(time_delta, max(end_phase_delay + intergreen, start_phase_delay))
-    #     return time_delta
 
     def get_initial_stage_id(self, m37_stages, stream):
         m37_check = len(m37_stages) > 0

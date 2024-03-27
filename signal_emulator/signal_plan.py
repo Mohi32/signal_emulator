@@ -301,13 +301,10 @@ class SignalPlanStream(BaseItem):
                 current_stage,
                 signal_plan_stage.stage,
             )
-            # if m37 and m37.utc_stage_id in {"PG", "GX"}:
-            #     averaged_interstage_time = 2
-            # else:
-            #     averaged_interstage_time = m37.interstage_time
+
             if controller_interstage_time < signal_plan_stage.interstage_length:
                 print(stream.controller_key, controller_interstage_time, signal_plan_stage.interstage_length)
-            # if m37_check and controller_interstage_time > signal_plan_stage.interstage_length:
+
             if controller_interstage_time > signal_plan_stage.interstage_length:
                 self.signal_emulator.logger.info(
                     f"Controller interstage time: {controller_interstage_time} greater than SignalPlanStage "

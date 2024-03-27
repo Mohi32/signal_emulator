@@ -1225,32 +1225,3 @@ class PhaseStageDemandDependencies(BaseCollection):
 
     def __init__(self, item_data, signal_emulator):
         super().__init__(item_data=item_data, signal_emulator=signal_emulator)
-
-
-@dataclass(eq=False)
-class PedestrianCrossingTiming(BaseItem):
-    controller_key: str
-    blackout_min_red_veh_time: int # Blackout,Red,B-A IG,8
-    blackout_max_red_veh_time: int # Extended Blackout,Red,B-A IG,
-    red_man_red_amber_veh_time: int # Red + Amber,B-A IG,2
-    red_man_red_veh_max_time: int # Red Man,Red (Max/Gap),A-B IG,3
-    red_man_green_veh_time: int # Red Man,Green (UTC/Local),A,10,30
-    green_man_red_veh_time: int # Green Man,Red,B,6
-    red_man_red_veh_time: int # Red Man,Red,B-A IG,
-    red_man_amber_veh_time: int # Red Man,Amber,A-B IG,3
-    max_black_ext_red_veh_time: int # Max Blackout,Ext Red,B-A IG,
-    signal_emulator: object
-
-"""
-Timings - start
-Pre Timed Max,Y
-Timings - end
-"""
-
-class PedestrianCrossingTimings(BaseCollection):
-    ITEM_CLASS = PedestrianCrossingTiming
-    TABLE_NAME = "pedestrian_crossing_timings"
-    WRITE_TO_DATABASE = True
-
-    def __init__(self, item_data, signal_emulator):
-        super().__init__(item_data=item_data, signal_emulator=signal_emulator)
