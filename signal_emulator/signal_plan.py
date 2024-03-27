@@ -64,7 +64,7 @@ class SignalPlans(BaseCollection):
 
         for stream, plan in streams_and_plans.items():
             m37_stages = self.get_m37_stage_numbers(stream.site_number)
-            stage_sequence = plan.get_stage_sequence(m37_stages=m37_stages, stream=stream)
+            stage_sequence = plan.get_stage_sequence(m37_stages=m37_stages, stream=stream, cycle_time=max_cycle_time)
             signal_plan_stream = SignalPlanStream(
                 signal_emulator=self.signal_emulator,
                 controller_key=stream.controller.controller_key,
@@ -83,11 +83,20 @@ class SignalPlans(BaseCollection):
                 total_length = self.get_stage_length_from_pulse_points(
                     this_ssi.pulse_time,
                     next_ssi.pulse_time,
-                    plan.cycle_time,
+                    max_cycle_time, #plan.cycle_time,
                 )
-                interstage_length = signal_plan_stream.get_interstage_time(
-                    previous_ssi.stage, this_ssi.stage
-                )
+                m37 = this_ssi.stage.get_m37(stream.site_number)
+                if m37 and m37.utc_stage_id not in {"PG", "GX"}:
+                    interstage_length = m37.interstage_time
+                else:
+                    interstage_length = signal_plan_stream.get_interstage_time(
+                        previous_ssi.stage, this_ssi.stage
+                    )
+                if this_ssi.effective_stage_call_rate < 1:
+                    interstage_length = int(interstage_length * this_ssi.effective_stage_call_rate)
+                elif previous_ssi.effective_stage_call_rate < 1:
+                    interstage_length = int(interstage_length * previous_ssi.effective_stage_call_rate)
+
                 signal_plan_stage = SignalPlanStage(
                     signal_emulator=self.signal_emulator,
                     controller_key=stream.controller.controller_key,
@@ -288,24 +297,24 @@ class SignalPlanStream(BaseItem):
             start_phases = self.signal_emulator.stages.get_start_phases(
                 current_stage, signal_plan_stage.stage
             )
-            interstage_time = self.get_interstage_time(
+            controller_interstage_time = self.get_interstage_time(
                 current_stage,
                 signal_plan_stage.stage,
             )
-            if (
-                m37_check
-                and m37.utc_stage_id not in {"PG", "GX"}
-                and interstage_time > m37.interstage_time
-            ):
+
+            if controller_interstage_time < signal_plan_stage.interstage_length:
+                print(stream.controller_key, controller_interstage_time, signal_plan_stage.interstage_length)
+
+            if controller_interstage_time > signal_plan_stage.interstage_length:
                 self.signal_emulator.logger.info(
-                    f"M37 interstage: {m37.interstage_time} less than controller "
-                    f"interstage time: {interstage_time}"
+                    f"Controller interstage time: {controller_interstage_time} greater than SignalPlanStage "
+                    f"interstage time: {signal_plan_stage.interstage_length}, so controller intergreens are adjusted"
                 )
                 self.reduce_interstage(
                     controller_key=stream.controller_key,
                     end_stage_key=current_stage.stage_number,
                     start_stage_key=signal_plan_stage.stage_number,
-                    interstage_time=m37.interstage_time,
+                    interstage_time=signal_plan_stage.interstage_length,
                 )
 
             if not index == 0:

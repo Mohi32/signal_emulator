@@ -25,7 +25,7 @@ class TimingSheetParser:
         ("Red Man", "Flashing Amber", "A-B IG"),
         ("Red Man", "Red (Max/Gap)", "A-B IG"),
     }
-    # Traffic to ped ig is red man,Amber and red man/red PED_TO_TRAFFIC_IG_KEYS TRAFFIC_TO_PED_IG_KEYS
+    # Traffic to ped ig is red man,Amber and red man/red
     PED_TO_TRAFFIC_IG_KEYS = {
         ("Flashing Green Man", "Flashing Amber", "B-A IG"),
         ("Flashing Green Man", "Red", "B-A IG"),
@@ -56,7 +56,7 @@ class TimingSheetParser:
         for section, section_data in data_dict.items():
             if section == "Controller":
                 processed_args["controllers"] = self.controller_data_factory(
-                    section_data[0], data_dict["Site Details"]
+                    section_data[0], data_dict["Site Details"], data_dict.get("Timings")
                 )
             elif section == "Streams":
                 processed_args["streams"] = self.stream_data_factory(section_data, controller_key)
@@ -145,7 +145,7 @@ class TimingSheetParser:
                 )
         return phase_records
 
-    def controller_data_factory(self, controller_data, details_data):
+    def controller_data_factory(self, controller_data, details_data, timings_data):
         if "/" in controller_data["grid_ref"]:
             x_coord, y_coord = controller_data["grid_ref"].split("/")
         else:
@@ -158,6 +158,7 @@ class TimingSheetParser:
                 "y_coord": int(y_coord),
                 "address": self.get_from_site_details(details_data, "Address"),
                 "spec_issue_no": self.get_from_site_details(details_data, "Issue"),
+                "is_pedestrian_controller": bool(timings_data)
             }
         ]
         return controller_records
@@ -265,7 +266,7 @@ class TimingSheetParser:
                 {
                     "controller_key": controller_key,
                     "phase_ref": phase_record["phase_ref"],
-                    "min_time": phase_record["min_time"],
+                    "min_time": str_to_int(phase_record["min_time"]),
                     "phase_type_str": phase_record["phase_type"],
                     "text": clean_stage_name(
                         phase_type_and_conditions_by_ref[this_phase_ref]["phase_name"]
