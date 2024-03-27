@@ -5,7 +5,7 @@ from signal_emulator.utilities.utility_functions import load_json_to_dict
 def run_all(config_path):
     config = load_json_to_dict(json_file_path=config_path)
     signal_emulator = SignalEmulator(config=config)
-    signal_emulator.generate_signal_plans()
+    signal_emulator.generate_signal_plans(config.get("ped_only", False))
     signal_emulator.generate_phase_timings()
     signal_emulator.generate_visum_signal_groups()
     signal_emulator.generate_saturn_signal_groups()

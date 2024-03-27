@@ -294,7 +294,7 @@ class TimingSheetParser:
                 {
                     "controller_key": controller_key,
                     "phase_ref": phase_record["phase_ref"],
-                    "min_time": phase_record["min_time"],
+                    "min_time": str_to_int(phase_record["min_time"]),
                     "phase_type_str": phase_record["phase_type"],
                     "text": clean_stage_name(
                         phase_type_and_conditions_by_ref[this_phase_ref]["phase_name"]

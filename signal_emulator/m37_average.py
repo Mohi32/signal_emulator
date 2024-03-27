@@ -287,11 +287,13 @@ class M37Averages(BaseCollection):
         :return: DataFrame of M37 data
         """
         m37_all_df = pd.DataFrame()
-        for file_path in find_files_with_extension(directory_path, "csv"):
+        file_paths = find_files_with_extension(directory_path, "csv")
+        for file_path in file_paths:
             m37_df = pd.read_csv(file_path)
             m37_df.rename(columns=self.CSV_COLUMN_RENAME)
             m37_all_df = pd.concat([m37_all_df, m37_df], ignore_index=True)
-        for file_path in find_files_with_extension(directory_path, "lsg"):
+        file_paths = find_files_with_extension(directory_path, "lsg")
+        for file_path in file_paths:
             m37_df = self.read_m37_lsg_file_to_df(file_path)
             m37_all_df = pd.concat([m37_all_df, m37_df], ignore_index=True)
         m37_all_df["timestamp"] = pd.to_datetime(m37_all_df["timestamp"])
@@ -313,14 +315,15 @@ class M37Averages(BaseCollection):
 
 
 if __name__ == "__main__":
-    m37_file = M37Averages(
-        m37_path="resources/M37_Timings_May10_AM.csv",
+    m37_averages = M37Averages(
+        m37_path="../signal_emulator/resources/M37/raw",
         source_type="raw",
         periods=TimePeriods(
             [
-                {"name": "AM", "start_time": "08:00:00", "end_time": "09:00:00"},
-                {"name": "OP", "start_time": "10:00:00", "end_time": "16:00:00"},
-                {"name": "PM", "start_time": "16:00:00", "end_time": "19:00:00"},
+                {"name": "AM", "start_time_str": "08:00:00", "end_time_str": "09:00:00", "index": 0},
+                {"name": "OP", "start_time_str": "10:00:00", "end_time_str": "16:00:00", "index": 1},
+                {"name": "PM", "start_time_str": "16:00:00", "end_time_str": "19:00:00", "index": 2},
             ]
         ),
     )
+

@@ -135,7 +135,7 @@ class SignalEmulator:
         logging.getLogger("").addHandler(console)
         return logging.getLogger(__name__)
 
-    def generate_signal_plans(self):
+    def generate_signal_plans(self, ped_only=False):
         """
         Method to generate signal plans from UTC plans and controller spec definitions
         :return: None
@@ -151,9 +151,10 @@ class SignalEmulator:
                 self.time_periods.active_period_id = time_period.get_key()
                 stream_plan_dict = self.get_stream_plan_dict(controller)
                 if len(stream_plan_dict) > 0:
-                    self.signal_plans.add_from_stream_plan_dict(
-                        stream_plan_dict, time_period, signal_plan_number
-                    )
+                    if not ped_only or any([s.is_pv_px_mode for s in stream_plan_dict.keys()]):
+                        self.signal_plans.add_from_stream_plan_dict(
+                            stream_plan_dict, time_period, signal_plan_number
+                        )
                 else:
                     self.logger.warning(
                         f"Controller: {controller.controller_key} was not processed to signal plans because suitable"
