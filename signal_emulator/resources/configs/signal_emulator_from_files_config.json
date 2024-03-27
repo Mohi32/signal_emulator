@@ -23,7 +23,7 @@
     "timing_sheet_column_config": "signal_emulator/resources/timing_sheet_column_lookup.json",
     "plan_directory": "signal_emulator/resources/plans_231130",
     "PJA_directory": "signal_emulator/resources/PJA",
-    "saturn_lookup_file": "signal_emulator/resources/phase_to_saturn_turns/phase_to_saturn_turns.csv",
+    "saturn_lookup_file": "signal_emulator/resources/phase_to_saturn_turns/phase_to_saturn_turns_b1_5_10.csv",
     "output_directory_visum": "signal_emulator/output/VISUM/v0_0_4_b1_2_3_4_5_10",
     "output_directory_linsig": "signal_emulator/output/LINSIG/v0_0_4_b1_2_3_4_5_10",
     "output_directory_saturn": "signal_emulator/output/SATURN/v0_0_4_b1_2_3_4_5_10"
