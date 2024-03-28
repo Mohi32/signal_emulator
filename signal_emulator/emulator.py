@@ -90,7 +90,6 @@ class SignalEmulator:
             **config.get("M37", {"source_type": None, "m37_path": None}),
             signal_emulator=self,
         )
-
         self.signal_plans = SignalPlans([], self)
         self.signal_plan_streams = SignalPlanStreams([], self)
         self.signal_plan_stages = SignalPlanStages([], self)

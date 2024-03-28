@@ -79,6 +79,8 @@ class M16Averages(BaseCollection):
         signal_emulator=None,
     ):
         super().__init__(item_data=[], signal_emulator=signal_emulator)
+        if signal_emulator.load_from_postgres:
+            return
         assert source_type in ("averaged", "raw", None)
         if not periods and signal_emulator:
             periods = signal_emulator.time_periods

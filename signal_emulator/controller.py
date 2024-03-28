@@ -595,7 +595,7 @@ class Stream(BaseItem):
     stage_keys_in_stream: Optional[List[int]] = None
     is_pv_px_mode: bool = False
 
-    def __init__(self, controller_key, stream_number, site_number, signal_emulator, stage_keys_in_stream=None):
+    def __init__(self, controller_key, stream_number, site_number, signal_emulator, stage_keys_in_stream=None, is_pv_px_mode=False):
         super().__init__(signal_emulator=signal_emulator)
         if stage_keys_in_stream is None:
             stage_keys_in_stream = []
@@ -603,6 +603,7 @@ class Stream(BaseItem):
         self.stream_number = stream_number
         self.site_number = site_number
         self.stage_keys_in_stream = stage_keys_in_stream
+        self.is_pv_px_mode = is_pv_px_mode
         self._active_stage_key = None
         self.__post_init__()
 
