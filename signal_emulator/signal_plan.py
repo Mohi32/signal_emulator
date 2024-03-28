@@ -131,12 +131,7 @@ class SignalPlans(BaseCollection):
                 stream.site_number, stage.value, self.signal_emulator.time_periods.active_period_id
             )).cycle_time
         if stream.site_number != stream.controller_key:
-            stream_number = 0
-            # for stream in stream.controller.streams:
-            #     if stream.site_number == stream.controller_key:
-            #         stream_number = stream.stream_number
-            #         break
-            return self.get_m37_cycle_time(self.signal_emulator.streams.get_by_key((stream.controller_key, stream_number)))
+            return self.get_m37_cycle_time(self.signal_emulator.streams.get_by_key((stream.controller_key, 0)))
         else:
             return None
 

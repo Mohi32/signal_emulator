@@ -83,7 +83,6 @@ class SignalEmulator:
             periods=self.time_periods,
             **config.get("M16", {"source_type": None, "m16_path": None}),
             signal_emulator=self,
-
         )
         self.m37s = M37Averages(
             periods=self.time_periods,
