@@ -404,7 +404,7 @@ class Plan:
                 effective_stage_call_rate = self.get_default_ped_call_rate()
             adjustment_factor = ig_traffic / (ped_green_man_time + ig_ped + ig_traffic)
             adjustment_seconds = int(adjustment_factor * m37_not_road_green_time)
-            stage_length = int((m37_not_road_green_time - adjustment_seconds) * effective_stage_call_rate)
+            stage_length = round((m37_not_road_green_time - adjustment_seconds) * effective_stage_call_rate)
             if new_stage.stream_stage_number==1:
                 pulse_time = previous_stage_sequence_item.pulse_time + stage_length
             else:
