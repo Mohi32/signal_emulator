@@ -4,10 +4,11 @@
         "database": "tfl_signal_timings",
         "user": "postgres",
         "port": 5432,
-        "schema": "v1_boroughs_3_4"
+        "schema": "v0_0_4_b1_2_3_4_5_10"
     },
     "load_from_postgres": true,
-    "output_directory_visum": "signal_emulator/output/VISUM",
-    "output_directory_linsig": "signal_emulator/output/LINSIG",
-    "output_directory_saturn": "signal_emulator/output/SATURN"
+    "output_schema": "v0_0_4_b1_2_3_4_5_10_v2",
+    "output_directory_visum": "signal_emulator/output/VISUM/v0_0_4_b1_2_3_4_5_10_v2",
+    "output_directory_linsig": "signal_emulator/output/LINSIG/v0_0_4_b1_2_3_4_5_10_v2",
+    "output_directory_saturn": "signal_emulator/output/SATURN/v0_0_4_b1_2_3_4_5_10_v2"
 }

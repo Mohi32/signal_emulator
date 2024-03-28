@@ -152,18 +152,18 @@ class Plan:
     def validate(self):
         return any(psi.has_f_bits() or psi.has_p_bits() for psi in self.plan_sequence_items)
 
-    def get_interstage_time(self, end_stage, start_stage):
+    def get_interstage_time(self, end_stage, start_stage, modified=True):
         end_phases = self.signal_emulator.stages.get_end_phases(end_stage, start_stage)
         start_phases = self.signal_emulator.stages.get_start_phases(end_stage, start_stage)
         max_interstage_time = 0
         for start_phase in start_phases:
             interstage_time = self.get_max_start_time(
-                end_phases, start_phase, end_stage.stage_number, start_stage.stage_number
+                end_phases, start_phase, end_stage.stage_number, start_stage.stage_number, modified
             )
             max_interstage_time = max(max_interstage_time, interstage_time)
         return max_interstage_time
 
-    def get_max_start_time(self, end_phases, start_phase, end_stage_key, start_stage_key):
+    def get_max_start_time(self, end_phases, start_phase, end_stage_key, start_stage_key, modified=True):
         time_delta = 0
         for end_phase in end_phases:
             end_phase_delay = (
@@ -172,14 +172,14 @@ class Plan:
                     end_stage_key=end_stage_key,
                     start_stage_key=start_stage_key,
                     phase_key=end_phase.phase_ref,
-                    modified=True,
+                    modified=modified,
                 )
             )
             intergreen = self.signal_emulator.intergreens.get_intergreen_time_by_phase_keys(
                 controller_key=end_phase.controller_key,
                 end_phase_key=end_phase.phase_ref,
                 start_phase_key=start_phase.phase_ref,
-                modified=True,
+                modified=modified,
             )
             start_phase_delay = (
                 self.signal_emulator.phase_delays.get_delay_time_by_stage_and_phase_keys(
@@ -187,7 +187,7 @@ class Plan:
                     end_stage_key=end_stage_key,
                     start_stage_key=start_stage_key,
                     phase_key=start_phase.phase_ref,
-                    modified=True,
+                    modified=modified,
                 )
             )
             time_delta = max(time_delta, max(end_phase_delay + intergreen, start_phase_delay))
@@ -378,8 +378,8 @@ class Plan:
             )
             not_road_green_phase = not_road_green_stage.phases_in_stage[0]
             ped_green_man_time = not_road_green_phase.min_time
-            ig_ped = self.get_interstage_time(road_green_stage, not_road_green_stage)
-            ig_traffic = self.get_interstage_time(not_road_green_stage, road_green_stage)
+            ig_ped = self.get_interstage_time(road_green_stage, not_road_green_stage, modified=False)
+            ig_traffic = self.get_interstage_time(not_road_green_stage, road_green_stage, modified=False)
             if not_road_green_stage.m37_exists(self.site_id):
                 m37_not_road_green_time = not_road_green_stage.get_m37(self.site_id).total_time
                 effective_stage_call_rate = m37_not_road_green_time / (ig_ped + ig_traffic + ped_green_man_time)
@@ -394,8 +394,8 @@ class Plan:
             )
             not_road_green_phase = not_road_green_stage.phases_in_stage[0]
             ped_green_man_time = not_road_green_phase.min_time
-            ig_ped = self.get_interstage_time(road_green_stage, not_road_green_stage)
-            ig_traffic = self.get_interstage_time(not_road_green_stage, road_green_stage)
+            ig_ped = self.get_interstage_time(road_green_stage, not_road_green_stage, modified=False)
+            ig_traffic = self.get_interstage_time(not_road_green_stage, road_green_stage, modified=False)
             if not_road_green_stage.m37_exists(self.site_id):
                 m37_not_road_green_time = not_road_green_stage.get_m37(self.site_id).total_time
                 effective_stage_call_rate = 1

@@ -83,14 +83,12 @@ class SignalEmulator:
             periods=self.time_periods,
             **config.get("M16", {"source_type": None, "m16_path": None}),
             signal_emulator=self,
-
         )
         self.m37s = M37Averages(
             periods=self.time_periods,
             **config.get("M37", {"source_type": None, "m37_path": None}),
             signal_emulator=self,
         )
-
         self.signal_plans = SignalPlans([], self)
         self.signal_plan_streams = SignalPlanStreams([], self)
         self.signal_plan_stages = SignalPlanStages([], self)

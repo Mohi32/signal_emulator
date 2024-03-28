@@ -37,11 +37,17 @@ class VisumCollection(BaseCollection):
                 self.output_directory,
                 f"VISUM_{self.VISUM_TABLE_NAME}_{time_period.name}.net",
             )
-        output_data = copy(self.OUTPUT_HEADER)
-        output_data.append(self.add_column_header())
+        output_data = []
         for item in self:
             if item.time_period_id == time_period.name:
                 output_data.append([getattr(item, attr_name) for attr_name in self.COLUMNS.values()])
+        if self.TABLE_NAME == "visum_signal_groups":
+            output_data = sorted(output_data, key=lambda k: (k[0], k[1]))
+        elif self.TABLE_NAME == "visum_signal_controllers":
+            output_data = sorted(output_data, key=lambda k: k[0])
+        else:
+            raise ValueError
+        output_data = copy(self.OUTPUT_HEADER) + [self.add_column_header()] + output_data
         Path(output_path).parent.mkdir(exist_ok=True, parents=True)
         list_to_csv(output_data, output_path, delimiter=";")
         self.signal_emulator.logger.info(

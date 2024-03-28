@@ -90,7 +90,7 @@ class SignalPlans(BaseCollection):
                     interstage_length = m37.interstage_time
                 else:
                     interstage_length = signal_plan_stream.get_interstage_time(
-                        previous_ssi.stage, this_ssi.stage
+                        previous_ssi.stage, this_ssi.stage, modified=False
                     )
                 if this_ssi.effective_stage_call_rate < 1:
                     interstage_length = int(interstage_length * this_ssi.effective_stage_call_rate)
@@ -493,18 +493,18 @@ class SignalPlanStream(BaseItem):
         )
         assert interstage_time == reduced_interstage
 
-    def get_interstage_time(self, end_stage, start_stage):
+    def get_interstage_time(self, end_stage, start_stage, modified=True):
         end_phases = self.signal_emulator.stages.get_end_phases(end_stage, start_stage)
         start_phases = self.signal_emulator.stages.get_start_phases(end_stage, start_stage)
         max_interstage_time = 0
         for start_phase in start_phases:
             interstage_time = self.get_max_start_time(
-                end_phases, start_phase, end_stage.stage_number, start_stage.stage_number
+                end_phases, start_phase, end_stage.stage_number, start_stage.stage_number, modified
             )
             max_interstage_time = max(max_interstage_time, interstage_time)
         return max_interstage_time
 
-    def get_max_start_time(self, end_phases, start_phase, end_stage_key, start_stage_key):
+    def get_max_start_time(self, end_phases, start_phase, end_stage_key, start_stage_key, modified=True):
         time_delta = 0
         for end_phase in end_phases:
             end_phase_delay = (
@@ -513,14 +513,14 @@ class SignalPlanStream(BaseItem):
                     end_stage_key=end_stage_key,
                     start_stage_key=start_stage_key,
                     phase_key=end_phase.phase_ref,
-                    modified=True,
+                    modified=modified,
                 )
             )
             intergreen = self.signal_emulator.intergreens.get_intergreen_time_by_phase_keys(
                 controller_key=end_phase.controller_key,
                 end_phase_key=end_phase.phase_ref,
                 start_phase_key=start_phase.phase_ref,
-                modified=True,
+                modified=modified,
             )
             start_phase_delay = (
                 self.signal_emulator.phase_delays.get_delay_time_by_stage_and_phase_keys(
@@ -528,7 +528,7 @@ class SignalPlanStream(BaseItem):
                     end_stage_key=end_stage_key,
                     start_stage_key=start_stage_key,
                     phase_key=start_phase.phase_ref,
-                    modified=True,
+                    modified=modified,
                 )
             )
             time_delta = max(time_delta, max(end_phase_delay + intergreen, start_phase_delay))
