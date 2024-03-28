@@ -13,7 +13,7 @@ def run_all(config_path):
     signal_emulator.visum_signal_controllers.export_to_net_files()
     signal_emulator.visum_signal_groups.export_to_net_files()
     signal_emulator.linsig.export_all_to_lsg_v236()
-    signal_emulator.export_to_database()
+    signal_emulator.export_to_database(config.get("output_schema", None))
 
 
 def run_from_files():
@@ -26,4 +26,4 @@ def run_from_postgres():
 
 if __name__ == "__main__":
     run_from_files()
-    # run_from_postgres()
+    run_from_postgres()
