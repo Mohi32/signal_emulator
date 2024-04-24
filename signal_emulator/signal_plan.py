@@ -491,23 +491,6 @@ class SignalPlanStream(BaseItem):
                     ),
                     modified=True,
                 )
-                # start_phase_delay_time = start_phase_delay.delay_time
-                # end_phase_delay_time = end_phase_delay.delay_time
-                # intergreen_time = intergreen.intergreen_time
-                # if end_phase_delay_time > interstage_time:
-                #     self.signal_emulator.modified_phase_delays.add_item(
-                #         {
-                #             "controller_key": end_phase_delay.controller_key,
-                #             "end_stage_key": end_phase_delay.end_stage_key,
-                #             "start_stage_key": end_phase_delay.start_stage_key,
-                #             "phase_ref": end_phase_delay.phase_ref,
-                #             "time_period_id": self.signal_emulator.time_periods.active_period_id,
-                #             "delay_time": interstage_time,
-                #             "original_delay_time": end_phase_delay.delay_time,
-                #             "is_absolute": True,
-                #         }
-                #     )
-                #     end_phase_delay_time = interstage_time
                 if end_phase_delay.delay_time + intergreen.intergreen_time > interstage_time:
                     old_interstage_time = end_phase_delay.delay_time + intergreen.intergreen_time
                     new_end_phase_delay_time = round(end_phase_delay.delay_time * interstage_time / old_interstage_time)
