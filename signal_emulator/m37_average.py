@@ -89,6 +89,8 @@ class M37Averages(BaseCollection):
         :param periods: parent SignalEmulator object
         """
         super().__init__(item_data=[], signal_emulator=signal_emulator)
+        if signal_emulator.load_from_postgres:
+            return
         assert source_type in ("averaged", "raw", None)
         self.periods = periods
         if source_type is None:
@@ -96,8 +98,6 @@ class M37Averages(BaseCollection):
         elif source_type == "raw":
             self.m37_data = self.load_all_m37_in_directory_df(m37_path)
             self.m37_df = self.calculate_average_signal_timings()
-            self.m37_data.to_csv("D:/dump/m37_data_df.csv")
-            self.m37_df.to_csv("D:/dump/m37_summary_df.csv")
         elif source_type == "averaged":
             self.m37_df = pd.read_csv(
                 m37_path,
