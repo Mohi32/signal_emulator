@@ -10,8 +10,8 @@ def run_all(config_path):
     signal_emulator.generate_visum_signal_groups()
     signal_emulator.generate_saturn_signal_groups()
     signal_emulator.saturn_signal_groups.export_to_rgs_files()
-    signal_emulator.visum_signal_controllers.export_to_net_files()
-    signal_emulator.visum_signal_groups.export_to_net_files()
+    signal_emulator.visum_signal_controllers.export_all_to_net_files()
+    signal_emulator.visum_signal_groups.export_all_to_net_files()
     signal_emulator.linsig.export_all_to_lsg_v236()
     signal_emulator.export_to_database(config.get("output_schema", None))
 
