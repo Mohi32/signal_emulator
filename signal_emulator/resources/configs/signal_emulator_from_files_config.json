@@ -4,11 +4,11 @@
         "database": "tfl_signal_timings",
         "user": "postgres",
         "port": 5432,
-        "schema": "v0_0_4_b1_2_3_4_5_10"
+        "schema": "v0_0_5_b0_13_14_15_16_17_31"
     },
     "load_from_postgres": false,
     "M37": {
-        "m37_path": "signal_emulator/resources/M37/averaged/m37_averaged_240125.csv",
+        "m37_path": "signal_emulator/resources/M37/averaged/m37_averaged_240125_fixed.csv",
         "source_type": "averaged",
         "export_to_csv_path": false
     },
@@ -18,13 +18,13 @@
         "export_to_csv_path": false
     },
     "timing_sheet_directory": "signal_emulator/resources/timing_sheets",
-    "borough_codes": [1, 2, 3, 4, 5, 10],
+    "borough_codes": [0, 13, 14, 15, 16, 17, 31],
     "ped_only": false,
     "timing_sheet_column_config": "signal_emulator/resources/timing_sheet_column_lookup.json",
     "plan_directory": "signal_emulator/resources/plans_231130",
     "PJA_directory": "signal_emulator/resources/PJA",
-    "saturn_lookup_file": "signal_emulator/resources/phase_to_saturn_turns/phase_to_saturn_turns_b1_5_10.csv",
-    "output_directory_visum": "signal_emulator/output/VISUM/v0_0_4_b1_2_3_4_5_10",
-    "output_directory_linsig": "signal_emulator/output/LINSIG/v0_0_4_b1_2_3_4_5_10",
-    "output_directory_saturn": "signal_emulator/output/SATURN/v0_0_4_b1_2_3_4_5_10"
+    "saturn_lookup_file": "signal_emulator/resources/phase_to_saturn_turns/phase_to_saturn_turns_b0_13_14_15_16_17_31.csv",
+    "output_directory_visum": "signal_emulator/output/VISUM/v0_0_5_b0_13_14_15_16_17_31",
+    "output_directory_linsig": "signal_emulator/output/LINSIG/v0_0_5_b0_13_14_15_16_17_31",
+    "output_directory_saturn": "signal_emulator/output/SATURN/v0_0_5_b0_13_14_15_16_17_31"
 }

@@ -285,7 +285,20 @@ class SignalEmulator:
         :return:
         """
         for phase_timing in self.phase_timings:
-            self.visum_signal_groups.add_from_phase_timing(phase_timing)
+            if not self.visum_signal_groups.key_exists((phase_timing.controller_key, phase_timing.visum_phase_name)):
+                self.visum_signal_groups.add_from_phase_timing(phase_timing)
+            visum_signal_group = self.visum_signal_groups.get_by_key(
+                (phase_timing.controller_key, phase_timing.visum_phase_name)
+            )
+            if phase_timing.time_period_id == "AM":
+                visum_signal_group.green_time_start_am = phase_timing.start_time
+                visum_signal_group.green_time_end_am = phase_timing.end_time
+            elif phase_timing.time_period_id == "OP":
+                visum_signal_group.green_time_start_op = phase_timing.start_time
+                visum_signal_group.green_time_end_op = phase_timing.end_time
+            elif phase_timing.time_period_id == "PM":
+                visum_signal_group.green_time_start_pm = phase_timing.start_time
+                visum_signal_group.green_time_end_pm = phase_timing.end_time
 
     def generate_saturn_signal_groups(self):
         """
