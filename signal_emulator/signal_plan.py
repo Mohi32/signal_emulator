@@ -29,9 +29,19 @@ class SignalPlan(BaseItem):
         return self.signal_emulator.time_periods.get_by_key(self.time_period_id)
 
     def emulate(self):
-        self.signal_emulator.visum_signal_controllers.add_visum_signal_controller(
-            self.controller_key, self.controller.visum_controller_name, self.cycle_time, self.time_period_id, self.signal_emulator.run_datestamp
-        )
+        if not self.signal_emulator.visum_signal_controllers.key_exists(self.controller_key):
+            self.signal_emulator.visum_signal_controllers.add_visum_signal_controller(
+                self.controller_key, self.controller.visum_controller_name, self.cycle_time, self.time_period_id, self.signal_emulator.run_datestamp
+            )
+        visum_signal_controller = self.signal_emulator.visum_signal_controllers.get_by_key(self.controller_key)
+        if self.time_period_id == "AM":
+            visum_signal_controller.cycle_time = self.cycle_time
+            visum_signal_controller.cycle_time_am = self.cycle_time
+        elif self.time_period_id == "OP":
+            visum_signal_controller.cycle_time_op = self.cycle_time
+        elif self.time_period_id == "PM":
+            visum_signal_controller.cycle_time_pm = self.cycle_time
+
         for signal_plan_stream in self.signal_plan_streams:
             self.signal_emulator.logger.info(
                 f"Emulating Signal Plan Stream: {signal_plan_stream.site_id}"
@@ -72,7 +82,7 @@ class SignalPlans(BaseCollection):
                 signal_plan_number=signal_plan_number,
                 stream_number=stream.stream_number_linsig,
                 first_stage_time=stage_sequence[0].pulse_time,
-                cycle_time=self.get_cycle_time(stream, plan),
+                cycle_time=max_cycle_time, #self.get_cycle_time(stream, plan),
                 single_double_triple=1,
                 is_va=False,
             )
@@ -341,6 +351,7 @@ class SignalPlanStream(BaseItem):
                                 end_stage_key=current_stage.stage_number,
                                 start_stage_key=signal_plan_stage.stage_number,
                                 phase_key=end_phase.phase_ref,
+                                modified=True
                             ),
                             cycle_time,
                         )
@@ -416,6 +427,25 @@ class SignalPlanStream(BaseItem):
 
             stream.active_stage_key = (stream.controller_key, signal_plan_stage.stage_number)
 
+        phases_in_all_stages = set(all_phases_used)
+        for signal_plan_stage in self.signal_plan_stages:
+            phases_in_all_stages = phases_in_all_stages & set(signal_plan_stage.stage.phases_in_stage)
+        for phase in phases_in_all_stages:
+            phase_timing = PhaseTiming(
+                signal_emulator=self.signal_emulator,
+                controller_key=stream.controller_key,
+                site_id=stream.site_number,
+                phase_ref=phase.phase_ref,
+                index=0,
+                start_time=0,
+                end_time=cycle_time,
+                time_period_id=self.signal_plan.time_period_id,
+            )
+            self.signal_emulator.phase_timings.add_instance(phase_timing)
+
+
+        aa=66
+
     @staticmethod
     def constrain_time_to_cycle_time(time, cycle_time):
         return time % cycle_time
@@ -430,10 +460,10 @@ class SignalPlanStream(BaseItem):
             for end_phase in end_phases:
                 end_phase_delay = self.signal_emulator.phase_delays.get_by_key(
                     (controller_key, end_stage_key, start_stage_key, end_phase.phase_ref),
-                    modified=True,
+                    modified=False,
                 )
                 intergreen = self.signal_emulator.intergreens.get_by_key(
-                    (controller_key, end_phase.phase_ref, start_phase.phase_ref), modified=True
+                    (controller_key, end_phase.phase_ref, start_phase.phase_ref), modified=False
                 )
                 start_phase_delay = self.signal_emulator.phase_delays.get_by_key(
                     (
@@ -442,38 +472,55 @@ class SignalPlanStream(BaseItem):
                         start_stage_key,
                         start_phase.phase_ref,
                     ),
+                    modified=False,
+                )
+
+                end_phase_delay_mod = self.signal_emulator.phase_delays.get_by_key(
+                    (controller_key, end_stage_key, start_stage_key, end_phase.phase_ref),
                     modified=True,
                 )
-                start_phase_delay_time = start_phase_delay.delay_time
-                end_phase_delay_time = end_phase_delay.delay_time
-                intergreen_time = intergreen.intergreen_time
-                if end_phase_delay_time > interstage_time:
-                    self.signal_emulator.modified_phase_delays.add_item(
-                        {
-                            "controller_key": end_phase_delay.controller_key,
-                            "end_stage_key": end_phase_delay.end_stage_key,
-                            "start_stage_key": end_phase_delay.start_stage_key,
-                            "phase_ref": end_phase_delay.phase_ref,
-                            "time_period_id": self.signal_emulator.time_periods.active_period_id,
-                            "delay_time": interstage_time,
-                            "original_delay_time": end_phase_delay.delay_time,
-                            "is_absolute": True,
-                        }
-                    )
-                    end_phase_delay_time = interstage_time
-                if end_phase_delay_time + intergreen_time > interstage_time:
-                    self.signal_emulator.modified_intergreens.add_item(
-                        {
-                            "controller_key": intergreen.controller_key,
-                            "end_phase_key": intergreen.end_phase_key,
-                            "start_phase_key": intergreen.start_phase_key,
-                            "time_period_id": self.signal_emulator.time_periods.active_period_id,
-                            "intergreen_time": interstage_time - end_phase_delay_time,
-                            "original_time": intergreen.intergreen_time,
-                        },
-                        signal_emulator=self.signal_emulator,
-                    )
-                if start_phase_delay_time > interstage_time:
+                intergreen_mod = self.signal_emulator.intergreens.get_by_key(
+                    (controller_key, end_phase.phase_ref, start_phase.phase_ref), modified=True
+                )
+                start_phase_delay_mod = self.signal_emulator.phase_delays.get_by_key(
+                    (
+                        controller_key,
+                        end_stage_key,
+                        start_stage_key,
+                        start_phase.phase_ref,
+                    ),
+                    modified=True,
+                )
+                if end_phase_delay.delay_time + intergreen.intergreen_time > interstage_time:
+                    old_interstage_time = end_phase_delay.delay_time + intergreen.intergreen_time
+                    new_end_phase_delay_time = round(end_phase_delay.delay_time * interstage_time / old_interstage_time)
+                    new_intergreen_time = interstage_time - new_end_phase_delay_time
+                    if new_intergreen_time < intergreen_mod.intergreen_time:
+                        self.signal_emulator.modified_intergreens.add_item(
+                            {
+                                "controller_key": intergreen.controller_key,
+                                "end_phase_key": intergreen.end_phase_key,
+                                "start_phase_key": intergreen.start_phase_key,
+                                "time_period_id": self.signal_emulator.time_periods.active_period_id,
+                                "intergreen_time": new_intergreen_time,
+                                "original_time": intergreen.intergreen_time,
+                            },
+                            signal_emulator=self.signal_emulator,
+                        )
+                    if new_end_phase_delay_time < end_phase_delay_mod.delay_time:
+                        self.signal_emulator.modified_phase_delays.add_item(
+                            {
+                                "controller_key": end_phase_delay.controller_key,
+                                "end_stage_key": end_phase_delay.end_stage_key,
+                                "start_stage_key": end_phase_delay.start_stage_key,
+                                "phase_ref": end_phase_delay.phase_ref,
+                                "time_period_id": self.signal_emulator.time_periods.active_period_id,
+                                "delay_time": new_end_phase_delay_time,
+                                "original_delay_time": end_phase_delay.delay_time,
+                                "is_absolute": True,
+                            }
+                        )
+                if start_phase_delay_mod.delay_time > interstage_time:
                     self.signal_emulator.modified_phase_delays.add_item(
                         {
                             "controller_key": start_phase_delay.controller_key,

@@ -264,23 +264,6 @@ class Controller(BaseItem):
                 section_data.append(row[:num_cols])
         return data_dict
 
-    @classmethod
-    def validate_timing_sheet_csv(cls, timing_sheet_csv_path):
-        timing_sheet_dict = cls.timing_sheet_csv_to_dict(timing_sheet_csv_path)
-        for detail in timing_sheet_dict["Site Details"]:
-            if detail["field_name"] == "Controller Type":
-                if detail["value"] == "Parallel Stage Stream Site":
-                    return False
-                else:
-                    break
-        if "Junc" in timing_sheet_csv_path:
-            return all(
-                len(timing_sheet_dict[section]) > 0
-                for section in ["Stages", "Phase Timings", "Streams"]
-            )
-        else:
-            return all(len(timing_sheet_dict[section]) > 0 for section in ["Timings", "Stages"])
-
     @staticmethod
     def data_to_dict(data, column_dict):
         output_dict = []

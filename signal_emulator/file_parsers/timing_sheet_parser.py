@@ -427,8 +427,34 @@ class TimingSheetParser:
                     timing_sheet_directory_path, "fixed", filename.replace(".csv", "_fixed.csv")
                 )
             if filename.endswith("csv") and os.path.isfile(timing_sheet_path):
-                if Controller.validate_timing_sheet_csv(timing_sheet_path):
+                if self.validate_timing_sheet_csv(timing_sheet_path):
                     yield timing_sheet_path
+
+    def validate_timing_sheet_csv(self, timing_sheet_csv_path):
+        timing_sheet_dict = self.timing_sheet_csv_to_dict(timing_sheet_csv_path)
+        for detail in timing_sheet_dict["Site Details"]:
+            if detail["field_name"] == "Controller Type":
+                if detail["value"] == "Parallel Stage Stream Site":
+                    return False
+                else:
+                    break
+        valid = True
+        if "Junc" in timing_sheet_csv_path:
+            for section in ["Stages", "Phase Timings", "Streams"]:
+                if len(timing_sheet_dict[section]) == 0:
+                    self.signal_emulator.logger.warning(
+                        f"Timing sheet: {timing_sheet_csv_path} is invalid. Section: {section} contain not data"
+                    )
+                    valid = False
+            return valid
+        else:
+            for section in ["Timings", "Stages"]:
+                if len(timing_sheet_dict[section]) == 0:
+                    self.signal_emulator.logger.warning(
+                        f"Timing sheet: {timing_sheet_csv_path} is invalid. Section: {section} contain not data"
+                    )
+                    valid = False
+            return valid
 
     def ped_stage_data_factory(self, section_data, controller_key):
         stage_records = []

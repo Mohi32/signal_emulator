@@ -25,6 +25,22 @@ class VisumCollection(BaseCollection):
         self.signal_emulator = signal_emulator
         self.output_directory = output_directory
 
+    def export_all_to_net_files(self, output_path=None):
+        if not output_path:
+            output_path = os.path.join(
+                self.output_directory,
+                f"VISUM_{self.VISUM_TABLE_NAME}_ALL.net",
+            )
+        output_data = copy(self.OUTPUT_HEADER)
+        output_data.append(self.add_column_header())
+        for item in self:
+            output_data.append([getattr(item, attr_name) for attr_name in self.COLUMNS.values()])
+        Path(output_path).parent.mkdir(exist_ok=True, parents=True)
+        list_to_csv(output_data, output_path, delimiter=";")
+        self.signal_emulator.logger.info(
+            f"VISUM {self.VISUM_TABLE_NAME} output to net file: {output_path}"
+        )
+
     def export_to_net_files(self, time_periods=None):
         if time_periods is None:
             time_periods = self.signal_emulator.time_periods.get_all()
@@ -68,12 +84,17 @@ class VisumSignalGroup(BaseItem):
     phase_name: str
     green_time_start: int
     green_time_end: int
-    time_period_id: str
     source_data: str
     signal_emulator: object
+    green_time_start_am: Optional[int] = None
+    green_time_end_am: Optional[int] = None
+    green_time_start_op: Optional[int] = None
+    green_time_end_op: Optional[int] = None
+    green_time_start_pm: Optional[int] = None
+    green_time_end_pm: Optional[int] = None
 
     def get_key(self):
-        return self.controller_key, self.phase_name, self.time_period_id
+        return self.controller_key, self.phase_name
 
     def get_phase_key(self):
         return self.controller_key, self.phase_ref
@@ -88,7 +109,7 @@ class VisumSignalGroup(BaseItem):
 
     @property
     def visum_signal_controller(self):
-        return self.signal_emulator.visum_signal_controllers.get_by_key((self.controller_key, self.time_period_id))
+        return self.signal_emulator.visum_signal_controllers.get_by_key(self.controller_key)
 
     @property
     def phase_type(self):
@@ -116,8 +137,14 @@ class VisumSignalGroups(VisumCollection):
         "SCNO": "signal_controller_number",
         "NO": "phase_number",
         "NAME": "phase_name",
-        "GTSTART": "green_time_start",
-        "GTEND": "green_time_end",
+        "GTSTART": "green_time_start_am",
+        "GTEND": "green_time_end_am",
+        "GTSTART_AM": "green_time_start_am",
+        "GTEND_AM": "green_time_end_am",
+        "GTSTART_OP": "green_time_start_op",
+        "GTEND_OP": "green_time_end_op",
+        "GTSTART_PM": "green_time_start_pm",
+        "GTEND_PM": "green_time_end_pm",
         "SOURCE_DATA": "source_data",
         "PHASE_TYPE": "phase_type",
         "ASSOCIATED_PHASE_REF": "associated_phase_ref",
@@ -142,7 +169,6 @@ class VisumSignalGroups(VisumCollection):
             phase_name=phase_timing.visum_phase_name,
             green_time_start=phase_timing.start_time,
             green_time_end=phase_timing.end_time,
-            time_period_id=phase_timing.time_period_id,
             source_data=phase_timing.signal_emulator.run_datestamp,
             signal_emulator=self.signal_emulator
         )
@@ -159,9 +185,12 @@ class VisumSignalController:
     source_data: str
     signal_emulator: object
     signalisation_type: Optional[str] = DEFAULT_SIGNALISATION_TYPE
+    cycle_time_am: Optional[int] = None
+    cycle_time_op: Optional[int] = None
+    cycle_time_pm: Optional[int] = None
 
     def get_key(self):
-        return self.controller_key, self.time_period_id
+        return self.controller_key
 
     @property
     def code(self):
@@ -188,6 +217,9 @@ class VisumSignalControllers(VisumCollection):
     COLUMNS = {
         "NO": "signal_controller_number",
         "CYCLETIME": "cycle_time",
+        "CYCLETIME_AM": "cycle_time_am",
+        "CYCLETIME_OP": "cycle_time_op",
+        "CYCLETIME_PM": "cycle_time_pm",
         "SIGNALIZATIONTYPE": "signalisation_type",
         "SOURCE_DATA": "source_data",
         "CODE": "code",
@@ -208,5 +240,15 @@ class VisumSignalControllers(VisumCollection):
         self.signal_emulator = signal_emulator
 
     def add_visum_signal_controller(self, controller_key, name, cycle_time, time_period_id, source_data):
-        signal_controller = VisumSignalController(controller_key, name, cycle_time, time_period_id, source_data, signal_emulator=self.signal_emulator)
+        signal_controller = VisumSignalController(
+            controller_key=controller_key,
+            name=name,
+            cycle_time=cycle_time,
+            time_period_id=time_period_id,
+            source_data=source_data,
+            signal_emulator=self.signal_emulator,
+            cycle_time_am=None,
+            cycle_time_op=None,
+            cycle_time_pm=None
+        )
         self.data[signal_controller.get_key()] = signal_controller
