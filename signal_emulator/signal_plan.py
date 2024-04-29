@@ -259,10 +259,6 @@ class SignalPlanStream(BaseItem):
                 "M37s not found, plan pulse times used for stage lengths"
             )
 
-        # self.signal_emulator.visum_signal_controllers.add_visum_signal_controller(
-        #     self.controller_key, self.controller.address, cycle_time, self.signal_plan.time_period_id, self.signal_emulator.run_datestamp
-        # )
-
         stream.active_stage_key = stream.controller_key, self.signal_plan_stages[-1].stage_number
         if len(self.signal_plan_stages) == 1:
             for phase in self.signal_plan_stages[-1].stage.phases_in_stage:

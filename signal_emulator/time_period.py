@@ -17,6 +17,7 @@ class TimePeriod:
     index: int
     start_time_str: str
     end_time_str: str
+    long_name: Optional[str] = None
     signal_emulator: Optional[object] = None
 
     def __post_init__(self):

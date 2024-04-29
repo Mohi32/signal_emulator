@@ -26,4 +26,4 @@ def run_from_postgres():
 
 if __name__ == "__main__":
     run_from_files()
-    run_from_postgres()
+    # run_from_postgres()

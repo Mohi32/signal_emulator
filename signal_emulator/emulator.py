@@ -166,15 +166,21 @@ class SignalEmulator:
         return stream_plan_dict
 
     def get_best_matching_plan(self, stream):
-        """ """
+        """
+        Function to get the best matching plan for a stream
+        :param stream: Stream
+        :return: Plan
+        """
         pja = self.plan_timetables.get_by_key(
             (stream.site_number, self.time_periods.active_period_id)
         )
+        # If Plan exists that is referenced in pJA file then return this Plan
         if pja and pja.plan:
             self.logger.info(
                 f"Plan: {pja.plan.plan_number} {pja.plan.name} {pja.plan.site_id} selected from PJA file"
             )
             return pja.plan
+        # Else return best matching plan base on plan name, WAT AM for example
         elif self.get_plan_for_active_period(stream):
             plan = self.get_plan_for_active_period(stream)
             self.logger.info(
@@ -182,8 +188,10 @@ class SignalEmulator:
                 f"{self.time_periods.active_period_id}"
             )
             return plan
-        elif len(stream.plans) > 0:
-            plan = stream.plans[0]
+        # Else return the first available plan
+        non_mins_plans = [p for p in stream.plans if "MINS" not in p.name.upper()]
+        if non_mins_plans:
+            plan = non_mins_plans[0]
             self.logger.info(
                 f"Plan: {plan.plan_number} {plan.name} selected the first available plan"
             )
@@ -199,10 +207,16 @@ class SignalEmulator:
             }:
                 return plan
         for plan in stream.plans:
-            if "WAT" in plan.name and self.time_periods.active_period_id in plan.name:
+            if "WAT" in plan.name and (
+                self.time_periods.active_period.name in plan.name or
+                self.time_periods.active_period.long_name in plan.name
+            ):
                 return plan
         for plan in stream.plans:
-            if self.time_periods.active_period_id in plan.name:
+            if (
+                self.time_periods.active_period.name in plan.name or
+                self.time_periods.active_period.long_name in plan.name
+            ):
                 return plan
         return None
 
