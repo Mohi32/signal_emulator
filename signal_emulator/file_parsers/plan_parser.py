@@ -47,7 +47,7 @@ class PlanParser:
                         "plan_number": plan_number,
                         "cycle_time": cycle_time,
                         "timeout": timeout,
-                        "name": name,
+                        "name": name.upper(),
                     }
                 )
                 header_found = False

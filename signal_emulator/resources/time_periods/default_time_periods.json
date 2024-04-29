@@ -1,5 +1,5 @@
 [
-    {"name": "AM", "index": 1, "start_time_str": "08:00:00", "end_time_str": "09:00:00"},
-    {"name": "OP", "index": 2, "start_time_str": "10:00:00", "end_time_str": "16:00:00"},
-    {"name": "PM", "index": 3, "start_time_str": "16:00:00", "end_time_str": "19:00:00"}
+    {"name": "AM", "index": 1, "start_time_str": "08:00:00", "end_time_str": "09:00:00", "long_name":  "AM PEAK"},
+    {"name": "OP", "index": 2, "start_time_str": "10:00:00", "end_time_str": "16:00:00", "long_name":  "OFF PEAK"},
+    {"name": "PM", "index": 3, "start_time_str": "16:00:00", "end_time_str": "19:00:00", "long_name":  "PM PEAK"}
 ]
