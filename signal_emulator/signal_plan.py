@@ -423,6 +423,7 @@ class SignalPlanStream(BaseItem):
 
             stream.active_stage_key = (stream.controller_key, signal_plan_stage.stage_number)
 
+        # Create PhaseTimimgs for all green phases
         phases_in_all_stages = set(all_phases_used)
         for signal_plan_stage in self.signal_plan_stages:
             phases_in_all_stages = phases_in_all_stages & set(signal_plan_stage.stage.phases_in_stage)
@@ -439,8 +440,22 @@ class SignalPlanStream(BaseItem):
             )
             self.signal_emulator.phase_timings.add_instance(phase_timing)
 
-
-        aa=66
+        # Create PhaseTimings for unused, all red phases
+        unused_phases = set(stream.phases_in_stream)
+        for signal_plan_stage in self.signal_plan_stages:
+            unused_phases -= set(signal_plan_stage.stage.phases_in_stage)
+        for phase in unused_phases:
+            phase_timing = PhaseTiming(
+                signal_emulator=self.signal_emulator,
+                controller_key=stream.controller_key,
+                site_id=stream.site_number,
+                phase_ref=phase.phase_ref,
+                index=0,
+                start_time=0,
+                end_time=0,
+                time_period_id=self.signal_plan.time_period_id,
+            )
+            self.signal_emulator.phase_timings.add_instance(phase_timing)
 
     @staticmethod
     def constrain_time_to_cycle_time(time, cycle_time):
