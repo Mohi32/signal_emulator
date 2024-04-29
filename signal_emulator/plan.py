@@ -246,7 +246,7 @@ class Plan:
 
     def get_stage_sequence_pedestrian(self, m37_stages, stream, cycle_time=None):
         stage_sequence = DefaultList(None)
-        m37_check = len(m37_stages) > 0
+        m37_check = len(m37_stages) > 1
         # set the initial stage number
         # stream.active_stage_key = self.get_initial_stage_id_ped(m37_stages, stream)
         active_stage = self.signal_emulator.stages.get_by_stream_number_and_stage_number(stream.controller_key, stream.stream_number, 1)
