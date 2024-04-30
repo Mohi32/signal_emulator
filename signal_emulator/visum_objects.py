@@ -212,6 +212,13 @@ class VisumSignalController:
     def google_maps_url(self):
         return f"https://www.google.com/maps/place/{self.controller.latitude},{self.controller.longitude}"
 
+    @property
+    def timings_sheet_filepath(self):
+        return self.signal_emulator.visum_signal_controllers.timing_sheet_directory / self.controller.pdf_filename
+
+    @property
+    def sld_filepath(self):
+        return self.signal_emulator.visum_signal_controllers.sld_directory / self.controller.pdf_filename
 
 class VisumSignalControllers(VisumCollection):
     COLUMNS = {
@@ -224,20 +231,24 @@ class VisumSignalControllers(VisumCollection):
         "SOURCE_DATA": "source_data",
         "CODE": "code",
         "NAME": "name",
-        "GOOGLE_MAPS_URL": "google_maps_url"
+        "GOOGLE_MAPS_URL": "google_maps_url",
+        "TIMING_SHEET_URI": "timings_sheet_filepath",
+        "SLD_URI": "sld_filepath"
     }
     ITEM_CLASS = VisumSignalController
     TABLE_NAME = "visum_signal_controllers"
     WRITE_TO_DATABASE = True
     VISUM_TABLE_NAME = "SIGNALCONTROL"
 
-    def __init__(self, item_data, signal_emulator, output_directory):
+    def __init__(self, item_data, signal_emulator, output_directory, sld_directory, timing_sheet_directory):
         super().__init__(
             item_data=item_data,
             signal_emulator=signal_emulator,
-            output_directory=output_directory,
+            output_directory=output_directory
         )
         self.signal_emulator = signal_emulator
+        self.sld_directory = Path(sld_directory)
+        self.timing_sheet_directory = Path(timing_sheet_directory)
 
     def add_visum_signal_controller(self, controller_key, name, cycle_time, time_period_id, source_data):
         signal_controller = VisumSignalController(

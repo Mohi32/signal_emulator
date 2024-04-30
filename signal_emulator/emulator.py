@@ -100,7 +100,11 @@ class SignalEmulator:
             [], self, config.get("output_directory_visum", None)
         )
         self.visum_signal_controllers = VisumSignalControllers(
-            [], self, config.get("output_directory_visum", None)
+            [],
+            self,
+            config.get("output_directory_visum", None),
+            config.get("sld_pdf_directory"),
+            config.get("timing_sheet_pdf_directory")
         )
         self.plan_timetables = PlanTimetables(
             signal_emulator=self, pja_directory_path=config.get("PJA_directory", None)
