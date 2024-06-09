@@ -150,7 +150,6 @@ class SignalEmulator:
             for signal_plan_number, time_period in enumerate(self.time_periods, start=1):
                 self.time_periods.active_period_id = time_period.get_key()
                 stream_plan_dict = self.get_stream_plan_dict(controller)
-                # if len(stream_plan_dict) > 0:
                 if any(stream_plan_dict.values()):
                     if not ped_only or any([s.is_pv_px_mode for s in stream_plan_dict.keys()]):
                         self.signal_plans.add_from_stream_plan_dict(
@@ -166,7 +165,6 @@ class SignalEmulator:
         stream_plan_dict = {}
         for stream in controller.streams:
             plan = self.get_best_matching_plan(stream)
-            # if plan:  # todo sort out FT plans
             stream_plan_dict[stream] = plan
         return stream_plan_dict
 
