@@ -43,15 +43,26 @@ class PlanTimetable:
         return self.site_number, self.period
 
     @property
-    def plan_number(self):
+    def wat_plan_number(self):
         if self.wat.startswith("SC"):
             return int(self.wat[2:])
         else:
             return None
 
     @property
-    def plan(self):
-        return self.signal_emulator.plans.get_by_key((self.site_number, self.plan_number))
+    def wat_plan(self):
+        return self.signal_emulator.plans.get_by_key((self.site_number, self.wat_plan_number))
+
+    @property
+    def control_plan_number(self):
+        if self.control.startswith("SC"):
+            return int(self.control[2:])
+        else:
+            return None
+
+    @property
+    def control_plan(self):
+        return self.signal_emulator.plans.get_by_key((self.site_number, self.control_plan_number))
 
 
 class PlanTimetables(BaseCollection):

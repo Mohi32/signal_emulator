@@ -230,6 +230,11 @@ class Controller(BaseItem):
         return f"{site_number_parts[0]}/000{site_number_parts[1]}"
 
     @property
+    def pdf_filename(self):
+        site_number_parts = self.controller_key.replace("J", "").split("/")
+        return f"{site_number_parts[0]}_000{site_number_parts[1]}.pdf"
+
+    @property
     def plan_filename(self):
         site_number_parts = self.controller_key.split("/")
         return f"j{site_number_parts[0][1:]}{site_number_parts[1][-3:]}.pln"
