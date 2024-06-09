@@ -9,9 +9,10 @@ class SignalPlan(BaseItem):
     signal_emulator: object
     controller_key: str
     signal_plan_number: str
-    cycle_time: int
+    cycle_time: int | None
     name: str
     time_period_id: str
+    mode: str
 
     def __post_init__(self):
         self.signal_plan_streams = []
@@ -31,7 +32,7 @@ class SignalPlan(BaseItem):
     def emulate(self):
         if not self.signal_emulator.visum_signal_controllers.key_exists(self.controller_key):
             self.signal_emulator.visum_signal_controllers.add_visum_signal_controller(
-                self.controller_key, self.controller.visum_controller_name, self.cycle_time, self.time_period_id, self.signal_emulator.run_datestamp
+                self.controller_key, self.controller.visum_controller_name, self.cycle_time, self.time_period_id, self.signal_emulator.run_datestamp, self.mode
             )
         visum_signal_controller = self.signal_emulator.visum_signal_controllers.get_by_key(self.controller_key)
         if self.time_period_id == "AM":
@@ -58,6 +59,19 @@ class SignalPlans(BaseCollection):
         super().__init__(item_data=item_data, signal_emulator=signal_emulator)
         self.signal_emulator = signal_emulator
 
+    def add_local_control(self, streams, period, signal_plan_number):
+        first_stream = streams[0]
+        signal_plan = SignalPlan(
+            controller_key=first_stream.controller.controller_key,
+            signal_emulator=self.signal_emulator,
+            signal_plan_number=signal_plan_number,
+            cycle_time=None,
+            name="LOCAL CONTROL",
+            time_period_id=period.get_key(),
+            mode="LOCAL"
+        )
+        self.add_instance(signal_plan)
+
     def add_from_stream_plan_dict(self, streams_and_plans, period, signal_plan_number):
         first_plan = next(iter(streams_and_plans.values()))
         first_stream = next(iter(streams_and_plans.keys()))
@@ -69,10 +83,13 @@ class SignalPlans(BaseCollection):
             cycle_time=max_cycle_time,
             name=first_plan.name,
             time_period_id=period.get_key(),
+            mode="UTC"
         )
         self.add_instance(signal_plan)
 
         for stream, plan in streams_and_plans.items():
+            if not plan:
+                continue
             m37_stages = self.get_m37_stage_numbers(stream.site_number)
             stage_sequence = plan.get_stage_sequence(m37_stages=m37_stages, stream=stream, cycle_time=max_cycle_time)
             signal_plan_stream = SignalPlanStream(

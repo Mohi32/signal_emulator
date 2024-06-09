@@ -94,7 +94,7 @@ class VisumSignalGroup(BaseItem):
     green_time_end_pm: Optional[int] = None
 
     def get_key(self):
-        return self.controller_key, self.phase_name
+        return self.controller_key, self.phase_number
 
     def get_phase_key(self):
         return self.controller_key, self.phase_ref
@@ -183,6 +183,7 @@ class VisumSignalController:
     cycle_time: int
     time_period_id: str
     source_data: str
+    mode: str
     signal_emulator: object
     signalisation_type: Optional[str] = DEFAULT_SIGNALISATION_TYPE
     cycle_time_am: Optional[int] = None
@@ -231,6 +232,7 @@ class VisumSignalControllers(VisumCollection):
         "SOURCE_DATA": "source_data",
         "CODE": "code",
         "NAME": "name",
+        "MODE": "mode",
         "GOOGLE_MAPS_URL": "google_maps_url",
         "TIMING_SHEET_URI": "timings_sheet_filepath",
         "SLD_URI": "sld_filepath"
@@ -250,7 +252,7 @@ class VisumSignalControllers(VisumCollection):
         self.sld_directory = Path(sld_directory)
         self.timing_sheet_directory = Path(timing_sheet_directory)
 
-    def add_visum_signal_controller(self, controller_key, name, cycle_time, time_period_id, source_data):
+    def add_visum_signal_controller(self, controller_key, name, cycle_time, time_period_id, source_data, mode):
         signal_controller = VisumSignalController(
             controller_key=controller_key,
             name=name,
@@ -260,6 +262,7 @@ class VisumSignalControllers(VisumCollection):
             signal_emulator=self.signal_emulator,
             cycle_time_am=None,
             cycle_time_op=None,
-            cycle_time_pm=None
+            cycle_time_pm=None,
+            mode=mode
         )
         self.data[signal_controller.get_key()] = signal_controller

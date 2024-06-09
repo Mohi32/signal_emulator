@@ -188,6 +188,18 @@ def filter_lines_after(data, search_string, column_index=0) -> list:
     else:
         return data
 
+def filter_lines_after_double_slash(data) -> list:
+    """
+    Function to slice list up until line containing search string is found
+    :param data: list data
+    :return: list
+    """
+    for i, line in enumerate(data):
+        if line[0].count("/") == 2:
+            return data[:i]
+    else:
+        return data
+
 
 def filter_pja_file(data, search_string, column_index=0) -> list:
     """
@@ -199,6 +211,7 @@ def filter_pja_file(data, search_string, column_index=0) -> list:
     :return: list
     """
     filtered_data = filter_lines_after(data, search_string, column_index)
+    filtered_data = filter_lines_after_double_slash(filtered_data)
     return [a for a in filtered_data if a[1] != ""]
 
 

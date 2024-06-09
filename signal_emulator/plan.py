@@ -344,8 +344,10 @@ class Plan:
                     stages_used.add(new_stage_sequence_item.stage.stage_number)
 
         if m37_check and not m37_stages == set([a.stage.stream_stage_number for a in stage_sequence]):
-            self.signal_emulator.logger.info(
-                f"Plan stage sequence: {[a.stage.stage_number for a in stage_sequence]} "
+            self.signal_emulator.logger.warning(
+                f"Stream: {stream.site_number} "
+                f"Time Period: {self.signal_emulator.time_periods.active_period_id} "
+                f"Plan stage sequence: {[a.stage.stream_stage_number for a in stage_sequence]} "
                 f"does not match m37 stages: {m37_stages}"
             )
         elif m37_check and m37_stages == set([a.stage.stream_stage_number for a in stage_sequence]):
