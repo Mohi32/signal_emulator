@@ -126,9 +126,9 @@ class SignalEmulator:
                 if stage_phase_types_list != [['D'], ['T'], ['P']]:
                     stream_codes.append([stream.controller_key, stream.site_number])
                     self.logger.warning(
-                        f"Controller: {stream.controller_key} Stream: {stream.site_number}"
+                        f"Controller: {stream.controller_key} Stream: {stream.site_number} "
                         f"Appears to be a ped stream without the all red stage first. "
-                        f"Check if manual fixing is required"
+                        f"Check if manual fixing is required."
                     )
         return stream_codes
 
