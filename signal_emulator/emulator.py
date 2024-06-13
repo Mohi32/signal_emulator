@@ -115,6 +115,23 @@ class SignalEmulator:
         self.linsig = Linsig(self, config.get("output_directory_linsig", None))
         self.run_datestamp = f'signal emulator run {datetime.now().strftime("%Y-%m-%d")}'
 
+    def find_streams_without_all_red_stage_first(self):
+        stream_codes = []
+        for stream in self.streams:
+            stage_phase_types_set = {tuple(phase.phase_type.name for phase in stage.phases_in_stage) for stage in
+                                      stream.stages_in_stream}
+            stage_phase_types_list = [[phase.phase_type.name for phase in stage.phases_in_stage] for
+                                      stage in stream.stages_in_stream]
+            if stage_phase_types_set == {("D",), ("T",), ("P",)} and len(stage_phase_types_list) == 3:
+                if stage_phase_types_list != [['D'], ['T'], ['P']]:
+                    stream_codes.append([stream.controller_key, stream.site_number])
+                    self.logger.warning(
+                        f"Controller: {stream.controller_key} Stream: {stream.site_number} "
+                        f"Appears to be a ped stream without the all red stage first. "
+                        f"Check if manual fixing is required."
+                    )
+        return stream_codes
+
     @staticmethod
     def setup_logger():
         if not os.path.exists("log"):

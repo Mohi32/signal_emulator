@@ -321,6 +321,7 @@ class Stage(BaseItem):
     def __post_init__(self):
         self.phase_stage_demand_dependencies = []
         self.stream.stage_keys_in_stream.append(self.stage_number)
+        self.stream.stage_keys_in_stream = sorted(self.stream.stage_keys_in_stream)
 
     def __repr__(self):
         return f"Stage: {self.stream_number=} {self.stage_number=} {self.stream_stage_number=} {self.stage_name=}"
