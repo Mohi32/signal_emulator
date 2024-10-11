@@ -143,7 +143,6 @@ class SignalPlans(BaseCollection):
                 signal_plan_sequence_number += 1
 
     def get_cycle_time(self, stream, plan):
-        print("stream", stream.site_number)
         cycle_time = self.get_m37_cycle_time(stream)
         if cycle_time:
             return cycle_time
