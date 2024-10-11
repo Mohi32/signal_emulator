@@ -125,7 +125,6 @@ class SignalEmulator:
     def find_streams_without_all_red_stage_first(self):
         stream_codes = []
         for stream in self.streams:
-            print(stream.site_number)
             stage_phase_types_set = {tuple(phase.phase_type.name for phase in stage.phases_in_stage) for stage in
                                       stream.stages_in_stream}
             stage_phase_types_list = [[phase.phase_type.name for phase in stage.phases_in_stage] for
