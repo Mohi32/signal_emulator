@@ -73,11 +73,8 @@ class SignalPlans(BaseCollection):
         self.add_instance(signal_plan)
 
     def add_from_stream_plan_dict(self, streams_and_plans, period, signal_plan_number):
-        first_plan = next(iter(streams_and_plans.values()))
         first_plan = next((v for v in streams_and_plans.values() if v is not None), None)
-        first_stream = next(iter(streams_and_plans.keys()))
         first_stream = next((k for k, v in streams_and_plans.items() if v is not None), None)
-        print("first stream", first_stream)
         max_cycle_time = self.get_cycle_time(first_stream, first_plan)
         signal_plan = SignalPlan(
             controller_key=first_stream.controller.controller_key,
