@@ -180,6 +180,18 @@ class TimingSheetParser:
         return stream_records
 
     def stage_data_factory(self, stream_data, stage_data, phase_timings, controller_key):
+        if stage_data[0]["stage_name"] not in {a["stage_name"] for a in stream_data}:
+            self.signal_emulator.logger.info(f"Controller: {controller_key}: All red stage assumed with no phases")
+            stream_data.insert(0,
+                {
+                    "phase_ref": None,
+                    "site_code": stream_data[0]["site_code"],
+                    "stage_name": stage_data[0]["stage_name"],
+                    "stream_number": stream_data[0]["stream_number"],
+                    "x": "X"
+                }
+            )
+
         stages_names_in_streams = {clean_stage_name(a["stage_name"]) for a in stream_data}
         stage_name_to_stream_numbers = defaultdict(list)
         for stream in stream_data:
@@ -241,7 +253,8 @@ class TimingSheetParser:
             stream_stage_number = stage_name_to_stream_stage_number[
                 this_stage_name, this_stream_number
             ]
-            phases_in_stage.append(stream_record["phase_ref"])
+            if stream_record["phase_ref"]:
+                phases_in_stage.append(stream_record["phase_ref"])
             if this_stage_number != next_stage_number:
                 stage_numbers.add(this_stage_number)
                 stage_records.append(

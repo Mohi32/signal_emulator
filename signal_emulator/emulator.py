@@ -18,7 +18,10 @@ from signal_emulator.controller import (
 )
 from signal_emulator.enums import Cell
 from signal_emulator.file_parsers.plan_parser import PlanParser
+from signal_emulator.file_parsers.connect_plus_plan_parser import ConnectPlusPlanParser
 from signal_emulator.file_parsers.timing_sheet_parser import TimingSheetParser
+from signal_emulator.file_parsers.connect_plus_config_parser import ConnectPlusConfigParser
+from signal_emulator.file_parsers.connect_plus_timetable_parser import ConnectPlusTimetableParser
 from signal_emulator.linsig import Linsig
 from signal_emulator.m16_average import M16Averages
 from signal_emulator.m37_average import M37Averages
@@ -67,18 +70,25 @@ class SignalEmulator:
         self.phase_delays = PhaseDelays([], self)
         self.modified_phase_delays = ModifiedPhaseDelays([], self)
         self.prohibited_stage_moves = ProhibitedStageMoves([], self)
+        self.plans = Plans([], self)
+        self.plan_sequence_items = PlanSequenceItems([], self)
+        self.plan_timetables = PlanTimetables(self)
         if config.get("timing_sheet_directory"):
             self.load_timing_sheets_from_directory(
                 timing_sheet_directory=config["timing_sheet_directory"],
                 borough_codes=config.get("borough_codes")
             )
-        self.plans = Plans([], self)
-        self.plan_sequence_items = PlanSequenceItems([], self)
+        if config.get("connect_plus_directory"):
+            self.connect_plus_config_parser = ConnectPlusConfigParser(self)
+            self.connect_plus_plan_parser = ConnectPlusPlanParser(self)
+            self.connect_plus_timetable_parser = ConnectPlusTimetableParser(self)
+            self.load_connect_plus_configs_from_directory(config_directory=config["connect_plus_directory"])
+            self.load_connect_plus_timetables_from_directory(config_directory=config["connect_plus_directory"])
+            self.load_connect_plus_plans_from_directory(config_directory=config["connect_plus_directory"])
         if config.get("plan_directory"):
             self.load_plans_from_cell_directories(config["plan_directory"])
-        self.plan_timetables = PlanTimetables(
-            signal_emulator=self, pja_directory_path=config.get("PJA_directory", None)
-        )
+        if config.get("PJA_directory"):
+            self.plan_timetables = PlanTimetables(signal_emulator=self, pja_directory_path=config["PJA_directory"])
         self.m16s = M16Averages(
             periods=self.time_periods,
             **config.get("M16", {"source_type": None, "m16_path": None}),
@@ -105,9 +115,6 @@ class SignalEmulator:
             config.get("output_directory_visum", None),
             config.get("sld_pdf_directory"),
             config.get("timing_sheet_pdf_directory")
-        )
-        self.plan_timetables = PlanTimetables(
-            signal_emulator=self, pja_directory_path=config.get("PJA_directory", None)
         )
         self.phase_to_saturn_turns = PhaseToSaturnTurns(
             signal_emulator=self, saturn_lookup_file=config.get("saturn_lookup_file", None)
@@ -181,8 +188,13 @@ class SignalEmulator:
     def get_stream_plan_dict(self, controller):
         stream_plan_dict = {}
         for stream in controller.streams:
+            if stream is None:
+                self.logger.info(f"Null stream found in controller: {controller.controller_key}")
+                raise Exception
             plan = self.get_best_matching_plan(stream)
             stream_plan_dict[stream] = plan
+            if not plan:
+                self.logger.info(f"No Plan found for stream: {stream.site_number}")
         return stream_plan_dict
 
     def get_best_matching_plan(self, stream):
@@ -254,6 +266,10 @@ class SignalEmulator:
         ):
             self.load_timing_sheet_csv(csv_filepath)
 
+    def load_connect_plus_configs_from_directory(self, config_directory):
+        for config_filepath in self.connect_plus_config_parser.config_file_iterator(config_directory):
+            self.load_connect_plus_config_pdf(config_filepath)
+
     def load_timing_sheet_csv(self, csv_filepath):
         attrs_dict = self.timing_sheet_parser.parse_timing_sheet_csv(csv_filepath)
         self.controllers.add_items(attrs_dict["controllers"], self)
@@ -261,8 +277,34 @@ class SignalEmulator:
         self.stages.add_items(attrs_dict["stages"], self)
         self.phases.add_items(attrs_dict["phases"], self)
         self.intergreens.add_items(attrs_dict["intergreens"], self)
-        self.phase_delays.add_items(attrs_dict.get("phase_delays", []), self)
-        self.phase_delays.remove_invalid()
+        self.phase_delays.add_items(attrs_dict.get("phase_delays", []), self, valid_only=True)
+        # self.phase_delays.remove_invalid()
+        self.prohibited_stage_moves.add_items(attrs_dict.get("prohibited_stage_moves", []), self)
+        self.phase_stage_demand_dependencies.add_items(attrs_dict.get("phase_stage_demand_dependencies", []), self)
+        controller = self.controllers.get_by_key(attrs_dict["controllers"][0]["controller_key"])
+        self.phases.set_indicative_arrow_phases(controller.phases)
+
+    def load_connect_plus_config_pdf(self, pdf_filepath):
+        config_type = self.connect_plus_config_parser.get_config_type(pdf_filepath)
+        if config_type == "SWARCO":
+            attrs_dict = self.connect_plus_config_parser.parse_swarco_config_pdf(pdf_filepath)
+        elif config_type == "SIEMENS":
+            attrs_dict = self.connect_plus_config_parser.parse_siemens_config_pdf(pdf_filepath)
+        elif config_type == "MOTUS":
+            attrs_dict = self.connect_plus_config_parser.parse_motus_config_pdf(pdf_filepath)
+        elif config_type == "TELENT":
+            attrs_dict = self.connect_plus_config_parser.parse_telent_config_pdf(pdf_filepath)
+        else:
+            attrs_dict = None
+        if not attrs_dict:
+            return
+        self.controllers.add_items(attrs_dict["controllers"], self)
+        self.streams.add_items(attrs_dict["streams"], self)
+        self.stages.add_items(attrs_dict["stages"], self)
+        self.phases.add_items(attrs_dict["phases"], self)
+        self.intergreens.add_items(attrs_dict["intergreens"], self)
+        self.phase_delays.add_items(attrs_dict.get("phase_delays", []), self, valid_only=True)
+        # self.phase_delays.remove_invalid()
         self.prohibited_stage_moves.add_items(attrs_dict.get("prohibited_stage_moves", []), self)
         self.phase_stage_demand_dependencies.add_items(attrs_dict.get("phase_stage_demand_dependencies", []), self)
         controller = self.controllers.get_by_key(attrs_dict["controllers"][0]["controller_key"])
@@ -279,6 +321,11 @@ class SignalEmulator:
     def load_plans_from_directory(self, plan_directory):
         for plan_filepath in self.plan_parser.plan_file_iterator(plan_directory):
             self.load_plan_from_pln(plan_filepath)
+
+    def load_plan_from_connect_plus_file(self, plan_filepath):
+        attrs_dict = self.plan_parser.pln_to_attr_dict(plan_filepath)
+        self.plans.add_items(attrs_dict["plans"], self)
+        self.plan_sequence_items.add_items(attrs_dict["plan_sequence_items"], self)
 
     def load_plan_from_pln(self, plan_filepath):
         attrs_dict = self.plan_parser.pln_to_attr_dict(plan_filepath)
@@ -339,6 +386,24 @@ class SignalEmulator:
         """
         for phase_timing in self.phase_timings:
             self.saturn_signal_groups.add_from_phase_timing(phase_timing)
+
+    def load_connect_plus_plans_from_directory(self, config_directory):
+        for plan_filepath in self.connect_plus_plan_parser.plan_file_iterator(config_directory):
+            self.load_connect_plus_plan(plan_filepath)
+
+    def load_connect_plus_plan(self, plan_filepath):
+        attrs_dict = self.connect_plus_plan_parser.parse_plan(plan_filepath)
+        self.plans.add_items(attrs_dict["plans"], self)
+        self.plan_sequence_items.add_items(attrs_dict["plan_sequence_items"], self)
+
+    def load_connect_plus_timetables_from_directory(self, config_directory):
+        for timetable_filepath in self.connect_plus_timetable_parser.timetable_file_iterator(config_directory):
+            self.load_connect_plus_timetable(timetable_filepath)
+
+    def load_connect_plus_timetable(self, timetable_filepath):
+        pja_list = self.connect_plus_timetable_parser.parse_timetable(timetable_filepath)
+        self.plan_timetables.add_items(pja_list, self)
+
 
 if __name__ == "__main__":
     signal_emulator_config = load_json_to_dict(

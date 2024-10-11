@@ -5,7 +5,7 @@ from typing import Optional
 import numpy as np
 
 from signal_emulator.controller import BaseCollection
-from signal_emulator.utilities.utility_functions import time_str_to_timedelta
+from signal_emulator.utilities.utility_functions import time_str_to_timedelta, time_str_to_time
 
 
 @dataclass(eq=False)
@@ -26,6 +26,10 @@ class TimePeriod:
 
     def get_key(self):
         return self.name
+
+    @property
+    def mid_time(self):
+        return (self.start_time + self.end_time) / 2
 
     @staticmethod
     def timedelta_to_string(time_delta):
