@@ -22,9 +22,9 @@ def run_from_files():
 
 
 def run_from_postgres():
-    run_all(config_path="signal_emulator/resources/configs/signal_emulator_from_pg_config.json")
+    run_all(config_path="signal_emulator/resources/configs/signal_emulator_from_pg_config_cp.json")
 
 
 if __name__ == "__main__":
     run_from_files()
-    # run_from_postgres()
+    run_from_postgres()
