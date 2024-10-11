@@ -343,6 +343,18 @@ class Plan:
                     stage_sequence.append(new_stage_sequence_item)
                     stages_used.add(new_stage_sequence_item.stage.stage_number)
 
+        if len(stage_sequence) == 0:
+            # todo check this
+            stage = self.signal_emulator.stages.get_by_key(
+                self.get_initial_stage_id(m37_stages, stream)
+            )
+            stage_sequence.append(
+                StageSequenceItem(
+                    stage=stage,
+                    pulse_time=0,
+                )
+            )
+
         if m37_check and not m37_stages == set([a.stage.stream_stage_number for a in stage_sequence]):
             self.signal_emulator.logger.warning(
                 f"Stream: {stream.site_number} "
@@ -361,17 +373,6 @@ class Plan:
         ):
             stage_sequence = stage_sequence[:-1]
 
-        if len(stage_sequence) == 0:
-            # todo check this
-            stage = self.signal_emulator.stages.get_by_key(
-                self.get_initial_stage_id(m37_stages, stream)
-            )
-            stage_sequence.append(
-                StageSequenceItem(
-                    stage=stage,
-                    pulse_time=0,
-                )
-            )
         self.validate_stage_sequence(stage_sequence, stream.controller)
         # stage_sequence = self.remove_repeated_dd_stages(stage_sequence)
         return stage_sequence

@@ -50,13 +50,16 @@ class BaseCollection:
     def __len__(self):
         return len(self.data)
 
-    def add_items(self, item_arg_list, signal_emulator=None):
+    def add_items(self, item_arg_list, signal_emulator=None, valid_only=False):
         for arg_list in item_arg_list:
-            self.add_item(arg_list, signal_emulator=signal_emulator)
+            self.add_item(arg_list, signal_emulator=signal_emulator, valid_only=valid_only)
 
-    def add_item(self, data, signal_emulator=None):
+    def add_item(self, data, signal_emulator=None, valid_only=False):
         item = self.ITEM_CLASS(signal_emulator=signal_emulator, **data)
-        self.data[item.get_key()] = item
+        if valid_only and item.is_valid:
+            self.data[item.get_key()] = item
+        elif not valid_only:
+            self.data[item.get_key()] = item
 
     def add_instance(self, item):
         if isinstance(item, self.ITEM_CLASS):
@@ -443,7 +446,7 @@ class Stages(BaseCollection):
             (controller_key, stream_number, stage_number)
         ]
 
-    def add_item(self, data, signal_emulator=None):
+    def add_item(self, data, signal_emulator=None, valid_only=False):
         stage = self.ITEM_CLASS(signal_emulator=signal_emulator, **data)
         self.data[stage.get_key()] = stage
         self.data_by_stream_number_and_stage_number[stage.get_number_key()] = stage
@@ -925,6 +928,13 @@ class PhaseDelay(BasePhaseDelay):
     def __post_init__(self):
         self.controller.phase_delay_keys.append(
             (self.end_stage_key, self.start_stage_key, self.phase_ref)
+        )
+
+    @property
+    def is_valid(self):
+        return (
+            self.phase_ref in self.end_stage.phase_keys_in_stage or
+            self.phase_ref in self.start_stage.phase_keys_in_stage
         )
 
     @property

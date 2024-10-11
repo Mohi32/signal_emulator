@@ -74,7 +74,10 @@ class SignalPlans(BaseCollection):
 
     def add_from_stream_plan_dict(self, streams_and_plans, period, signal_plan_number):
         first_plan = next(iter(streams_and_plans.values()))
+        first_plan = next((v for v in streams_and_plans.values() if v is not None), None)
         first_stream = next(iter(streams_and_plans.keys()))
+        first_stream = next((k for k, v in streams_and_plans.items() if v is not None), None)
+        print("first stream", first_stream)
         max_cycle_time = self.get_cycle_time(first_stream, first_plan)
         signal_plan = SignalPlan(
             controller_key=first_stream.controller.controller_key,
@@ -143,6 +146,7 @@ class SignalPlans(BaseCollection):
                 signal_plan_sequence_number += 1
 
     def get_cycle_time(self, stream, plan):
+        print("stream", stream.site_number)
         cycle_time = self.get_m37_cycle_time(stream)
         if cycle_time:
             return cycle_time
@@ -157,7 +161,7 @@ class SignalPlans(BaseCollection):
                 return self.signal_emulator.m37s.get_by_key((
                 stream.site_number, stage.value, self.signal_emulator.time_periods.active_period_id
             )).cycle_time
-        if stream.site_number != stream.controller_key:
+        if stream.site_number != stream.controller_key and self.signal_emulator.streams.key_exists((stream.controller_key, 0)):
             return self.get_m37_cycle_time(self.signal_emulator.streams.get_by_key((stream.controller_key, 0)))
         else:
             return None
