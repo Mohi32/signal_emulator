@@ -73,7 +73,6 @@ class SignalEmulator:
         self.plans = Plans([], self)
         self.plan_sequence_items = PlanSequenceItems([], self)
         self.plan_timetables = PlanTimetables(self)
-
         if config.get("timing_sheet_directory"):
             self.load_timing_sheets_from_directory(
                 timing_sheet_directory=config["timing_sheet_directory"],
@@ -86,7 +85,6 @@ class SignalEmulator:
             self.load_connect_plus_configs_from_directory(config_directory=config["connect_plus_directory"])
             self.load_connect_plus_timetables_from_directory(config_directory=config["connect_plus_directory"])
             self.load_connect_plus_plans_from_directory(config_directory=config["connect_plus_directory"])
-
         if config.get("plan_directory"):
             self.load_plans_from_cell_directories(config["plan_directory"])
         if config.get("PJA_directory"):
@@ -192,12 +190,12 @@ class SignalEmulator:
         stream_plan_dict = {}
         for stream in controller.streams:
             if stream is None:
-                print(controller.controller_key)
+                self.logger.info(f"Null stream found in controller: {controller.controller_key}")
                 raise Exception
             plan = self.get_best_matching_plan(stream)
             stream_plan_dict[stream] = plan
             if not plan:
-                print(stream)
+                self.logger.info(f"No Plan found for stream: {stream.site_number}")
         return stream_plan_dict
 
     def get_best_matching_plan(self, stream):
@@ -270,13 +268,8 @@ class SignalEmulator:
             self.load_timing_sheet_csv(csv_filepath)
 
     def load_connect_plus_configs_from_directory(self, config_directory):
-        c = 1
         for config_filepath in self.connect_plus_config_parser.config_file_iterator(config_directory):
-            # config_filepath = r"signal_emulator/resources/connect_plus\\J05141x - M25 J8 - North West\Configuration File\E62241 Issue 4 Print.pdf"
             self.load_connect_plus_config_pdf(config_filepath)
-            # c+=1
-            # if c==6:
-            #     break
 
     def load_timing_sheet_csv(self, csv_filepath):
         attrs_dict = self.timing_sheet_parser.parse_timing_sheet_csv(csv_filepath)
