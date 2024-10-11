@@ -1,0 +1,137 @@
+{
+    "junction_groups": [
+        {
+            "junction_group_name": "M25 J1B",
+            "controller_keys": ["J52/110", "J52/120"]
+        },
+        {
+            "junction_group_name": "M25 J2",
+            "controller_keys": ["J51/110", "J51/120"]
+        },
+        {
+            "junction_group_name": "M25 J3",
+            "controller_keys": ["J51/210", "J51/220", "J51/230"]
+        },
+        {
+            "junction_group_name": "M25 J6",
+            "controller_keys": ["J51/310", "J51/320"]
+        },
+        {
+            "junction_group_name": "M25 J8",
+            "controller_keys": ["J51/410", "J51/420"]
+        },
+        {
+            "junction_group_name": "M25 J9B",
+            "controller_keys": ["J51/510"]
+        },
+
+        {
+            "junction_group_name": "M25 J10",
+            "controller_keys": ["J51/610", "J51/620", "J51/630", "J51/640"]
+        },
+        {
+            "junction_group_name": "M25 J10 PEGASUS",
+            "controller_keys": ["J51/650"]
+        },
+        {
+            "junction_group_name": "M25 J11",
+            "controller_keys": ["J51/710", "J51/720"]
+        },
+        {
+            "junction_group_name": "M25 J13",
+            "controller_keys": ["J51/810", "J51/820"]
+        },
+        {
+            "junction_group_name": "M25 J14",
+            "controller_keys": ["J51/910", "J51/920"]
+        },
+        {
+            "junction_group_name": "M25 J23",
+            "controller_keys": ["J52/210", "J52/230"]
+        },
+        {
+            "junction_group_name": "M25 J25",
+            "controller_keys": ["J52/310", "J52/320"]
+        },
+        {
+            "junction_group_name": "M25 J28",
+            "controller_keys": ["J52/450", "J52/460"]
+        },
+        {
+            "junction_group_name": "M25 J29",
+            "controller_keys": ["J52/510", "J52/520"]
+        },
+        {
+            "junction_group_name": "M25 J30",
+            "controller_keys": ["J52/610", "J52/620", "J52/630", "J52/640"]
+        },
+        {
+            "junction_group_name": "M25 J31",
+            "controller_keys": ["J54/110", "J54/120"]
+        },
+        {
+            "junction_group_name": "M1 J6",
+            "controller_keys": ["J52/710"]
+        },
+        {
+            "junction_group_name": "M3 J1",
+            "controller_keys": ["J52/810", "J52/820"]
+        },
+        {
+            "junction_group_name": "A1 Roehyde",
+            "controller_keys": ["J53/110", "J53/120"]
+        },
+        {
+            "junction_group_name": "A1 Roehyde College Lane",
+            "controller_keys": ["J53/140"]
+        },
+        {
+            "junction_group_name": "A3 Painshill",
+            "controller_keys": ["J53/210", "J53/220"]
+        },
+        {
+            "junction_group_name": "A30 Town Lane Tesco",
+            "controller_keys": ["J53/310"]
+        },
+        {
+            "junction_group_name": "A30 Bulldog",
+            "controller_keys": ["J53/320"]
+        },
+        {
+            "junction_group_name": "A30 Ashford School Puffin",
+            "controller_keys": ["J53/330"]
+        },
+        {
+            "junction_group_name": "A30 Stanwell New Road",
+            "controller_keys": ["J53/410"]
+        },
+        {
+            "junction_group_name": "A30 Crooked Billet",
+            "controller_keys": ["J53/510"]
+        },
+        {
+            "junction_group_name": "A3113 Stanwell Moor",
+            "controller_keys": ["J53/610"]
+        },
+        {
+            "junction_group_name": "A23 Netherne Drive",
+            "controller_keys": ["J53/710"]
+        },
+        {
+            "junction_group_name": "A23 Star Lane",
+            "controller_keys": ["J53/810"]
+        },
+        {
+            "junction_group_name": "A23 Church Lane Puffin",
+            "controller_keys": ["J53/820"]
+        },
+        {
+            "junction_group_name": "M40 J1 East",
+            "controller_keys": ["J53/910"]
+        },
+        {
+            "junction_group_name": "M40 J1 West",
+            "controller_keys": ["J53/920"]
+        }
+    ]
+}
