@@ -1,3 +1,4 @@
+
 {
     "postgres_connection": {
         "host": "localhost",
@@ -6,8 +7,24 @@
         "port": 5432,
         "schema": "v0_0_7_b6_7_8_9_19_20"
     },
-    "load_from_postgres": true,
-    "output_schema": "v0_0_7_b6_7_8_9_19_20",
+    "load_from_postgres": false,
+    "M37": {
+        "m37_path": "signal_emulator/resources/M37/averaged/m37_averaged_240125_fixed.csv",
+        "source_type": "averaged",
+        "export_to_csv_path": false
+    },
+    "M16": {
+        "m16_path": "signal_emulator/resources/M16/averaged/m16_averaged_240125.csv",
+        "source_type": "averaged",
+        "export_to_csv_path": false
+    },
+    "timing_sheet_directory": "signal_emulator/resources/timing_sheets",
+    "borough_codes": [6,7,8,9,19,20],
+    "ped_only": false,
+    "timing_sheet_column_config": "signal_emulator/resources/timing_sheet_column_lookup.json",
+    "plan_directory": "signal_emulator/resources/plans_231130",
+    "PJA_directory": "signal_emulator/resources/PJA",
+    "saturn_lookup_file": "signal_emulator/resources/phase_to_saturn_turns/phase_to_saturn_turns_b0_13_14_15_16_17_31.csv",
     "output_directory_visum": "signal_emulator/output/VISUM/v0_0_7_b6_7_8_9_19_20",
     "output_directory_linsig": "signal_emulator/output/LINSIG/v0_0_7_b6_7_8_9_19_20",
     "output_directory_saturn": "signal_emulator/output/SATURN/v0_0_7_b6_7_8_9_19_20",
