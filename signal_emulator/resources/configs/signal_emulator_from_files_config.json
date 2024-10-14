@@ -24,10 +24,10 @@
     "timing_sheet_column_config": "signal_emulator/resources/timing_sheet_column_lookup.json",
     "plan_directory": "signal_emulator/resources/plans_231130",
     "PJA_directory": "signal_emulator/resources/PJA",
-    "saturn_lookup_file": "signal_emulator/resources/phase_to_saturn_turns/phase_to_saturn_turns_b0_13_14_15_16_17_31.csv",
-    "output_directory_visum": "signal_emulator/output/VISUM/v0_0_7_b6_7_8_9_19_20",
-    "output_directory_linsig": "signal_emulator/output/LINSIG/v0_0_7_b6_7_8_9_19_20",
-    "output_directory_saturn": "signal_emulator/output/SATURN/v0_0_7_b6_7_8_9_19_20",
+    "saturn_lookup_file": "signal_emulator/resources/phase_to_saturn_turns/phase_to_saturn_turns_connect_plus.csv",
+    "output_directory_visum": "signal_emulator/output/VISUM/M25",
+    "output_directory_linsig": "signal_emulator/output/LINSIG/M25",
+    "output_directory_saturn": "signal_emulator/output/SATURN/M25",
     "sld_pdf_directory": "signal_emulator/sld",
     "timing_sheet_pdf_directory": "signal_emulator/resources/timing_sheet_pdf"
 }
