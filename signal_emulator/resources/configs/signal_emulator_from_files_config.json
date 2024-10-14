@@ -5,7 +5,7 @@
         "database": "tfl_signal_timings",
         "user": "postgres",
         "port": 5432,
-        "schema": "v0_0_7_b6_7_8_9_19_20"
+        "schema": "v0_0_8_connect_plus"
     },
     "load_from_postgres": false,
     "M37": {
