@@ -11,6 +11,6 @@
     "output_directory_visum": "signal_emulator/output/VISUM/v0_0_8_connect_plus_2",
     "output_directory_linsig": "signal_emulator/output/LINSIG/v0_0_8_connect_plus_2",
     "output_directory_saturn": "signal_emulator/output/SATURN/v0_0_8_connect_plus_2",
-    "sld_pdf_directory": "\\\\onelondon.tfl.local\\shared\\OMVHUB\\Assignment Modelling\\ONE Model\\Development\\2023 P6\\05 Data\\01 Signal\\sld_pdf_231201",
+    "sld_pdf_directory": "signal_emulator/sld",
     "timing_sheet_pdf_directory": "\\\\onelondon.tfl.local\\shared\\OMVHUB\\Assignment Modelling\\ONE Model\\Development\\2023 P6\\05 Data\\01 Signal\\timing_sheets_pdf_231201"
 }
